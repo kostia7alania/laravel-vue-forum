@@ -1,7 +1,11 @@
 <template>
     <v-app class="app">
         <toolbar></toolbar>
-        <router-view></router-view>
+
+ <keep-alive max="1">
+        <router-view :key="$route.fullPath"></router-view>
+ </keep-alive>
+
         <snack/>
         <foot-app></foot-app>
    </v-app>
