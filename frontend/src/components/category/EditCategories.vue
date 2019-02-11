@@ -131,7 +131,10 @@ export default {
     create() {
       this.loading = true;
       this["category/createCategory"](this.form)
-        .then(() => (this.form.name = null))
+        .then(() => {
+            this.form.name = null
+            snack("Категория успешно создана", "success")
+        })
         .catch(err => {
           console.warn(err);
           this.errors = err.response.data.errors;
