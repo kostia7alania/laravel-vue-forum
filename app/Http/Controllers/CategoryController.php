@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CategoryTopicsResource;
+use App\Http\Resources\CategoryQuestionsResource;
 use App\Http\Requests\CategoryRequest;
 
 
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\App;
 class CategoryController extends Controller {
 
     public function __construct() { // Create a new AuthController instance. @return void
-        $this->middleware('JWT', ['except' => ['index','show']]);
+        $this->middleware('JWT', ['except' => ['index','show','getQuestionsByCategorySlug']]);
     }
 
     public function index() {   // Display a listing of the resource.  @return \Illuminate\Http\Response
@@ -85,4 +86,13 @@ class CategoryController extends Controller {
         $category->delete();
         return response(null. Response::HTTP_NO_CONTENT);
     }
+
+    public function getQuestionsByCategorySlug(Category $category) {
+
+        return  CategoryQuestionsResource::collection($category->questions);
+
+        //return CategoryTopicsResource::collection( category::latest()->get()->where('id','=','1') );
+    }
+
+
 }

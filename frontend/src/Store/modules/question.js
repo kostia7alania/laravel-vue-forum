@@ -2,14 +2,17 @@
 import AppStorage from '../Helpers/AppStorage';
 export default  {
     state: {
-        categories: [],
         questions: [],
-        replies: [],
+        loading:false,
     },
 
     getters: {
-        categories ({state, getters}, arg2, arg3, modulesGetters, ) {
-        }
+        questions  (state, getters) {
+            return state.questions
+        },
+        loading (state, getters) {
+            return state.loading
+        },
 
     },
 
@@ -29,14 +32,48 @@ export default  {
 
 
     actions: {
-        async newReply( {state, commit, dispatch}, id) {
 
+        getQuestions({ state,commit,dispatch}) {
+            commit('changeProp', {prop: 'loading',val: true})
+            return axios.get(`/question/`)
+                .then(res => {
+                    commit('changeProp', { prop: 'questions',val: res.data.data })
+                    return res
+                })
+                .catch(err => {
+                    console.warn('ERR in getQuestions => ', err)
+                    return false
+                })
+                .finally(e => {
+                    commit('changeProp', { prop: 'loading', val: false })
+                    return e
+                })
         },
+
+        getQuestionByCategorySlug({ state,commit,dispatch}, slug) {
+            commit('changeProp', {prop: 'loading',val: true})
+            return axios.get(`/category/${slug}/questions`)
+                .then(res => {
+                    commit('changeProp', { prop: 'questions',val: res.data.data })
+                    return res
+                })
+                .catch(err => {
+                    console.warn('ERR in getQuestions => ', err)
+                    return false
+                })
+                .finally(e => {
+                    commit('changeProp', { prop: 'loading', val: false })
+                    return e
+                })
+        },
+
         createQuestion({}, form){
             return axios.post("/question", form)
         },
+
         questionUpdate({}, form){
             return axios.patch(`/question/${form.slug}`, form)
         },
+
     }
 }

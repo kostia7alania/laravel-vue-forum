@@ -4,15 +4,18 @@
     <v-container fluid grid-list-md>
         <v-layout row wrap>
             <v-flex xs8>
-                <div v-if="loading" class="text-xs-center">
-                    <v-progress-circular :size="70" :width="7" color="purple" indeterminate ></v-progress-circular>
-                </div>
-                <div v-else >
-                        <h1>{{ question.name }} ({{question.questions.length }})</h1>
-                            <question v-for="(question,i) in question.questions"
-                                    :key="question.path+i"
-                                    :question="question"/>
-                    </div>
+
+                <v-toolbar color="cyan" dark dense>
+                    <v-toolbar-title>{{ slug }} {{ quantity }}
+                        <v-progress-circular v-if="loading" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
+                    </v-toolbar-title>
+                </v-toolbar>
+
+                <question v-for="(question,i) in questions"
+                        :key="question.path+i"
+                        :question="question"
+                />
+
             </v-flex>
             <v-flex xs4>
                 <Categories/>
@@ -24,39 +27,51 @@
 
 
 <script>
-import question from '@/components/forum/question'
+import question from "@/components/forum/question";
 import Categories from "@/components/category/Categories.vue";
+import { mapActions, mapGetters } from "vuex";
+
 export default {
-    name: "Category-Questions",
-    components: { question, Categories },
-    data() {
-        return {
-            question: null,
-            loading: false
-        };
+  name: "Category-Questions",
+  components: { question, Categories },
+  data() {
+    return {};
   },
   created() {
-    this.getQuestion();
+    this.getQuestions();
+  },
+  computed: {
+      ...mapGetters([
+          'question/questions',
+      "question/loading"
+      ]),
+      loading() {
+          return this['question/loading']
+      },
+      questions() {
+          return this['question/questions']
+      },
+      slug(){
+          return this.$route.params&&this.$route.params.slug || "Last questions"
+      },
+      quantity(){
+          return this.questions instanceof Array && `(${this.questions.length})` || ''
+      }
   },
   methods: {
-    getQuestion() {
-        this.loading = true;
-    window.t = this
-        let slug = this.$route.params.slug;
-        if( typeof slug=='undefined' )  slug='';
-      axios
-        .get(`/category/${slug}`)
-        .then(res => {
-            if(slug) this.question = res.data.data
-            else {
-                this.question = {
-                    name:       'Категории',
-                    questions:  res.data.data
-                }
-            }
-        })
-        .finally( () => this.loading = false)
-    }
+    ...mapActions([
+      "question/getQuestions",
+      "question/getQuestionByCategorySlug"
+    ]),
+    async getQuestions() {
+      let slug = this.$route.params.slug;
+      window.t = this
+      let res;
+      if (!slug) res = await  this["question/getQuestions"]();
+      else res = await this["question/getQuestionByCategorySlug"](slug);
+      if (!res) snack("Ошибка при получении списка", "error");
+      else snack("Список обновлен!", "success");
+    },
   }
 };
 </script>
