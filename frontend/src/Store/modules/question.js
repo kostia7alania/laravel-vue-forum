@@ -34,6 +34,9 @@ export default  {
         },
         createQuestion({}, form){
             return axios.post("/question", form)
-        }
+        },
+        questionUpdate({}, form){
+            return axios.patch(`/question/${form.slug}`, form)
+        },
     }
 }
