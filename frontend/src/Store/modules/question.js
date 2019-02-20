@@ -31,6 +31,9 @@ export default  {
     actions: {
         async newReply( {state, commit, dispatch}, id) {
 
+        },
+        createQuestion({}, form){
+            return axios.post("/question", form)
         }
     }
 }

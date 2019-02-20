@@ -14,7 +14,7 @@
             <v-list-tile v-for="category in categories" :key="category.path">
                 <v-list-tile-content>
                         <v-list-tile-title>
-                           <router-link :to="category.path">{{ category.name}}</router-link>
+                           <router-link :to="category.path">{{ category.name }}</router-link>
                         </v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
@@ -24,7 +24,7 @@
 
 <script>
 
-import {mapState, mapActions, mapGetters} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
     name: 'Categories',
