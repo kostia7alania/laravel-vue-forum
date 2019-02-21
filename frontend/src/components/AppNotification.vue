@@ -1,18 +1,25 @@
 <template>
     <div clsas="text-xs-center">
         <v-menu offset-y>
+
+                <v-alert class="ma-0 pa-0" v-if="noNews"
+                    :value="true" type="primary" >
+                    Нету новостей
+                </v-alert>
+
             <v-btn icon slot="activator">
                 <v-icon :color="unreadCount?'red':'red lighten-4'">add_alert</v-icon>
                 {{ unreadCount }}
             </v-btn>
             <v-list :class="noAlerts?'ma-0 pa-0':'pb-0'" >
+
                 <v-list-tile v-for="item in unread" :key="item.id">
                     <router-link :to="item.path">
-                        <v-list-tile-title @click="readIt(item)">{{ item.question }}</v-list-tile-title>
+                        <v-list-tile-title @click="markAsRead(item)">{{ item.question }}</v-list-tile-title>
                     </router-link>
                 </v-list-tile>
 
-                <v-divider v-if="unread.length"/>
+                <v-divider v-if="unreadCount"/>
 
                 <v-list-tile v-for="item in read" :key="item.id">
                     <router-link :to="item.path">
@@ -43,57 +50,81 @@ export default {
   name: "notifics",
   data() {
     return {
-      read: {},
-      unread: {},
-      unreadCount: 0,
+      inited: false,
       sound:
         "https://www.soundsnap.com/streamers/play.php?id=1554465771.2719:f58b2a1ec50f5a5b79ed74d836d2eaf5a2bb11bf:f25ca3cbbbabc600c18619f588ee0dcca822172413031b9a056fd1630e73ba2c2679ee348c5b56583ca59d4991f14127b8864d3e2470b3f99886768a7d15eec51084495434374d0349db5c4692805249960df3d70666eaeaa184aafadbd04757a4817a0bbe20252aad7a46d82f7af97614d23353e3632e798535b8ccf6e381d8eb2f51bed6cda2c33c7d111a8750e4a031ec38acbd4b8c99a0fb212930aa07b40458547b8fb80d1e020fa595b7fd75bb8f93a0aa1b0a23d595344668f7084bc65d5c3d2941a2afc7e3ed0c18f9bc1cd606a9b8934f8be11fbbf5e42b7c3313d7" // @/assets/alert_audio.mp3'
     };
   },
   created() {
-    window.playSound = this.playSound; // <- 4-test
-    if (this["login/loggedIn"]) this.getNotifications();
-    Echo.private("App.User." + this["login/id"]).notification(notification => {
-      console.log("app notif.vue ->", notification, notification.type);
-      this.playSound();
-      this.unread.unshift(notification);
-      this.unreadCount++;
-    });
+    this.getNotifications();
+    this.initLiveNotifications();
   },
   computed: {
-    ...mapGetters(["login/loggedIn", "login/id"]),
-    noAlerts(){
-        return !this.unread.length && !this.read.length
+    ...mapGetters([
+      "login/loggedIn",
+      "login/id",
+      "notification/read",
+      "notification/unread"
+    ]),
+    loggedIn() {
+      return this["login/loggedIn"];
+    },
+    noAlerts() {
+      return !this.unreadCount && !this.readCount;
+    },
+    noNews(){
+      return !this.unreadCount
+    },
+    read() {
+      return this["notification/read"];
+    },
+    unread() {
+      return this["notification/unread"];
+    },
+    readCount() {
+      const u = this.read;
+      return u && u instanceof Array && u.length;
+    },
+    unreadCount() {
+      const u = this.unread;
+      return u && u instanceof Array && u.length;
+    }
+  },
+  watch: {
+    loggedIn(neww, old) {
+      alert("");
+      this.getNotifications();
+      this.initLiveNotifications();
     }
   },
   methods: {
+    ...mapActions(["notification/getNotifications", "notification/markAsRead"]),
+    async getNotifications() {
+      if (this["login/loggedIn"]) {
+        let bool = await this["notification/getNotifications"]();
+        if (bool) console.log("GET NOTIF: success");
+        else console.warn("GET NOTIF: failed");
+      }
+    },
+    initLiveNotifications() {
+      if (this["login/loggedIn"] && !this.inited) {
+        window.playSound = this.playSound; // <- 4-test
+        Echo.private("App.User." + this["login/id"]).notification(
+          notification => {
+            console.log("app notif.vue ->", notification, notification.type);
+            this.playSound();
+            this.getNotifications();
+            this.inited = true;
+          }
+        );
+      }
+    },
     playSound() {
       let alert = new Audio(this.sound);
       alert.play();
     },
-    getNotifications() {
-      axios
-        .post("/notifications")
-        .then(res => {
-          this.read = res.data.read;
-          this.unread = res.data.unread;
-          this.unreadCount = res.data.unread.length;
-        })
-        .catch(err => {
-          console.warn(err);
-        });
-    },
-    readIt(notification) {
-      axios
-        .post("/markAsRead", { id: notification.id })
-        .then(res => {
-          this.unread.splice(notification, 1);
-          this.read.push(notification);
-          this.unreadCount--;
-        })
-        .catch(err => {
-          console.warn(err);
-        });
+    markAsRead(notification) {
+      this["notification/markAsRead"](notification);
     }
   }
 };
@@ -101,6 +132,6 @@ export default {
 
 <style>
 .mt-0 {
-    margin-top:0px !important;
+  margin-top: 0px !important;
 }
 </style>
