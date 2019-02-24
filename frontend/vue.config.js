@@ -1,7 +1,7 @@
 module.exports = {
     transpileDependencies: [
         'vuex-persist',
-        /node_modules[/\\\\]vuetify[/\\\\]/
+       // /node_modules[/\\\\]vuetify[/\\\\]/
     ],
     // proxy API requests to Valet during development
     devServer: {
