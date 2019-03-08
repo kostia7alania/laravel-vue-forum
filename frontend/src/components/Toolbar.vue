@@ -28,7 +28,7 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
 
-    <app-notification v-if="['login/loggedIn']"/>
+    <app-notification v-if="loggedIn"/>
 
     <div class="hidden-sm-and-down">
         <v-btn flat v-for="item in items" :key="item.title" v-show="item.show" :to="item.to" @click="!item.to?logout():''">
@@ -61,6 +61,9 @@ export default {
         ]),
         items() {
             return this['toolbar/items']
+        },
+        loggedIn() {
+            return this['login/loggedIn'];
         }
     },
     methods: {
