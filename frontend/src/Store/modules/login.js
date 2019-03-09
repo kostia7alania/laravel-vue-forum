@@ -16,15 +16,15 @@ export default  {
     getters: {
 
         TOKEN__isValid (state, getters) {
-            const decode = payload => isBase64(payload) ? JSON.parse(atob(payload)) : false
             const isBase64 = str => {
                 try {  return btoa(atob(str)).replace(/=/g, '') == str } catch (err)
                 { return false }
             }
+            const decode = payload => isBase64(payload) ? JSON.parse(atob(payload)) : false
             const token = state.token;
             const payload = typeof token == 'string' && decode(token.split('.')[1]);
             if (payload) {
-                return true // payload.iss == state.token_validation.iss
+                return true // payload.iss == state.token_validation.iss // => validation
             }
             return false;
         },
@@ -71,7 +71,6 @@ export default  {
 
     mutations: { /***** USING GLOBAL ****/
 
-
         toggle(state, { prop }) {
             state[prop] = !state[prop];
         },
@@ -81,7 +80,6 @@ export default  {
         changeObj(state, { obj, prop, val } ) {
             state[obj][prop] = val
         },
-
 
     },
 
@@ -95,6 +93,7 @@ export default  {
                         //    AppStorage.store(token)
                             commit('changeProp',{prop: 'token', val:token})
                             commit('changeObj', {obj: 'user', prop: 'role', val: res.data.role})
+                            window.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
                             return true;
                         }) //return!!
                         .catch( () => !!0 );
@@ -117,9 +116,9 @@ export default  {
 
         logout({commit}) {
             commit('changeProp',{prop: 'token', val: null})
-         //   AppStorage.clear();
-            router.push('/forum')
-
+            commit('changeProp',{prop: 'user', val: {} })
+            // AppStorage.clear();
+            // router.push('/forum')
         },
 
     },
