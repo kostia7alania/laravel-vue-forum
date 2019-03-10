@@ -10,6 +10,7 @@
             required
            ></v-text-field>
 
+            <categories :form='form'/>
 
             <span class="red--text" v-if="errors.body">{{ errors.body[0] }}</span>
             <markdown :form="form"></markdown>
@@ -22,14 +23,14 @@
 
 
            <span class="red--text" v-if="errors.category_id">{{ errors.category_id[0] }}</span>
-            <categories :form='form'/>
+
        </v-form>
    </v-container>
 </template>
 <script>
 
 import {mapActions} from 'vuex'
-import categories from './categories'
+import categories from './categories-autocomplete'
 import markdown from '@/components/markdown'
 
 export default {
