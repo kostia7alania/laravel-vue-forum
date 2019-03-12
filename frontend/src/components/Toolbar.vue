@@ -23,16 +23,16 @@
 
     </div>
 
-    <v-toolbar-title>
-        <router-link class="white--text" to="/">Форум</router-link>
+    <v-toolbar-title class="white--text">
+            <v-icon >nature_people</v-icon> Форум
     </v-toolbar-title>
     <v-spacer></v-spacer>
 
     <app-notification v-if="['login/loggedIn']"/>
 
     <div class="hidden-sm-and-down">
-        <v-btn flat v-for="item in items" :key="item.title" v-show="item.show" :to="item.to">
-            <v-btn icon><v-icon>{{ item.icon }}</v-icon></v-btn>
+        <v-btn flat v-for="item in items" :key="item.title" v-show="item.show" :to="item.to" @click="!item.to?logout():''">
+            <v-icon>{{ item.icon }}</v-icon>
             {{ item.title }}
         </v-btn>
     </div>
@@ -44,7 +44,7 @@
 
 import AppNotification from './AppNotification'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     name: 'TOOLbar',
@@ -63,8 +63,18 @@ export default {
             return this['toolbar/items']
         }
     },
+    methods: {
+        ...mapActions([
+            'login/logout'
+        ]),
+        logout(){
+            console.log('login/logout')
+            this['login/logout']();
+        }
+    }
 }
 </script>
+<!--
 <style lang="scss" scoped>
 .v-list__tile__title {
     /*overflow: inherit;*/
@@ -81,3 +91,4 @@ export default {
     top: -18px !important   ;
 }
 </style>
+-->
