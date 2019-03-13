@@ -22,29 +22,12 @@ const routes =  [
         path: '/',
         component: ()=>import('@/components/parallex')
     },
+
     {
-        name: "login",
-        meta: {title: 'Login'},
-        path: "/login",
-        component: () => import("@/components/login/Login")
-    },
-    {
-        name: "logout",
-        meta: {title: 'Logout'},
-        path: "/logout",
-        component: () => import("@/components/login/Logout")
-    },
-    {
-        name: "signup",
-        meta: {title: 'Signup'},
-        path: "/signup",
-        component: () => import("@/components/login/Signup")
-    },
-    {
-        name: "category",
-        meta: {title: 'Categories'},
-        path: "/category",
-        component: () => import("@/components/category/CreateCategory")
+        name: "forum",
+        meta: {title: 'Forum'},
+        path: "/forum",
+        component: () =>import("@/components/category/CategoryQuestions")// import("@/components/forum/forum")
     },
     {
         name: "CategoryQuestions",
@@ -52,11 +35,33 @@ const routes =  [
         path: "/category/:slug",
         component: () => import("@/components/category/CategoryQuestions")
     },
+
     {
-        name: "forum",
-        meta: {title: 'Forum'},
-        path: "/forum",
-        component: () => import("@/components/forum/forum")
+        name: "ask",
+        meta: {title: 'Create question'},
+        path: "/ask",
+        component: () => import("@/components/forum/createTopic/create")
+    },
+
+    {
+        name: "signup",
+        meta: {title: 'Signup'},
+        path: "/signup",
+        component: () => import("@/components/login/Signup")
+    },
+
+    {
+        name: "edit-categories",
+        meta: {title: 'Edit categories'},
+        path: "/edit-categories",
+        component: () => import("@/components/category/EditCategories")
+    },
+
+    {
+        name: "login",
+        meta: {title: 'Login'},
+        path: "/login",
+        component: () => import("@/components/login/Login")
     },
     {
         name: "read",
@@ -64,12 +69,7 @@ const routes =  [
         path: "/question/:slug",
         component: () => import("@/components/forum/read")
     },
-    {
-        name: "ask",
-        meta: {title: 'Create question'},
-        path: "/ask",
-        component: () => import("@/components/forum/createTopic/create")
-    },
+
     {
         path: '*',
         meta: {title: 'Page not found!'},
