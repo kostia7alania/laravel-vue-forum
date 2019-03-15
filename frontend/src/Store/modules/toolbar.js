@@ -15,9 +15,9 @@ export default  {
             return [
                 {title: 'Forum', to:'/forum', icon:'question_answer',   show: true},
                 {title: 'Ask question', to:'/ask', icon: 'plus_one',    show: loggedIn },
-                {title: 'Category', to:'/category', icon: 'bookmarks',  show: true },
+                {title: 'Edit categories', to:'/edit-categories', icon: 'bookmarks',  show: true },
                 {title: 'Login', to:'/login', icon: 'person',           show: !loggedIn },
-                {title: 'Logout', to:'/Logout', icon: 'exit_to_app',    show: loggedIn },
+                {title: 'Logout', icon: 'exit_to_app',                  show: loggedIn },
             ]
         }
 
