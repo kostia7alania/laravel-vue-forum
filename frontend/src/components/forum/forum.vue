@@ -3,6 +3,13 @@
         <v-layout row wrap>
             <v-flex xs8>
 
+        <v-toolbar color="cyan" dark dense>
+            <v-toolbar-title>Questions
+                <v-progress-circular v-if="loading" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
+            </v-toolbar-title>
+        </v-toolbar>
+
+
                 <div v-if="loading" class="text-xs-center">
                     <v-progress-circular :size="70" :width="7" color="purple" indeterminate ></v-progress-circular>
                 </div>
@@ -14,12 +21,13 @@
                 <div v-if="questions" class="text-xs-center">
                         <v-pagination
                         v-model="meta.current_page"
-                        :length="meta.total / meta.per_page"
-                        ></v-pagination>
-                    </div>
+                        :length="lenComp"
+                        />
+                </div>
+
             </v-flex>
             <v-flex xs4>
-                <app-sidebar/>
+                <Categories/>
             </v-flex>
         </v-layout>
     </v-container>
@@ -27,12 +35,13 @@
 
 <script>
 import question from "./question";
-import AppSidebar from "./AppSidebar";
+import Categories from "@/components/category/Categories.vue";
+
 export default {
   name: "forum",
   components: {
     question,
-    AppSidebar
+    Categories
   },
   data() {
     return {
@@ -50,6 +59,11 @@ export default {
   },
   created() {
       this.getQuestions()
+  },
+  computed: {
+    lenComp() {
+        return Math.ceil(this.meta.total/this.meta.per_page)
+    },
   },
   watch: {
       'meta.current_page'(neww,old){
