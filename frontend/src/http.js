@@ -10,8 +10,8 @@ window.axios = ax.create({
     }
   });
 /*
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-window.axios.defaults.headers.common['Authorization'] = JwtToken;
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+window.axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.login.token}`
 */
 
 
