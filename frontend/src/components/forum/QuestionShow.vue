@@ -6,7 +6,16 @@
                     <div class="headline">
                         {{ question.title }}
                     </div>
-                    <span grey--text> {{ question.user }} said {{ question.created_at }} </span>
+                    <div grey--text>
+                        <span>
+                            <v-icon size=16.5>account_circle</v-icon>
+                            {{ question.user }}
+                        </span>
+                        <span>
+                            <v-icon size=16.5>date_range</v-icon>
+                            {{ created_at }}
+                        </span>
+                    </div>
                 </div>
                 <v-spacer></v-spacer>
                 <v-btn color="teal" dark>{{ replyCount }} Replies</v-btn>
@@ -48,12 +57,12 @@ export default {
         },
         body() {
             return md.parse(this.question.body);
+        },
+        created_at() {
+            return  new Date(this.question.created_at).toLocaleString()
         }
     },
     created() {
-        EventBus.$on('newReply', () => {
-            this.replyCount++
-        })
         Echo.private('App.User.' + this['login/id'] )
             .notification(notification => {
             this.replyCount++
