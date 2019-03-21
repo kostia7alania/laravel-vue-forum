@@ -24,14 +24,9 @@ import App from '@/components/App'
 
 import VueSimplemde from 'vue-simplemde'
 Vue.use(VueSimplemde)
-
-require('vuetify/dist/vuetify.min.css')
-
 window.md = require('marked');
 
 import './sass/app.scss'
-
-import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 
 window.EventBus = new Vue();
 
