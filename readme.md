@@ -23,7 +23,7 @@ php artisan make:model Model/Like -mfr
 ## database\migrations\2019_03_29_085411_create_questions_table.php
 
         Schema::create('questions', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('title');
             $table->string('slug');
             $table->text('body');
@@ -67,3 +67,7 @@ php artisan make:model Model/Like -mfr
             $table->timestamps();
         });
 
+
+## -> ⌨  СОЗдАТЬ ЗАПИСИ В БАЗЕ::
+ИЗ КОНСОЛИ ВИНДЫ (в линухе не пашет пока ПДО с mssql)
+        php artisan migrate
