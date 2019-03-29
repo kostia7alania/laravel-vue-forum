@@ -61,7 +61,7 @@ php artisan make:model Model/Like -mfr
 
 ## database\migrations\2019_03_29_090005_create_likes_table.php
         Schema::create('likes', function (Blueprint $table) {
-            $table->integer('id');
+            $table->increments('id');
             $table->integer('reply_id');
             $table->integer('user_id');
             $table->timestamps();
@@ -71,3 +71,75 @@ php artisan make:model Model/Like -mfr
 ## -> ⌨  СОЗдАТЬ ЗАПИСИ В БАЗЕ::
 ИЗ КОНСОЛИ ВИНДЫ (в линухе не пашет пока ПДО с mssql)
         php artisan migrate
+
+
+    php artisan migrate:fresh #очистить БД
+
+
+
+
+
+===============================
+## database\factories\:
+## CategoryFactory.php
+
+        $factory->define(App\Model\Category::class, function (Faker $faker) {
+            $word = $faker->word;
+            return [
+                'name' => $word,
+                'slug' => str_slug($word)
+            ];
+        });
+
+## LikeFactory.php
+
+    return [
+        'user_id' => function() {
+            return App\User::all()->random();
+        }
+    ];
+
+## QuestionFactory.php
+
+        use Faker\Generator as Faker;
+        use App\Model\Category;
+
+        $factory->define(App\Model\Question::class, function (Faker $faker) {
+            $title = $faker->sentence;
+            return [
+                'title' =>  $title,
+                'slug' =>  str_slug($title),
+                'body' => $faker->text,
+                'category_id' => function(){
+                    return Category::all()->random();
+                },
+                'user_id' => function() {
+                    return App\User::all()->random();
+                }
+            ];
+        });
+
+
+## ReplyFactory.php
+
+        use Faker\Generator as Faker;
+        use App\User;
+        use App\Model\Question;
+
+        $factory->define(App\Model\Reply::class, function (Faker $faker) {
+            return [
+                'body' => $faker->text,
+                'question_id' => function () {
+                    return Question::all()->random();
+                },
+                'user_id' => function () {
+                    return User::all()->random();
+                }
+            ];
+        });
+
+
+  #генерируем фейковые данные:
+        php artisan db:seed
+
+
