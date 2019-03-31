@@ -143,3 +143,55 @@ php artisan make:model Model/Like -mfr
         php artisan db:seed
 
 
+
+
+## API
+## routes\api.php
+        Route::get('/question', 'QuestionController@index');
+## смотрим список роутов (апи и веб):
+php artisan route:list
+
+Теперь напишем так:
+
+        Route::apiResource('/question', 'QuestionController@index');
+
+и увидим много роутов по формуле;;
+
+
+## app\Http\Controllers\QuestionController.php
+удаляем функцию crate() и edit()
+
+
+На этом у нас вываливается ошибка:
+Залазим в линукс и ставим дрова на MSSQL по мануалу:
+https://docs.microsoft.com/en-us/sql/connect/php/installation-tutorial-linux-mac?view=sql-server-2017
+
+add-apt-repository ppa:ondrej/php -y
+apt-get update
+apt-get install php7.3 php7.3-dev php7.3-xml -y --allow-unauthenticated
+
+!!!!!!!!!!!!!!!
+pecl install sqlsrv pdo_sqlsrv
+!!!!!!!!!
+
+TEST:
+sqlcmd -S your_hostname -U your_login -P your_pass -Q "SELECT @@VERSION"
+
+ТУТ СОВЕТ ПОМОГ: https://github.com/laravel/framework/issues/19403
+но ввел ето в виндовой среде:
+"""
+php artisan key:generate
+php artisan config:clear
+php artisan config:cache
+потом : php artisan serve
+"""
+и прикинь, запахало прямо на винде!! ЭТо мб у меня раньше пахало изза нехватки оперативы? [+8gb ram +500gb HDD]
+С виндовыми дровами на ms sql; Но так не интересно и давай на линухе , то бишь, на убунте настроим дрова;;;
+
+
+=> ВОЗМОЖНОЕ РЕШЕНИЕ ТРАБЛЫ С РАСШИРЕНИЕМ SQLSRV PHP :
+https://github.com/laradock/laradock/issues/721
+Удалить контейнеры php и nginx, поднастроить их в laradock и переустановить без кеша:
+docker-compose build --no-cache php-fpm
+docker-compose build --no-cache nginx
+
