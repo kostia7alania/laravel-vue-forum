@@ -11,6 +11,18 @@ use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 
 class ReplyController extends Controller
 {
+     /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('JWT', ['except' => ['index','show']]);
+    }
+
+
+
     /**
      * Display a listing of the resource.
      *
