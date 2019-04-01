@@ -195,3 +195,8 @@ https://github.com/laradock/laradock/issues/721
 docker-compose build --no-cache php-fpm
 docker-compose build --no-cache nginx
 
+
+
+
+=================
+смотрим роуты: жмакаем F1, пишем ROUTE LIST.
