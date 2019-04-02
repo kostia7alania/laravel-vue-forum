@@ -5,14 +5,24 @@ Vue.use(VueRouter)
 
 const routes =  [
     {
-        name: "Forum",
+        name: "forum",
         path: "/forum",
+        component: () => import("@/components/forum/forum")
+    },
+    {
+        name: "login",
+        path: "/login",
         component: () => import("@/components/login/Login")
     },
     {
-        name: "Login",
-        path: "/login",
-        component: () => import("@/components/login/Login")
+        name: "signup",
+        path: "/signup",
+        component: () => import("@/components/login/Signup")
+    },
+    {
+        name: "logout",
+        path: "/logout",
+        component: () => import("@/components/login/Logout")
     }
 ]
 const router = new VueRouter ({

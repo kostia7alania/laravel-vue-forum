@@ -10,6 +10,9 @@ docker-compose ps
 👉🏻 cd laradock ; docker-compose exec workspace bash
 docker-compose exec —user=laradock workspace bash #чтобы избежать овнер иссуе каких-то там;
 и дальше можно пахать с линухой как хоч;
+php artisan config:clear
+php artisan config:cache
+php artisan serve
 /*************/
 
 1) Создаем модель:

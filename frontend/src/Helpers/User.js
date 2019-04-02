@@ -1,7 +1,6 @@
 import Token from './Token';
 import AppStorage from './AppStorage';
 
-const axios = require('axios');
 
 
 class User {
@@ -18,6 +17,7 @@ class User {
         if(Token.isValid(access_token)) {
             console.log(access_token)
             AppStorage.store(username, access_token)
+            window.location = '/forum';
         } else {
             console.log('false')
         }
@@ -34,6 +34,7 @@ class User {
 
     logout(){
         AppStorage.clear();
+        window.location = '/login';
     }
     name(){
         if(this.loggedIn) {

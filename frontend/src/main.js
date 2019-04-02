@@ -12,10 +12,16 @@ import Vuetify from 'vuetify'
 Vue.use(Vuetify)
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 
+window.axios = require('axios');
+
 import App from '@/components/AppHome'
 import User from './Helpers/User'
+
 window.User = User;
-console.log(User.id())
+
+console.log(User.loggedIn())
+window.EventBus = new Vue();
+
 new Vue({
   router,
   store,
