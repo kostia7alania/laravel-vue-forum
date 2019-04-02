@@ -13,7 +13,9 @@ Vue.use(Vuetify)
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 
 import App from '@/components/AppHome'
-
+import User from './Helpers/User'
+window.User = User;
+console.log(User.id())
 new Vue({
   router,
   store,
