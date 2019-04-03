@@ -50,10 +50,6 @@ export default {
 
 
       listen() {
-          EventBus.$on('newReply', reply => {
-              this.content.unshift(reply);
-              window.scrollTo(0,0)
-          })
           EventBus.$on('deleteReply', index => {
               axios
                 .delete(`/question/${this.question.slug}/reply/${this.content[index].id}`)
