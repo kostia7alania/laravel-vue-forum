@@ -43,10 +43,14 @@ class User {
     }
 
     id(){
-        if(this.loggedIn) {
+        if(this.loggedIn()) {
             const payload = Token.payload(AppStorage.getToken());
-            return payload.sub;
+            return payload.sub;// токен содержит user_id || id
         }
+    }
+
+    own (id) {
+        return this.id() == id;
     }
 }
 

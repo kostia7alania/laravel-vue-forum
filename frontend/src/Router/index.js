@@ -5,11 +5,6 @@ Vue.use(VueRouter)
 
 const routes =  [
     {
-        name: "forum",
-        path: "/forum",
-        component: () => import("@/components/forum/forum")
-    },
-    {
         name: "login",
         path: "/login",
         component: () => import("@/components/login/Login")
@@ -23,6 +18,25 @@ const routes =  [
         name: "logout",
         path: "/logout",
         component: () => import("@/components/login/Logout")
+    },
+    {
+        name: "forum",
+        path: "/forum",
+        component: () => import("@/components/forum/forum")
+    },
+    {
+        name: "read",
+        path: "/question/:slug",
+        component: () => import("@/components/forum/read")
+    },
+    {
+        name: "ask",
+        path: "/ask",
+        component: () => import("@/components/forum/create")
+    },
+    {
+        path: '*',
+        component: () => import("@/components/NotFound")
     }
 ]
 const router = new VueRouter ({

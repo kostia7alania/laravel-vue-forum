@@ -5,9 +5,10 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "rm -rf ../public/{js,css,img} && vue-cli-service build --no-clean",
-    "lint": "vue-cli-service lint",
+    "build modern": "vue-cli-service build --modern",
     "build_OLD": "vue-cli-service build",
     "build_win": "del '../public/*.css' /F /S  && vue-cli-service build --no-clean НУЖЕН clean-webpack-plugin",
+    "lint": "vue-cli-service lint",
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit"
   },
@@ -17,6 +18,7 @@
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
+    "vue-simplemde": "^0.5.1",
     "vuetify": "^1.5.5",
     "vuex": "^3.0.1"
   },

@@ -5,22 +5,29 @@ import router from './Router/'
 import store from './store'
 import './registerServiceWorker'
 
-Vue.config.productionTip = false;
-Vue.config.devtools = true;
-
 import Vuetify from 'vuetify'
 Vue.use(Vuetify)
-import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 
-window.axios = require('axios');
+require('./http.js');
 
 import App from '@/components/AppHome'
+
+import VueSimplemde from 'vue-simplemde'
+Vue.use(VueSimplemde)
+
+window.md = require('marked');
+
 import User from './Helpers/User'
 
 window.User = User;
 
-console.log(User.loggedIn())
+import './sass/app.scss'
+
+console.log('loggedIn? => ',User.loggedIn())
 window.EventBus = new Vue();
+
+Vue.config.productionTip = false;
+Vue.config.devtools = true;
 
 new Vue({
   router,
