@@ -8,7 +8,7 @@
             type="text"
             required
            ></v-text-field>
-{{ errors }}
+
             <v-autocomplete
                 :items="categories"
                 item-text="name"

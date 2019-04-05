@@ -6,7 +6,11 @@
                           :key="question.path+i"
                           :question="question"/>
             </v-flex>
-            SIDE--BAR
+            <v-flex xs4>
+                <app-sidebar/>
+            </v-flex>
+
+
         </v-layout>
     </v-container>
 </template>
@@ -15,11 +19,12 @@
 
 <script>
 import question from './question'
+import AppSidebar from './AppSidebar'
 
 export default {
     name: 'forum',
     components: {
-        question
+        question,AppSidebar
     },
     data() {
         return {

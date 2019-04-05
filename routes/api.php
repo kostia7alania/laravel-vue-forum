@@ -1,6 +1,8 @@
 <?php
 use Illuminate\Http\Request;
 
+//header('Access-Control-Allow-Origin: http://10.0.75.1:8080');
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,6 +23,8 @@ Route::apiResource('/question/{question}/reply', 'ReplyController');
 Route::post('/like/{reply}', 'LikeController@likeIt');
 Route::delete('/like/{reply}', 'LikeController@unlikeIt');
 
+Route::post('notifications', 'NotificationController@index');
+Route::post('markAsRead', 'NotificationController@markAsRead');
 
 Route::group([
     'middleware' => 'api',

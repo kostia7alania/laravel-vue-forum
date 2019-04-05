@@ -8,15 +8,21 @@
                 :question="question"
             />
        </div>
+       <v-container  v-if="question">
+            <replies :question="question"/>
+            <new-reply :questionSlug="question.slug"/>
+       </v-container>
     </div>
 </template>
 
 <script>
 import QuestionEdit from "./QuestionEdit";
 import QuestionShow from "./QuestionShow";
+import replies from "@/components/reply/replies";
+import NewReply from "@/components/reply/newReply";
 
 export default {
-  components: { QuestionEdit, QuestionShow },
+  components: { QuestionEdit, QuestionShow, replies, NewReply },
   data() {
     return {
       question: null,

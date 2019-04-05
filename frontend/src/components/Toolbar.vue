@@ -4,6 +4,8 @@
     <v-toolbar-title>Форум</v-toolbar-title>
     <v-spacer></v-spacer>
 
+    <app-notification v-if="loggedIn"/>
+
     <div class="hidden-sm-and-down">
 
     <router-link
@@ -20,15 +22,18 @@
 </template>
 
 <script>
+import AppNotification from './AppNotification'
 export default {
     name: 'TOOLbar',
+    components: {AppNotification},
     data() {
       return {
+          loggedIn: User.loggedIn(),
         items: [
           {title: 'Forum', to:'/forum', show:true},
           {title: 'Login', to:'/login', show: !User.loggedIn()},
           {title: 'Ask question', to:'/ask', show: User.loggedIn()},
-          {title: 'Category', to:'/category', show: User.loggedIn()},
+          {title: 'Category', to:'/category', show:  User.loggedIn() && User.admin()},
           {title: 'Logout', to:'/Logout', show: User.loggedIn()},
         ]
       }

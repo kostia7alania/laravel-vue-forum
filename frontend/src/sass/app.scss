@@ -1,8 +1,16 @@
-.navbar-laravel {
+
+
+  @import '~simplemde/dist/simplemde.min.css';
+  @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons');
+  //@import '~vuetify/dist/vuetify.min.css';
+
+
+  .navbar-laravel {
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 4px rgba(78, 58, 58, 0.04);
   }
 
-  @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons');
-  @import '~vuetify/dist/vuetify.min.css';
-  @import '~simplemde/dist/simplemde.min.css';
+
+.v-sheet {
+    /*z-index: -1;*/
+}

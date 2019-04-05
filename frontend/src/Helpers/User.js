@@ -50,7 +50,12 @@ class User {
     }
 
     own (id) {
+        console.log('this_id->',this.id(),'arg id =>', id)
         return this.id() == id;
+    }
+
+    admin() {
+        return true// this.id() == 0;
     }
 }
 

@@ -10,14 +10,19 @@ const routes =  [
         component: () => import("@/components/login/Login")
     },
     {
+        name: "logout",
+        path: "/logout",
+        component: () => import("@/components/login/Logout")
+    },
+    {
         name: "signup",
         path: "/signup",
         component: () => import("@/components/login/Signup")
     },
     {
-        name: "logout",
-        path: "/logout",
-        component: () => import("@/components/login/Logout")
+        name: "category",
+        path: "/category",
+        component: () => import("@/components/category/CreateCategory")
     },
     {
         name: "forum",
