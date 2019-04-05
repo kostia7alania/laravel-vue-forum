@@ -8,7 +8,9 @@ class Exception {
     }
 
     isExpired(error) {
-        if (error == 'Token is invalid') {
+        if (['Token is invalid',
+             'Token is expired']
+            .includes(error)) {
             User.logout();
         }
     }

@@ -35,11 +35,13 @@ export default {
     props: ['question'],
     data() {
         return {
-            own: User.own(this.question.id),
-            replyCount: this.data.reply_count
+            replyCount: this.question.reply_count //<--меняется в процессе;
         }
     },
     computed: {
+        own() {
+            return User.own(this.question.id)
+        },
         body() {
             return md.parse(this.question.body);
         }

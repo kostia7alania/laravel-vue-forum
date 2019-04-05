@@ -5,6 +5,11 @@ Vue.use(VueRouter)
 
 const routes =  [
     {
+        name:'Paralle x',
+        path: '/',
+        component: ()=>import('@/components/parallex')
+    },
+    {
         name: "login",
         path: "/login",
         component: () => import("@/components/login/Login")

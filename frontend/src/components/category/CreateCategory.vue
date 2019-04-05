@@ -1,13 +1,18 @@
 <template>
     <v-container>
+
+        <v-alert v-if="errors" type="error" color="red" :value="true">
+            Pleasse give category name
+        </v-alert>
+
         <v-form @submit.prevent="submit">
             <v-text-field
                 label="Category Name"
-                v-model="form.name"
+                v-model.trim="form.name"
                 required
             ></v-text-field>
 
-            <v-btn type="submit" :color="editSlug?'pink':'teal'">{{ editSlug?"Update":"Create" }}</v-btn>
+            <v-btn type="submit" :disabled="disabled" :color="editSlug?'pink':'teal'">{{ editSlug?"Update":"Create" }}</v-btn>
 
         </v-form>
 
@@ -55,7 +60,8 @@ export default {
         name: null
       },
       categories: [],
-      editSlug: null
+      editSlug: null,
+      errors: null
     };
   },
     created() {
@@ -63,6 +69,11 @@ export default {
         this.$router.push('/forum')
     }
     this.getCategories();
+  },
+  computed: {
+      disabled() {
+          return !this.form.name
+      }
   },
   methods: {
     submit() {
@@ -85,7 +96,10 @@ export default {
           this.categories.unshift({ ...res.data });
           this.form.name = null;
         })
-        .catch(err => console.warn(err));
+        .catch(err => {
+            console.warn(err);
+            this.errors = err.response.data.errors
+        });
     },
     destroy(slug, index) {
       axios
