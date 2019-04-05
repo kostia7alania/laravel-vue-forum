@@ -18,8 +18,9 @@ Vue.use(VueSimplemde)
 window.md = require('marked');
 
 import User from './Helpers/User'
-
 window.User = User;
+import Exception from './Helpers/Exception'
+window.Exception = Exception;
 
 import './sass/app.scss'
 

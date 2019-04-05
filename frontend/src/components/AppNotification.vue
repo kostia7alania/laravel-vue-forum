@@ -50,7 +50,8 @@ export default {
         this.read = res.data.read;
         this.unread = res.data.unread;
         this.unreadCount = res.data.unread.length;
-      });
+      })
+      .catch( err => Exception.handle(err) )
     },
     readIt(notification) {
       axios
