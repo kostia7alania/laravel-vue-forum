@@ -1,6 +1,11 @@
 <template>
     <div>
-        <div v-if="question">
+
+        <div v-if="loading" class="text-xs-center">
+            <v-progress-circular :size="70" :width="7" color="purple" indeterminate ></v-progress-circular>
+        </div>
+
+        <div v-else-if="question">
             <question-edit v-if="editing"
                 :question="question"
             />
@@ -16,6 +21,7 @@
                 <router-link to="/login">Log in to Reply</router-link>
             </div>
        </v-container>
+
     </div>
 </template>
 
@@ -30,7 +36,8 @@ export default {
   data() {
     return {
       question: null,
-      editing: null
+      editing: null,
+      loading: false
     };
   },
   created() {
@@ -52,9 +59,13 @@ export default {
       });
     },
     getQuestion() {
+        this.loading = true;
       axios
         .get(`/api/question/${this.$route.params.slug}`)
-        .then(res => (this.question = res.data.data));
+        .then(res => {
+            this.question = res.data.data
+        })
+        .finally( () => this.loading = false)
     }
   }
 };

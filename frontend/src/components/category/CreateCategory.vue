@@ -21,7 +21,12 @@
             <v-toolbar-title>Categories</v-toolbar-title>
             </v-toolbar>
 
-            <v-list>
+
+            <div v-if="loading" class="text-xs-center">
+                <v-progress-circular :size="70" :width="7" color="purple" indeterminate ></v-progress-circular>
+            </div>
+
+            <v-list v-else>
                 <div v-for="(category,index) in categories" :key="category.id">
                 <v-list-tile>
 
@@ -56,18 +61,19 @@
 export default {
   data() {
     return {
-      form: {
-        name: null
-      },
-      categories: [],
-      editSlug: null,
-      errors: null
+        loading: false,
+        form: {
+            name: null
+        },
+        categories: [],
+        editSlug: null,
+        errors: null
     };
   },
     created() {
     if(!User.admin()) {
         this.$router.push('/forum')
-    }
+    } else
     this.getCategories();
   },
   computed: {
@@ -80,6 +86,7 @@ export default {
       this.editSlug ? this.update() : this.create();
     },
     update() {
+
       axios
         .patch(`/api/category/${this.editSlug}`, this.form)
         .then(res => {
@@ -90,6 +97,7 @@ export default {
         .catch(err => console.warn(err));
     },
     create() {
+
       axios
         .post("/api/category", this.form)
         .then(res => {
@@ -99,7 +107,8 @@ export default {
         .catch(err => {
             console.warn(err);
             this.errors = err.response.data.errors
-        });
+        })
+
     },
     destroy(slug, index) {
       axios
@@ -113,10 +122,12 @@ export default {
         this.categories.splice(index, 1);
     },
     getCategories() {
+        this.loading = true;
       axios
         .get("/api/category")
         .then(res => (this.categories = res.data.data))
-        .catch(err => console.warn(err));
+        .catch(err => console.warn(err))
+        .finally(() => this.loading = false)
     }
   }
 };

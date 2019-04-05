@@ -10,7 +10,15 @@
            ></v-text-field>
 
            <span class="red--text" v-if="errors.category_id">{{ errors.category_id[0] }}</span>
-            <v-autocomplete
+
+
+
+                <div v-if="loading" class="text-xs-center">
+                    <v-progress-circular :size="70" :width="7" color="purple" indeterminate ></v-progress-circular>
+                </div>
+
+
+            <v-autocomplete v-else
                 :items="categories"
                 item-text="name"
                 item-value="id"
@@ -35,6 +43,7 @@
 export default {
     data(){
         return {
+            loading:false,
             form: {
                 title:null,
                 category_id:null,
@@ -44,10 +53,12 @@ export default {
             errors: {}
         }
     },
-    created(){
+    created() {
+        this.loading = true;
         axios
             .get('/api/category')
             .then(res => this.categories = res.data.data)
+            .finally(()=>this.loading=false)
     },
     computed: {
         disabled() {
