@@ -31,7 +31,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return CategoryResource::collection(category::latest()->get());
+        //return CategoryResource(category::paginate(1));
+        return CategoryResource::collection( category::latest()->get() );
     }
 
 
@@ -72,10 +73,12 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
     //return $request->all();
-        $category->update(
-            ['name'=>$request->name,
-            'slug'=>str_slug($request->name)
-        ]);
+        $category -> update (
+            [
+                'name' => $request->name,
+                'slug' => str_slug($request->name)
+            ]
+        );
     return response(new CategoryResource($category), Response::HTTP_ACCEPTED);
     }
 

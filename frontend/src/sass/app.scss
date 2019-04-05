@@ -10,7 +10,25 @@
     box-shadow: 0 2px 4px rgba(78, 58, 58, 0.04);
   }
 
-
 .v-sheet {
     /*z-index: -1;*/
 }
+
+
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px olivedrab;
+    border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: yellowgreen;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    }

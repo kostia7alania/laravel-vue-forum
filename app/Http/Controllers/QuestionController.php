@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\QuestionResource;
 use App\Http\Requests\QuestionRequest;
+use App\Http\Resources\QuestionTopicsResource;
 
 class QuestionController extends Controller
 {
@@ -28,7 +29,7 @@ class QuestionController extends Controller
     public function index()
     {
              //echo phpinfo();die;
-        return QuestionResource::collection(Question::latest()->get());
+        return QuestionTopicsResource::collection( Question::latest()->get() );
     }
 
 

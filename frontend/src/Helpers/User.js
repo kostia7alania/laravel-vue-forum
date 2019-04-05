@@ -4,11 +4,12 @@ import AppStorage from './AppStorage';
 
 
 class User {
+
     login(data) {
-        axios
-        .post('/api/auth/login', data)
-        .then(res=>this.responseAfterLogin(res))
-        .catch(error=>console.log(error.response));
+        return axios
+                    .post('/api/auth/login', data)
+                    .then( res => this.responseAfterLogin(res) ) //return!!
+                    .catch(error=> { return false });
     }
 
     responseAfterLogin(res) {
@@ -17,9 +18,11 @@ class User {
         if(Token.isValid(access_token)) {
             console.log(access_token)
             AppStorage.store(username, access_token)
-            window.location = '/forum';
+            console.log('return -> true')
+            return true //window.location = '/forum';
         } else {
-            console.log('false')
+            console.log('return -> false')
+            return false;
         }
     }
     hasToken(){
