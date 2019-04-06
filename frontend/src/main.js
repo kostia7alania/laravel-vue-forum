@@ -2,7 +2,7 @@
 import Vue from 'vue'
 import './plugins/vuetify'
 import router from './Router/'
-import store from './store'
+import store from './Store'
 import './registerServiceWorker'
 
 import Vuetify from 'vuetify'
