@@ -1,10 +1,11 @@
 //window.Vue = require('vue');
 import Vue from 'vue'
 import './plugins/vuetify'
-import router from './Router/'
-import store from './store'
+import router from './Router';
+window.router = router;
+import store from './Store';
+window.store = store;
 import './registerServiceWorker'
-
 import Vuetify from 'vuetify'
 Vue.use(Vuetify, {
     theme: {
@@ -24,14 +25,8 @@ Vue.use(VueSimplemde)
 
 window.md = require('marked');
 
-import User from './Helpers/User'
-window.User = User;
-import Exception from './Helpers/Exception'
-window.Exception = Exception;
-
 import './sass/app.scss'
 
-console.log('loggedIn? => ',User.loggedIn())
 window.EventBus = new Vue();
 
 Vue.config.productionTip = false;
