@@ -4,7 +4,7 @@
 
         <v-card-title>
             <div class="headline">{{ data.user }}</div>
-            <div class="md-2">said {{ data.created_at }}</div>
+            <div class="md-2">написал  {{ created_at }}</div>
             <v-spacer/>
             <Like :content="data"/>
         </v-card-title>
@@ -35,10 +35,9 @@
 </template>
 
 <script>
-
 import editReply from "./editReply";
-import Like from '@/components/likes/like'
-import { mapGetters } from 'vuex';
+import Like from "@/components/likes/like";
+import { mapGetters } from "vuex";
 
 export default {
   name: "reply",
@@ -50,19 +49,20 @@ export default {
     };
   },
   computed: {
-      ...mapGetters([
-          'login/id',
-          'login/loggedIn'
-      ]),
+    ...mapGetters(["login/id", "login/loggedIn"]),
     own() {
-      return this['login/id'] ==  this.data.user_id
+      return this["login/id"] == this.data.user_id;
     },
     reply() {
       return md.parse(this.data.reply);
+    },
+    created_at() {
+      const t = new Date(this.data.created_at).toLocaleString();
+      return t != "Invalid Date" ? t : "";
     }
   },
   created() {
-      this.listen();
+    this.listen();
   },
   methods: {
     destroy() {
@@ -72,9 +72,9 @@ export default {
       this.editing = true;
     },
     listen() {
-        EventBus.$on('cancelEditing', () => {
-            this.editing = false;
-        })
+      EventBus.$on("cancelEditing", () => {
+        this.editing = false;
+      });
     }
   }
 };
