@@ -1,7 +1,7 @@
 const JwtToken = `Bearer ${localStorage.getItem('token')}`;
 const ax = require('axios');
 window.axios = ax.create({
-    baseURL: 'http://localhost:80',
+    baseURL: 'http://localhost:80/api',
     headers: {
         common: {
             'X-Requested-With': 'XMLHttpRequest',
