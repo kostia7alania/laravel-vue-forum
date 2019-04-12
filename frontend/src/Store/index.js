@@ -1,23 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import modules from './modules/index.js'
 
-import actions from './Actions'
-import mutations from './Mutations'
-import AppStorage from './Helpers/AppStorage';
-import getters from './Getters'
-Vue.use(Vuex);
 
-window.createPersistedState = createPersistedState;
-const store = new Vuex.Store({
-    plugins: [createPersistedState()],
-    state: {
-        token: AppStorage.getToken(),
-        token_validation: {
-            iss: "http://localhost/api/auth/login"
-        },
-        user: {
-            role: false,
-            name: null,
-        }
-    }
+
+import VuexPersistence from 'vuex-persist'
+const vuexLocal = new VuexPersistence({ storage: window.localStorage })
+
+
+Vue.use(Vuex)
+
+window.store = new Vuex.Store({
+    plugins: [vuexLocal.plugin],
+    modules
 });
+
+export default store;

@@ -1,4 +1,5 @@
 module.exports = {
+    transpileDependencies: ['vuex-persist'],
     // proxy API requests to Valet during development
     devServer: {
         //proxy: 'http://localhost:80/api'//с пушером траблы вызывает;
