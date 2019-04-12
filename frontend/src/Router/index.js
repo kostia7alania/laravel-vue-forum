@@ -60,7 +60,7 @@ const routes =  [
     },
     {
         name: "read",
-        meta: {title: ':slug'},
+        meta: {title: 'Article'},
         path: "/question/:slug",
         component: () => import("@/components/forum/read")
     },
@@ -68,7 +68,7 @@ const routes =  [
         name: "ask",
         meta: {title: 'Create question'},
         path: "/ask",
-        component: () => import("@/components/forum/create")
+        component: () => import("@/components/forum/createTopic/create")
     },
     {
         path: '*',

@@ -10,7 +10,7 @@ class Reply extends Model
     protected static function boot() {
         parent::boot();
         static::creating(function($reply){
-            $reply->user_id = auth()->id();
+            $reply->user_id = auth()->id();//закоментить при заполнении сидером и раскоментить при завершении работы Ф**КЕРА .!.
         });
     }
     protected $guarded = [];

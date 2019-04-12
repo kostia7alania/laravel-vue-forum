@@ -8,6 +8,9 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\SignupRequest;
 
+use Illuminate\Support\Facades\DB;
+
+
 class AuthController extends Controller
 {
     /**
@@ -86,7 +89,8 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()->name
+            'user' => auth()->user()->name,
+            'role' => auth()->user()->role
         ]);
     }
 }

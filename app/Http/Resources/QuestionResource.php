@@ -14,16 +14,19 @@ class QuestionResource extends JsonResource
      */
     public function toArray($request)
     {
+        //var_dump($this);die;
         return [
             'title' => $this->title,
             'slug' => $this->slug,
-            'replies' => ReplyResource::collection($this->replies),
+            //'replies' => ReplyResource::collection($this->replies),
             'reply_count' => $this->replies->count(),
             'path' => $this->path,
             'body' => $this->body,
             'created_at' => $this->created_at->diffForHumans(),
             'user' => $this->user->name,
             'id' => $this->user_id,
+            'category_id' => $this->category_id,
+          //  'category_slug' =>  new CategoryResource($this->category_id)
         ];
         //parent::toArray($request);
     }

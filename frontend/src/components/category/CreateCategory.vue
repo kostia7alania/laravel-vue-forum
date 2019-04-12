@@ -58,6 +58,8 @@
     </v-container>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
@@ -71,12 +73,15 @@ export default {
     };
   },
     created() {
-    if(!User.admin()) {
-        this.$router.push('/forum')
-    } else
-    this.getCategories();
+    if(!this['login/isAdmin']) { //выкидываем за шкирку НЕадмина;
+        console.warn('Брысь отсюда! Ты не админ .!. ');
+        this.$router.push( { name:'forum' } )
+    } else this.getCategories();
   },
   computed: {
+      ...mapGetters([
+          'login/isAdmin'
+      ]),
       disabled() {
           return !this.form.name
       }
@@ -88,7 +93,7 @@ export default {
     update() {
 
       axios
-        .patch(`/api/category/${this.editSlug}`, this.form)
+        .patch(`/category/${this.editSlug}`, this.form)
         .then(res => {
           this.categories.unshift({ ...res.data });
           this.form.name = null;
@@ -99,7 +104,7 @@ export default {
     create() {
 
       axios
-        .post("/api/category", this.form)
+        .post("/category", this.form)
         .then(res => {
           this.categories.unshift({ ...res.data });
           this.form.name = null;
@@ -112,7 +117,7 @@ export default {
     },
     destroy(slug, index) {
       axios
-        .delete(`/api/category/${slug}`)
+        .delete(`/category/${slug}`)
         .then(res => this.categories.splice(index, 1))
         .catch(err => console.warn(err));
     },
@@ -124,7 +129,7 @@ export default {
     getCategories() {
         this.loading = true;
       axios
-        .get("/api/category")
+        .get("/category")
         .then(res => (this.categories = res.data.data))
         .catch(err => console.warn(err))
         .finally(() => this.loading = false)

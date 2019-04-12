@@ -29,6 +29,7 @@
 
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
     name:"forum-show-question",
@@ -39,8 +40,11 @@ export default {
         }
     },
     computed: {
+        ...mapGetters([
+            'login/id'
+        ]),
         own() {
-            return User.own(this.question.id)
+            return this['login/id'] == this.question.id
         },
         body() {
             return md.parse(this.question.body);
@@ -50,7 +54,7 @@ export default {
         EventBus.$on('newReply', () => {
             this.replyCount++
         })
-        Echo.private('App.User.'+User.id())
+        Echo.private('App.User.' + this['login/id'] )
             .notification(notification => {
             this.replyCount++
         });
@@ -65,7 +69,7 @@ export default {
     methods: {
         destroy() {
             axios
-            .delete(`/api/question/${this.question.slug}`)
+            .delete(`/question/${this.question.slug}`)
             .then(res => {
                 this.$router.push('/forum');
             })

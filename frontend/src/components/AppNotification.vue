@@ -32,9 +32,12 @@
 </template>
 
 <script>
+import {mapActions, mapState, mapGetters} from 'vuex'
+
 export default {
-  data() {
-    return {
+    name: 'notifics',
+    data() {
+     return {
       read: {},
       unread: {},
       unreadCount: 0,
@@ -43,16 +46,20 @@ export default {
   },
   created() {
     window.playSound = this.playSound// <- 4-test
-    if (User.loggedIn()) {
-      this.getNotifications();
-    }
-    Echo.private("App.User." + User.id())
+    if (this['login/loggedIn'])  this.getNotifications();
+    Echo.private("App.User." + this['login/id'] )
         .notification(notification => {
-      console.log("app notif.vue ->", notification, notification.type);
-        this.playSound()
-        this.unread.unshift(notification)
-        this.unreadCount++
+            console.log("app notif.vue ->", notification, notification.type);
+            this.playSound()
+            this.unread.unshift(notification)
+            this.unreadCount++
     });
+  },
+  computed: {
+      ...mapGetters([
+            'login/loggedIn',
+            'login/id'
+      ])
   },
   methods: {
     playSound() {
@@ -60,7 +67,7 @@ export default {
         alert.play()
     },
     getNotifications() {
-      axios.post("/api/notifications").then(res => {
+      axios.post("/notifications").then(res => {
         this.read = res.data.read;
         this.unread = res.data.unread;
         this.unreadCount = res.data.unread.length;
@@ -69,7 +76,7 @@ export default {
     },
     readIt(notification) {
       axios
-        .post("/api/markAsRead", { id: notification.id })
+        .post("/markAsRead", { id: notification.id })
         .then(res => {
           this.unread.splice(notification, 1);
           this.read.push(notification);

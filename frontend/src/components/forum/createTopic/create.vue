@@ -1,5 +1,6 @@
 <template>
    <v-container>
+
        <v-form @submit.prevent="create"  data-app>
            <span class="red--text" v-if="errors.title">{{ errors.title[0] }}</span>
            <v-text-field
@@ -9,26 +10,9 @@
             required
            ></v-text-field>
 
-           <span class="red--text" v-if="errors.category_id">{{ errors.category_id[0] }}</span>
-
-
-
-                <div v-if="loading" class="text-xs-center">
-                    <v-progress-circular :size="70" :width="7" color="purple" indeterminate ></v-progress-circular>
-                </div>
-
-
-            <v-autocomplete v-else
-                :items="categories"
-                item-text="name"
-                item-value="id"
-                v-model="form.category_id"
-                label="Category"
-                hint="Type the first letters and select the appropriate category"
-            ></v-autocomplete>
 
             <span class="red--text" v-if="errors.body">{{ errors.body[0] }}</span>
-            <markdown-editor v-model="form.body" ref="markdownEditor"></markdown-editor>
+            <markdown :form="form"></markdown>
 
             <v-btn
                 color="green"
@@ -36,29 +20,32 @@
                 :disabled="disabled"
             > Create </v-btn>
 
+
+           <span class="red--text" v-if="errors.category_id">{{ errors.category_id[0] }}</span>
+            <categories :form='form'/>
        </v-form>
    </v-container>
 </template>
 <script>
+
+import {mapActions} from 'vuex'
+import categories from './categories'
+import markdown from '@/components/markdown'
+
 export default {
+    components: {
+        categories,
+        markdown
+    },
     data(){
         return {
-            loading:false,
             form: {
                 title:null,
                 category_id:null,
                 body:null
             },
-            categories: [],
             errors: {}
         }
-    },
-    created() {
-        this.loading = true;
-        axios
-            .get('/api/category')
-            .then(res => this.categories = res.data.data)
-            .finally(()=>this.loading=false)
     },
     computed: {
         disabled() {
@@ -68,13 +55,16 @@ export default {
         }
     },
     methods: {
+        ...mapActions([
+            'login/logout'
+        ]),
         create() {
-            axios.post('/api/question', this.form)
+            axios.post('/question', this.form)
             .then(res => this.$router.push(res.data.path))
             .catch(error => {
                 console.log('ERRR=>', error)
                 if(error.error.match('Token is')) {
-                    User.logout();
+                    this['login/logout']();
                 } else {
                     this.errors = error.response.data.errors
                 }

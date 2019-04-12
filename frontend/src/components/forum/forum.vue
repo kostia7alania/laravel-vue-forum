@@ -18,12 +18,9 @@
     </v-container>
 </template>
 
-
-
 <script>
 import question from './question'
 import AppSidebar from './AppSidebar'
-
 export default {
     name: 'forum',
     components: {
@@ -37,7 +34,7 @@ export default {
     },
     created() {
         this.loading = true;
-        axios.get('/api/question')
+        axios.get('/question')
         .then(res=> {
             this.questions = res.data.data;
         })

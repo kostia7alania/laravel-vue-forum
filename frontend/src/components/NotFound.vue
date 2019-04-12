@@ -14,7 +14,7 @@ export default {
   created() {}
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .text-xs-center {
   background: dark;
 }

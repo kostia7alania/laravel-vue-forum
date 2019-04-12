@@ -14,8 +14,8 @@
             />
        </div>
        <v-container  v-if="question">
-            <replies :question="question"/>
-            <new-reply v-if="loggedIn" :questionSlug="question.slug"/>
+            <replies :slug="$route.params.slug"/>
+            <new-reply v-if="['login/loggedIn']" :questionSlug="question.slug"/>
 
             <div class="mt-4" v-else>
                 <router-link to="/login">Log in to Reply</router-link>
@@ -31,6 +31,8 @@ import QuestionShow from "./QuestionShow";
 import replies from "@/components/reply/replies";
 import NewReply from "@/components/reply/newReply";
 
+import { mapGetters } from 'vuex'
+
 export default {
   components: { QuestionEdit, QuestionShow, replies, NewReply },
   data() {
@@ -45,9 +47,9 @@ export default {
     this.getQuestion();
   },
   computed: {
-      loggedIn() {
-          return User.loggedIn();
-      }
+      ...mapGetters([
+          'login/loggedIn',
+      ])
   },
   methods: {
     listen() {
@@ -61,7 +63,7 @@ export default {
     getQuestion() {
         this.loading = true;
       axios
-        .get(`/api/question/${this.$route.params.slug}`)
+        .get(`/question/${this.$route.params.slug}`)
         .then(res => {
             this.question = res.data.data
         })

@@ -1,16 +1,16 @@
 <template>
     <v-container>
-        <v-form @submit.prevent="login">
+        <v-form @submit.prevent="handleSubmit">
             <v-text-field
                 label="E-mail"
-                v-model.trim="email"
+                v-model.trim="form.email"
                 type="email"
                 required
             ></v-text-field>
 
             <v-text-field
                 label="Password"
-                v-model.trim="password"
+                v-model.trim="form.password"
                 type="password"
                 required
             ></v-text-field>
@@ -19,45 +19,53 @@
                 <v-progress-circular v-if="loading" :width="7" color="purple" indeterminate ></v-progress-circular>
                 <v-icon v-else-if="disabled">cancel</v-icon>
                 <v-icon v-else>done_all</v-icon>
-                &nbsp;Login</v-btn>
-            <v-btn to="/signup" color="blue">
-            <v-icon>fingerprint</v-icon>
-            Sign up</v-btn>
-        </v-form>
+                &nbsp;
+                Login
+            </v-btn>
+                <v-btn to="/signup" color="blue"> <v-icon>fingerprint</v-icon> Sign up</v-btn>
+            </v-form>
     </v-container>
 </template>
 
 <script>
 
+import { mapGetters, mapActions, mapState } from 'vuex'
+
   export default {
     data ()  {
         return {
+            form: {
                 email:null,
                 password: null,
-                loading:false,
+            },
+            loading:false,
         }
     },
     created() {
-        if(User.loggedIn()) {
+        if(this['login/loggedIn']) {
             this.$router.push({name: 'forum'});
         }
     },
     computed: {
+        ...mapGetters([
+            'login/loggedIn'
+        ]),
         disabled() {
-            return !this.email || !this.password
+            return !this.form.email || !this.form.password
         }
     },
     methods: {
-        async login() {
+        ...mapActions([
+            'login/login'
+        ]),
+        async handleSubmit() {
             this.loading = true;
-            let req = await User.login({ email: this.email, password: this.password } );
-            this.loading = false
+            const req = await this['login/login'](this.form)
             if(req) {
-                this.$router.push({name:'forum'})
+                this.$router.push( { name: 'forum' } )
                 snack('Successfully logged in', 'success')
-            }
-            else snack('Invalid password', 'error')
-
+            } else snack('Invalid password', 'error')
+            this.loading = false
         }
     },
   }

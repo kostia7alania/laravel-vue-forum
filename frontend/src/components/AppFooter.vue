@@ -1,8 +1,8 @@
 <template>
-  <v-footer
-      <v-card-actions class="grey darken-3 justify-center">
-        <v-flex primary lighten-1 py-1 text-xs-center white--text xs12 >
-            &copy; {{ new Date().getFullYear() }} — <strong>ФОРУМ</strong>
+  <v-footer class="justify-center">
+      <v-card-actions class="justify-center">
+        <v-flex primary lighten-1 py-1 text-xs-center grey--text xs12 >
+       <strong>ФОРУМ</strong>    &copy;     {{ new Date().getFullYear() }}
         </v-flex>
       </v-card-actions>
   </v-footer>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: "footer",
+  name: "app-footer",
   data: () => ({
    })
 };

@@ -9,6 +9,9 @@
 
 
 <script>
+import { mapGetters } from 'vuex';
+
+
 export default {
     props:['content'],
     data() {
@@ -25,20 +28,25 @@ export default {
                     e.type==1 ? this.count++ : this.count--;
         })
     },
+    computed: {
+        ...mapGetters([
+            'login/loggedIn',
+        ])
+    },
     methods: {
         likeIt() {
-            if(User.loggedIn()) {
+            if(this['login/loggedIn']) {
                 this.liked ? this.decr() : this.incr()
                 this.liked = !this.liked
             }
         },
         incr() {
-            axios.post(`/api/like/${this.content.id}`)
+            axios.post(`/like/${this.content.id}`)
             .then(res => this.count++)
             .catch(err => console.warn(err) )
         },
         decr() {
-            axios.delete(`/api/like/${this.content.id}`)
+            axios.delete(`/like/${this.content.id}`)
             .then(res => this.count--)
             .catch(err => console.warn(err) )
         }

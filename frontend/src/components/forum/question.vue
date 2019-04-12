@@ -1,5 +1,5 @@
 <template>
-      <v-card  z-index=0>
+      <div  z-index=0>
         <v-card-title primary-title>
           <div>
             <h3 class="headline mb-0">
@@ -16,7 +16,7 @@
         <v-card-text>
             {{ question.body }}
         </v-card-text>
-      </v-card>
+      </div>
 </template>
 
 <script>

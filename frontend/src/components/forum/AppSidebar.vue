@@ -9,9 +9,11 @@
         </div>
 
         <v-list v-else>
-            <v-list-tile v-for="category in categories" :key="category.name">
+            <v-list-tile v-for="category in categories" :key="category.path">
                 <v-list-tile-content>
-                    <v-list-tile-title>{{ category.name}}</v-list-tile-title>
+                    <router-link :to="category.path">
+                        <v-list-tile-title>{{ category.name}}</v-list-tile-title>
+                    </router-link>
                 </v-list-tile-content>
             </v-list-tile>
         </v-list>
@@ -29,7 +31,7 @@ export default {
     },
     created() {
         this.loading = true;
-        axios.get('/api/category')
+        axios.get('/category')
         .then(res => this.categories = res.data.data)
         .finally(e=>this.loading = false)
     }

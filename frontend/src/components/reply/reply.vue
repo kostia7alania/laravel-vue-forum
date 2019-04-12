@@ -18,6 +18,7 @@
         <v-card-text v-else v-html="reply"></v-card-text>
 
         <v-divider/>
+
         <div v-if="!editing">
             <v-card-actions v-if="own">
                 <v-btn icon small @click="edit">
@@ -34,20 +35,27 @@
 </template>
 
 <script>
+
 import editReply from "./editReply";
 import Like from '@/components/likes/like'
+import { mapGetters } from 'vuex';
+
 export default {
   name: "reply",
   props: ["data", "index"],
-  components: { editReply,Like },
+  components: { editReply, Like },
   data() {
     return {
       editing: false
     };
   },
   computed: {
+      ...mapGetters([
+          'login/id',
+          'login/loggedIn'
+      ]),
     own() {
-      return User.own(this.data.user_id);
+      return this['login/id'] ==  this.data.user_id
     },
     reply() {
       return md.parse(this.data.reply);

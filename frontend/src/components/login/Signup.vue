@@ -49,8 +49,9 @@
 </template>
 
 <script>
-
-  export default {
+import { mapGetters, mapActions } from 'vuex';
+export default {
+    name:'sign-up',
     data ()  {
         return {
             form:{
@@ -65,18 +66,27 @@
         }
     },
     created() {
-        if(User.loggedIn()) {
-            this.$router.push({name: 'forum'});
-        }
+        if( this['login/loggedIn'] ) this.goHome()
+    },
+    computed: {
+        ...mapGetters([
+            'login/loggedIn',
+        ])
     },
     methods: {
-        signup() {
-            axios.post('/api/auth/signup', this.form)
-            .then(res=>{
-                User.responseAfterLogin(res)
-                this.$router.push({name:'forum'});
-            })
-            .catch(error=>this.errors = error.response.data.errors)
+        ...mapActions([
+            'login/register'
+        ]),
+        goHome(){
+            this.$router.push('/forum');
+        },
+        async signup() {
+            const res = await this['login/register'](this.form);
+            if(res==true) this.goHome();
+            else {
+                this.errors = res
+                snack('Registration error', 'error')
+            }
         }
     },
   }

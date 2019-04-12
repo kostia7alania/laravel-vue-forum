@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\QuestionResource;
 use App\Http\Requests\QuestionRequest;
 use App\Http\Resources\QuestionTopicsResource;
-
 class QuestionController extends Controller
 {
     /**

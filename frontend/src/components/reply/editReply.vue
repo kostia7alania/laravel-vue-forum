@@ -20,7 +20,7 @@ export default {
     methods: {
         update() {
             axios
-            .patch(`/api/question/${this.data.question_slug}/reply/${this.data.id}`, {body: this.data.reply} )
+            .patch(`/question/${this.data.question_slug}/reply/${this.data.id}`, {body: this.data.reply} )
             .then(res => {
                 this.cancel();
             })

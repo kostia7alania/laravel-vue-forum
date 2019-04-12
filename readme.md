@@ -214,3 +214,14 @@ docker-compose build --no-cache nginx
 
 ФРОНТЕНД:
 удаляю старый фронт и ставлю по Совету из доклада ЭванА Вью => https://github.com/yyx990803/laravel-vue-cli-3
+
+
+============== Посмотреть все команды: php artisan
+
+# -> НАКАТИТЬ СВЕЖАК:
+
+# переСоздать БД (сначала руками удалить таблицу questions)
+php artisan migrate:fresh
+
+# генерируем фейковые данные (сначала закоментить статик бут функцию тут -> app\Model\Reply.php):
+php artisan db:seed

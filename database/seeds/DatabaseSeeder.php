@@ -16,11 +16,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-       factory(User::class, 10)->create();
-       factory(Category::class, 5)->create();
-       factory(Question::class, 10)->create();
-       factory(Reply::class, 50)->create()->each(function($reply){
-           return $reply->like()->save(factory(Like::class)->make());
+
+       factory(User::class, 33)->create(); echo 'Users faking finished
+       ';
+       //die;
+       factory(Category::class, 33)->create();echo 'Categories faking finished
+       ';
+       factory(Question::class, 33)->create();echo 'Questions faking finished
+       ';
+
+       factory(Reply::class, 113)
+        ->create()
+        ->each(function($reply){
+            $user = factory(Like::class)->make();
+            return $reply->like()->save( $user );   echo "USER LIKED => $reply
+           ";
        });
     }
 }
