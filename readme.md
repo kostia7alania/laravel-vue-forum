@@ -1,3 +1,15 @@
+# PLAYGROUND:
+```
+php artisan tinker
+App\User::all();
+App\Model\Category::all();
+etc..
+```
+
+
+
+
+
 Команды:
 
 -> ⌨ Зайти в линукс:
