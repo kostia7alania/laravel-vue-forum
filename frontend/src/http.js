@@ -1,11 +1,11 @@
-const JwtToken = `Bearer ${localStorage.getItem('token')}`;
+///const tok = localStorage.getItem('token');
 const ax = require('axios');
 window.axios = ax.create({
     baseURL: 'http://localhost:80/api',
     headers: {
         common: {
             'X-Requested-With': 'XMLHttpRequest',
-            'Authorization': JwtToken
+            'Authorization': `Bearer ${store.state.login.token}`
         }
     }
   });
@@ -26,7 +26,7 @@ window.Echo = new Echo({
     encrypted: true,
     auth: {
         headers: {
-            Authorization: JwtToken
+            Authorization: store.state.login.token
         }
     }
 });
