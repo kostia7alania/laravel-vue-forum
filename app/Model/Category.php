@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
-use Symfony\Component\Console\Question\Question;
 
 class Category extends Model
 {
@@ -16,8 +15,7 @@ class Category extends Model
     }
     //protected $fillable = [ 'title', 'slug', 'body', 'category_id', 'category_slug', 'user_id','question_id' ];
     protected $guarded = [];
-    //protected $with = ['questions'];
-
+    protected $with = ['questions'];
     public function questions() { return $this->hasMany(Question::class)->latest(); }
     public function getRouteKeyName() { return 'slug'; }//берем из столбца слог
     public function getPathAttribute() { return "/category/$this->slug"; }
