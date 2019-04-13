@@ -28,7 +28,7 @@ class QuestionController extends Controller
     public function index()
     {
              //echo phpinfo();die;
-        return QuestionTopicsResource::collection( Question::latest()->get() );
+        return QuestionTopicsResource::collection( Question::latest()->paginate(15) );
     }
 
 
