@@ -15,14 +15,12 @@ class CategoryTopicsResource extends JsonResource
      */
     public function toArray($request)
     {
-        dd($this->question);
-        //var_dump($this);die;
         return [
             'name' => $this->name,
             'slug' => $this->slug,
             'id'   => $this->id,
             'path' => $this->path,
-           // 'questions' => QuestionResource::collection($this->questions),
+            'questions' => QuestionResource::collection($this->questions),
         ];
     }
 }

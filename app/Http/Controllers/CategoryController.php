@@ -45,15 +45,17 @@ class CategoryController extends Controller {
      */
     public function show(Category $category) {
 
+    //return \App\Model\Category::all();
+
         /*  return Category::latest()->get();
         $users =$category->questions();
         dd($users);
-    dd (DB::table('questions')
+        dd (DB::table('questions')
             ->leftJoin('categories', 'categories.id', '=', 'questions.category_id')
             ->select('questions.title','categories.name')
             ->get());
             die;*/
-        dd(DB::table('questions')->first());
+    //    dd(DB::table('questions')->first());
         return new CategoryTopicsResource($category);
     }
 
