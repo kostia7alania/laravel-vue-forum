@@ -231,9 +231,15 @@ docker-compose build --no-cache nginx
 ============== Посмотреть все команды: php artisan
 
 # -> НАКАТИТЬ СВЕЖАК:
-
-# переСоздать БД (сначала руками удалить таблицу questions)
+ 
+# (сначала руками удалить таблицу questions) 
+#!!автомат-выполнит down() в миграциях-> 
+```
+php artisan migrate:rollback
+```
+# переСоздать БД
+```
 php artisan migrate:fresh
-
+```
 # генерируем фейковые данные (сначала закоментить статик бут функцию тут -> app\Model\Reply.php):
-php artisan db:seed
+```php artisan db:seed```
