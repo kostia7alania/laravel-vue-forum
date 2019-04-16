@@ -15,7 +15,7 @@
                     </div>
             </v-flex>
             <v-flex xs4>
-                <app-sidebar/>
+                <Categories/>
             </v-flex>
         </v-layout>
     </v-container>
@@ -25,11 +25,10 @@
 
 <script>
 import question from '@/components/forum/question'
-import AppSidebar from '@/components/forum/AppSidebar'
-
+import Categories from "@/components/category/Categories.vue";
 export default {
     name: "Category-Questions",
-    components: { question,AppSidebar },
+    components: { question, Categories },
     data() {
         return {
             question: null,
@@ -42,10 +41,19 @@ export default {
   methods: {
     getQuestion() {
         this.loading = true;
+    window.t = this
+        let slug = this.$route.params.slug;
+        if( typeof slug=='undefined' )  slug='';
       axios
-        .get(`/category/${this.$route.params.slug}`)
+        .get(`/category/${slug}`)
         .then(res => {
-            this.question = res.data.data
+            if(slug) this.question = res.data.data
+            else {
+                this.question = {
+                    name:       'Категории',
+                    questions:  res.data.data
+                }
+            }
         })
         .finally( () => this.loading = false)
     }
