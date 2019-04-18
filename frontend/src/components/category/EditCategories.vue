@@ -6,45 +6,51 @@
         </v-alert>
 
         <v-form @submit.prevent="submit">
+
             <v-text-field
                 label="Category Name"
                 v-model.trim="form.name"
                 required
             ></v-text-field>
 
-            <v-btn type="submit" :disabled="disabled" :color="editSlug?'pink':'teal'">{{ editSlug?"Update":"Create" }}</v-btn>
+            <v-btn type="submit" :disabled="disabled" :color="editSlug?'pink':'teal'">
+                <v-progress-circular v-if="loading" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
+                <v-icon v-else>{{editSlug?"update":"playlist_add"}}</v-icon>
+                        {{ editSlug?"Update":"Create" }}
+            </v-btn>
+            <v-btn v-if="editSlug && !loading" color="purple" @click="cancelEditing">
+                <v-icon>cancel</v-icon>
+                Cancel
+            </v-btn>
 
         </v-form>
 
         <v-card>
             <v-toolbar color="indigo" dark dense>
-            <v-toolbar-title>Categories</v-toolbar-title>
+            <v-toolbar-title>Categories
+                <v-progress-circular v-if="category_loading" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
+            </v-toolbar-title>
             </v-toolbar>
 
-
-            <div v-if="loading" class="text-xs-center">
-                <v-progress-circular :size="70" :width="7" color="purple" indeterminate ></v-progress-circular>
-            </div>
-
-            <v-list v-else>
+            <v-list>
                 <div v-for="(category,index) in categories" :key="category.id">
                 <v-list-tile>
-
                     <v-list-tile-action>
-                        <v-btn icon small @click="edit(index)">
+                        <v-btn icon small @click="edit(category.name, category.slug)" :disabled="editSlug==category.slug || deletingSlug==category.slug || loading">
                             <v-icon color="orange">edit</v-icon>
                         </v-btn>
                     </v-list-tile-action>
 
                     <v-list-tile-content>
-                        <v-list-tile-title>
+                        <v-list-tile-title :class="deletingSlug==category.slug?'deleting-text':''">
                             {{ category.name }}
                         </v-list-tile-title>
                     </v-list-tile-content>
 
                     <v-list-tile-action>
-                        <v-btn icon small @click="destroy(category.slug, index)">
-                            <v-icon color="red">delete</v-icon>
+                        <v-btn icon small @click="destroy(category.slug, index)" :disabled="deletingSlug==category.slug">
+                            <v-progress-circular v-if="deletingSlug==category.slug" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
+                            <v-icon color="red" v-else>delete</v-icon>
                         </v-btn>
                     </v-list-tile-action>
 
@@ -58,85 +64,104 @@
     </v-container>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-    name: 'Edit-Categories',
+  name: "Edit-Categories",
   data() {
     return {
-        loading: false,
-        form: {
-            name: null
-        },
-        categories: [],
-        editSlug: null,
-        errors: null
+      loading: false,
+      form: {
+        name: null
+      },
+      editSlug: null,
+      errors: null,
+      deletingSlug: null
     };
   },
-    created() {
-        /*
+  created() {
+    /*
     if(!this['login/isAdmin']) { //выкидываем за шкирку НЕадмина;
         console.warn('Брысь отсюда! Ты не админ .!. ');
         this.$router.push( { name:'forum' } )
     } else */
-    this.getCategories();
+    this["category/getCategories"]();
   },
   computed: {
-      ...mapGetters([
-          'login/isAdmin'
-      ]),
-      disabled() {
-          return !this.form.name
-      }
+    ...mapGetters(["login/isAdmin", "category/categories", "category/loading"]),
+    disabled() {
+      return !this.form.name || this.loading;
+    },
+    categories() {
+      return this["category/categories"];
+    },
+    category_loading() {
+      return this["category/loading"];
+    }
   },
   methods: {
+    ...mapActions([
+      "category/getCategories",
+      "category/createCategory",
+      "category/updateCategory",
+      "category/deleteCategory"
+    ]),
+    cancelEditing() {
+      this.editSlug = null;
+      this.form.name = null;
+    },
     submit() {
       this.editSlug ? this.update() : this.create();
     },
     update() {
-
-      axios
-        .patch(`/category/${this.editSlug}`, this.form)
-        .then(res => {
-          this.categories.unshift({ ...res.data });
-          this.form.name = null;
-          this.editSlug = null;
-        })
-        .catch(err => console.warn(err));
-    },
-    create() {
-
-      axios
-        .post("/category", this.form)
-        .then(res => {
-          this.categories.unshift({ ...res.data });
-          this.form.name = null;
+      this.loading = true;
+      this["category/updateCategory"]({ slug: this.editSlug, form: this.form })
+        .then(async () => {
+            snack("Имя категории успешно изменено", "success")
+            await this["category/getCategories"]()
+            this.form.name = null;
+            this.editSlug = null;
         })
         .catch(err => {
-            console.warn(err);
-            this.errors = err.response.data.errors
+          console.warn(err);
+          snack("Ошибка при обновлении имени категории", "error");
         })
-
+        .finally(() => (this.loading = false));
+    },
+    create() {
+      this.loading = true;
+      this["category/createCategory"](this.form)
+        .then(() => (this.form.name = null))
+        .catch(err => {
+          console.warn(err);
+          this.errors = err.response.data.errors;
+          snack("Ошибка при создании категории", "error");
+        })
+        .finally(() => (this.loading = false));
     },
     destroy(slug, index) {
-      axios
-        .delete(`/category/${slug}`)
-        .then(res => this.categories.splice(index, 1))
-        .catch(err => console.warn(err));
+      this.deletingSlug = slug;
+      this["category/deleteCategory"](slug)
+        .then(async () => {
+            snack("Категория успешно удалена", "success")
+            return await this["category/getCategories"]()
+        })
+        .catch(err => {
+          console.warn(err);
+          snack("Ошибка при удалении категории", "error");
+        })
+        .finally(() => (this.deletingSlug = null));
     },
-    edit(index) {
-        this.form.name = this.categories[index].name;
-        this.editSlug = this.categories[index].slug;
-        this.categories.splice(index, 1);
-    },
-    getCategories() {
-        this.loading = true;
-      axios
-        .get("/category")
-        .then(res => (this.categories = res.data.data))
-        .catch(err => console.warn(err))
-        .finally(() => this.loading = false)
+    edit(name,slug) {
+      this.form.name = name;
+      this.editSlug = slug;
     }
   }
 };
 </script>
+
+<style lang="scss" >
+.deleting-text {
+  text-decoration: line-through;
+}
+</style>
