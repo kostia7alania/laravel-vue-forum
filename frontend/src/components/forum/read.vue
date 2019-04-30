@@ -14,8 +14,8 @@
             />
        </div>
        <v-container  v-if="question">
-            <replies :slug="$route.params.slug"/>
-            <new-reply v-if="['login/loggedIn']" :questionSlug="question.slug"/>
+            <replies/>
+            <new-reply v-if="['login/loggedIn']"/>
 
             <div class="mt-4" v-else>
                 <router-link to="/login">Log in to Reply</router-link>

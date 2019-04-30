@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-toolbar color="cyan" dark dense>
-            <v-toolbar-title>Categories
+            <v-toolbar-title>Categories ({{ categories_length }})
                 <v-progress-circular v-if="loading" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
             </v-toolbar-title>
         </v-toolbar>
@@ -40,12 +40,15 @@ export default {
             'category/categories',
             'category/loading'
         ]),
-        categories(){
-            return this['category/categories']
-        },
         loading(){
             return this['category/loading']
         },
+        categories(){
+            return this['category/categories']
+        },
+        categories_length(){
+            return this.categories.length || 0;
+        }
     },
     methods: {
         ...mapActions([

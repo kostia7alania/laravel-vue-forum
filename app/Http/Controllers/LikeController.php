@@ -20,14 +20,11 @@ class LikeController extends Controller
     }
 
 
-
-
     public function likeIt(Reply $reply) {
         $reply->like()->create([
             //'user_id' => '1'//test
             'user_id' => auth()->id()
         ]);
-
         broadcast(new LikeEvent($reply->id,1))->toOthers();
     }
     public function unLikeIt(Reply $reply) {

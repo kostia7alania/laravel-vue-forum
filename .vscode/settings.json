@@ -2,5 +2,6 @@
     "editor.fontSize": 14,
     "editor.fontFamily": "Fira Code",
     "editor.fontLigatures": true,
-    "terminal.integrated.fontFamily": "Fira Code"
+    "terminal.integrated.fontFamily": "Fira Code",
+    "vue-i18n.i18nPaths": ""
 }

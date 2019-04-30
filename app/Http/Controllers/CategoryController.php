@@ -45,7 +45,6 @@ class CategoryController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show(Category $category) {
-
     //return \App\Model\Category::all();
 
         /*  return Category::latest()->get();

@@ -231,9 +231,9 @@ docker-compose build --no-cache nginx
 ============== Посмотреть все команды: php artisan
 
 # -> НАКАТИТЬ СВЕЖАК:
- 
-# (сначала руками удалить таблицу questions) 
-#!!автомат-выполнит down() в миграциях-> 
+
+# (сначала руками удалить таблицу questions)
+#!!автомат-выполнит down() в миграциях->
 ```
 php artisan migrate:rollback
 ```
@@ -243,3 +243,22 @@ php artisan migrate:fresh
 ```
 # генерируем фейковые данные (сначала закоментить статик бут функцию тут -> app\Model\Reply.php):
 ```php artisan db:seed```
+
+
+
+
+# ОБРАБОТКА ОШИБОК:
+```
+UnexpectedValueException
+There is no existing directory at "C:\test\php\laravel-vue-forum\storage\logs" and its not buildable: Invalid argument
+```
+НАДО ПОЧИСТИТЬ КЕШ из той среды, где пытаешься запустить ЛАРКУ:
+1) если из под LARADOCK, то:
+```
+docker-compose exec —user=laradock workspace bash #в общем случае,если нет,то из расширения докера в VSCODE правой кнопкой по контейнеру WORKSPACE правой кнопкой нажать, затем -  "Attach Shell":
+php artisan config:cache
+```
+2) Если хочешь запустить из под Ларки (пхп), т.е. так: php artisan serve, то без докера:
+```
+php artisan config:cache
+```

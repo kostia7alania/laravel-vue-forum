@@ -38,7 +38,7 @@ export default  {
             return axios.get(`/question/`)
                 .then(res => {
                     commit('changeProp', { prop: 'questions',val: res.data.data })
-                    return res
+                    return res.data
                 })
                 .catch(err => {
                     console.warn('ERR in getQuestions => ', err)
@@ -55,7 +55,7 @@ export default  {
             return axios.get(`/category/${slug}/questions`)
                 .then(res => {
                     commit('changeProp', { prop: 'questions',val: res.data.data })
-                    return res
+                    return res.data
                 })
                 .catch(err => {
                     console.warn('ERR in getQuestions => ', err)

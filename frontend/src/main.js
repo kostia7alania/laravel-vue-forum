@@ -31,6 +31,7 @@ import './sass/app.scss'
 window.EventBus = new Vue();
 
 Vue.config.productionTip = false;
+Vue.config.performance = true;
 Vue.config.devtools = true;
 
 new Vue({
