@@ -228,9 +228,75 @@ docker-compose build --no-cache nginx
 удаляю старый фронт и ставлю по Совету из доклада ЭванА Вью => https://github.com/yyx990803/laravel-vue-cli-3
 
 
-============== Посмотреть все команды: php artisan
 
-# -> НАКАТИТЬ СВЕЖАК:
+git clone https://github.com/kostia7alania/laravel-vue-forum.git && cd laravel-vue-forum
+
+git clone https://github.com/Laradock/laradock.git && cd laradock && cp env-example .env
+```
+
+# ms SQL server MAC :
+```
+sudo docker pull mcr.microsoft.com/mssql/server:2017-latest
+
+sudo docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=kostia12345' \
+   -p 1433:1433 --name sql1 \
+   -d mcr.microsoft.com/mssql/server:2017-latest
+
+sudo docker ps -a
+
+docker exec -it
+
+sudo docker exec -it sql1 "bash"
+где: sql1-имя при создании (флаг --name)
+
+/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'kostia12345'
+CREATE DATABASE TestDB
+SELECT Name from sys.Databases
+GO
+
+USE TestDB
+CREATE TABLE Inventory (id INT, name NVARCHAR(50), quantity INT)
+INSERT INTO Inventory VALUES (1, 'banana', 150); INSERT INTO Inventory VALUES (2, 'orange', 154);
+GO
+
+SELECT * FROM Inventory WHERE quantity > 152;
+GO
+
+QUIT
+
+```
+# Подключение из-за пределов контейнера
+Определите IP-адрес компьютера, на котором размещен контейнер. В Linux используйте команды ifconfig или IP-адрес. В Windows используйте команду ipconfig.
+sqlcmd -S 10.3.2.4,1433 -U SA -P '<YourNewStrong!Passw0rd>'
+у нас - localhost:1433 !!!
+# mssql VCDode:
+поСтавить расширение  mssql
+F1 ввести sql - connect
+# Удаление контейнера
+sudo docker stop sql1
+sudo docker rm sql1
+
+# подробная инфа  о тачке:
+docker inspect laradock_nginx_1
+
+# ============== Посмотреть все команды:
+```
+ php artisan
+```
+
+# ставим образ из папки:
+```
+cd laradock
+docker-compose up -d mssql nginx
+```
+workspace сам ставится, можно не упоминать)
+
+
+# Удалить контейнеры php и nginx, поднастроить их в laradock и переустановить без кеша:
+docker-compose build --no-cache php-fpm
+docker-compose build --no-cache nginx
+
+# -> НАКАТИТЬ СВЕЖАК БД:
 
 # (сначала руками удалить таблицу questions)
 #!!автомат-выполнит down() в миграциях->
@@ -261,4 +327,18 @@ php artisan config:cache
 2) Если хочешь запустить из под Ларки (пхп), т.е. так: php artisan serve, то без докера:
 ```
 php artisan config:cache
+######## БЫСТРО РАЗВОРАЧИВАЕМ ЛАРАВЕЛ НА КОЛЕНКАХ!!!!!
+# 0) форкаем репу;
+# 1) меняем в ./.env:
+```
+DB_CONNECTION=sqlite
+#DB_DATABASE=kostia7forum # да, закомментировать!
+```
+# 2) создать файл: ./database/kostia7alania.sqlite
+# 3) чистим, мигрируем и запускаемся:
+```
+php artisan config:clear
+php artisan config:cache
+php artisan migrate
+php artisan serve
 ```
