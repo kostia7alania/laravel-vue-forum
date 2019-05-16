@@ -24,7 +24,7 @@ export default {
     computed: {
         ...mapGetters([ 'login/TOKEN__isOK' ])
     },
-    created() {
+    mounted() {
         window.app = this;
         if( !this['login/TOKEN__isOK']) this['login/logout']();
     },
