@@ -18,16 +18,10 @@ class CreateLikesTable extends Migration
             $table->integer('reply_id');
             $table->integer('user_id');
             $table->timestamps();
+            // $table->unique(['user_id', 'reply_id']);//  29.5.19 => тормозим повторный лайк! !! НАДО ПРОТЕСТИТЬ !
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('likes');
-    }
+    /** * Reverse the migrations.  * @return void */
+    public function down()   {   Schema::dropIfExists('likes');  }
 }

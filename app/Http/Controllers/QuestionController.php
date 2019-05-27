@@ -34,14 +34,12 @@ class QuestionController extends Controller
         //return response('Created', Response::HTTP_CREATED);
        $question = auth()->user()->question()->create($request->all());
         return response(new QuestionResource($question), Response::HTTP_CREATED);
-
     }
 
     /**  Display the specified resource.
      * @param  \App\Model\Question  $question
      * @return \Illuminate\Http\Response */
-    public function show(Question $question)
-    {
+    public function show(Question $question) {
         return new QuestionResource($question);
     }
 
@@ -50,8 +48,7 @@ class QuestionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Model\Question  $question
      * @return \Illuminate\Http\Response */
-    public function update(Request $request, Question $question)
-    {
+    public function update(Request $request, Question $question) {
         $question->update($request->all());
         return response('Update', Response::HTTP_ACCEPTED);
     }
@@ -59,8 +56,7 @@ class QuestionController extends Controller
     /**  Remove the specified resource from storage.
      * @param  \App\Model\Question  $question
      * @return \Illuminate\Http\Response */
-    public function destroy(Question $question)
-    {
+    public function destroy(Question $question) {
         $question->delete();
         return response(null, Response::HTTP_NO_CONTENT);
     }

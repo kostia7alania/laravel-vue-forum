@@ -9,9 +9,10 @@ use App\Http\Resources\CategoryTopicsResource;
 use App\Http\Resources\CategoryQuestionsResource;
 use App\Http\Requests\CategoryRequest;
 
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
+
+use App\Exceptions\CategoryError;
 
 class CategoryController extends Controller {
 
@@ -20,17 +21,13 @@ class CategoryController extends Controller {
     }
 
     public function index() {   // Display a listing of the resource.  @return \Illuminate\Http\Response
-        //return CategoryResource(category::paginate(1));
-        return CategoryResource::collection( category::latest()->get() );
+       // return CategoryResource(category::paginate(1) );
+       // throw new CategoryError;
+        return CategoryResource::collection( Category::latest()->get() );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(CategoryRequest $request)
-    {
+    /** * Store a newly created resource in storage. * @param  \Illuminate\Http\Request  $request * @return \Illuminate\Http\Response */
+    public function store(CategoryRequest $request) {
        // Category::create($request->all());
         $category = new Category;
         $category->name=$request->name;
@@ -46,7 +43,6 @@ class CategoryController extends Controller {
      */
     public function show(Category $category) {
     //return \App\Model\Category::all();
-
         /*  return Category::latest()->get();
         $users =$category->questions();
         dd($users);
@@ -59,12 +55,7 @@ class CategoryController extends Controller {
         return new CategoryTopicsResource($category);
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\Category  $category
-     * @return \Illuminate\Http\Response
-     */
+    /** * Update the specified resource in storage. * @param  \Illuminate\Http\Request  $request  * @param  \App\Model\Category  $category * @return \Illuminate\Http\Response */
     public function update(Request $request, Category $category) {
     //return $request->all();
         $category -> update (
@@ -76,22 +67,15 @@ class CategoryController extends Controller {
     return response(new CategoryResource($category), Response::HTTP_ACCEPTED);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @param  \App\Model\Category  $category
-     * @return \Illuminate\Http\Response
-     */
+    /** * Remove the specified resource from storage. * @param  \App\Model\Category  $category * @return \Illuminate\Http\Response */
     public function destroy(Category $category) {
         $category->delete();
         return response(null. Response::HTTP_NO_CONTENT);
     }
 
     public function getQuestionsByCategorySlug(Category $category) {
-
         return  CategoryQuestionsResource::collection($category->questions);
-
         //return CategoryTopicsResource::collection( category::latest()->get()->where('id','=','1') );
     }
-
 
 }
