@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,13 +17,15 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
+    /**  * Bootstrap any application services.  * @return void */
     public function boot()
     {
         //
+        if(0)//выводить sql-запрос?
+        DB::listen(function ($query) {
+            dump($query->sql);//сам запрос
+            dump($query->bindings);//переданные в него параметры
+        });
+
     }
 }
