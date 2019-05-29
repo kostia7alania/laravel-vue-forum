@@ -9,7 +9,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () { return view('home'); });
+//Route::get('/', function () { return view('home'); });
+Route::get('/', 'SpaController@index')->where('any', '.*');
 Route::get('/{any}', 'SpaController@index')->where('any', '.*');
 Route::get('/{any}/{any1}', 'SpaController@index')->where('any', '.*');
 
