@@ -2,20 +2,38 @@
 ```
 php artisan tinker
 App\User::all();
-App\Model\Category::all();
+App\User::find(1)
+factory(App\User::class, 1000)->create();
+App\Model\Category::all()
+\App\Model\Like::all()->map->created_at
+App\Model\Like::first
+App\Model\Like::all()->first
+
+
 etc..
+
 ```
 
+php artisan migrate:rollback
+php artisan migrate:rollback --step=5 # отменить последние 5 миграций
+php artisan migrate:fresh --seed
+php artisan migrate:refresh --seed
+
+
+# ВАЖНАЯ ИНФА О приоритетах в МИГРАЦИЯХ
+""""""""""""""""""
+В папке базы данных/миграции/ваше имя файла миграции имеет следующий формат: year_month_day_hhmmss_create_XXXX_table.php
+
+Просто переименуйте созданный файл пользователя, чтобы дата создания таблицы приоритетов таблиц была установлена ​​позже, чем дата пользователя (даже спустя одну секунду)
+""""""""""""""""""
 
 
 
 
 Команды:
-
 -> ⌨ Зайти в линукс:
 cd  laradock
 docker-compose exec workspace bash
-
 /*************/
 docker-compose ps
 ЗАХОДИМ в консоль ЛИНУХИ:
@@ -91,13 +109,8 @@ php artisan make:model Model/Like -mfr
 
 ## -> ⌨  СОЗдАТЬ ЗАПИСИ В БАЗЕ::
 ИЗ КОНСОЛИ ВИНДЫ (в линухе не пашет пока ПДО с mssql)
-        php artisan migrate
-
-
-    php artisan migrate:fresh #очистить БД
-
-
-
+    php artisan migrate # накатить миграции в базу
+    php artisan migrate:fresh # очистить БД и накатить
 
 
 ===============================
