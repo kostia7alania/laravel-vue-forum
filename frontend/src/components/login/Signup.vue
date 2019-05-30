@@ -62,10 +62,10 @@ export default {
             },
             errors: {
 
-            }
+             }
         }
     },
-    created() {
+    mounted() {
         if( this['login/loggedIn'] ) this.goHome()
     },
     computed: {
