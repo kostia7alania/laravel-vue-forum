@@ -6,14 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 use App\User;
 use App\Reply;
 use App\Category;
+use Illuminate\Http\Request;
 
 class Question extends Model
 {
     //при создании (триггер или хук CREATING) вопроса, генерится УРЛ в транслите от тайтла
-    /*protected static function boot() {
-        parent::boot();
-        static::creating(function($question) { $question-> slug = str_slug($question->title);});
-    }*/
+    protected static function boot() {
+         parent::boot();
+        static::creating(function($question, Request $request) {
+            $method = $request->method();   // НАДО придумать че-нить,--> 31.5.19:  УЖЕ ПРИДУМАЛ:
+            if ($request->isMethod('post')) // чтобы при запуске СИДИНГА вручную, не надо было ето комментить,!,
+                $question-> slug = str_slug($question->title);
+        });
+    }
 
     public function getRouteKeyName() {
         return 'slug';//берем из столбца слог
