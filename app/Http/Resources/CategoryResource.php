@@ -7,12 +7,7 @@ use Symfony\Component\Console\Question\Question;
 
 class CategoryResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
+    /*** Transform the resource into an array. @param  \Illuminate\Http\Request  $request @return array*/
     public function toArray($request)
     {
         //var_dump($this);die;
@@ -21,7 +16,8 @@ class CategoryResource extends JsonResource
             'slug' => $this->slug,
             'id'   => $this->id,
             'path' => $this->path,
-            //'questions' => QuestionResource::collection($this->questions),
+            'questions_count'=>$this->questions->count(),
+          //  'questions' => QuestionResource::collection($this->questions),
         ];
     }
 }
