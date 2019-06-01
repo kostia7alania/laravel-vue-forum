@@ -11,13 +11,17 @@
         </div>
 
         <v-list v-else>
-            <v-list-tile v-for="category in categories" :key="category.path">
-                <v-list-tile-content>
-                        <v-list-tile-title>
-                           <router-link :to="category.path">{{ category.name }}</router-link>
-                        </v-list-tile-title>
-                </v-list-tile-content>
-            </v-list-tile>
+            <v-list-item v-for="category in categories" :key="category.path">
+                <v-list-item-content>
+                        <v-list-item-title>
+                            <v-badge>
+                                <template v-slot:badge>{{ category.questions_count }}</template>
+                                <router-link :to="category.path">{{ category.name }}
+                                </router-link>
+                            </v-badge>
+                        </v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
         </v-list>
     </v-card>
 </template>
