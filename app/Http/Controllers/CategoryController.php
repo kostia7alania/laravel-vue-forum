@@ -23,7 +23,8 @@ class CategoryController extends Controller {
     public function index() {   // Display a listing of the resource.  @return \Illuminate\Http\Response
        // return CategoryResource(category::paginate(1) );
        // throw new CategoryError;
-        return CategoryResource::collection( Category::latest()->get() );
+        //return CategoryResource::collection( Category::latest()->get() ); //то же самое ->  Category::orderBy('created_at', 'desc')->get()
+        return CategoryResource::collection( Category::all() );
     }
 
     /** * Store a newly created resource in storage. * @param  \Illuminate\Http\Request  $request * @return \Illuminate\Http\Response */
@@ -57,14 +58,14 @@ class CategoryController extends Controller {
 
     /** * Update the specified resource in storage. * @param  \Illuminate\Http\Request  $request  * @param  \App\Model\Category  $category * @return \Illuminate\Http\Response */
     public function update(Request $request, Category $category) {
-    //return $request->all();
-        $category -> update (
+        //return $request->all();
+        $category->update (
             [
                 'name' => $request->name,
                 'slug' => str_slug($request->name)
             ]
         );
-    return response(new CategoryResource($category), Response::HTTP_ACCEPTED);
+        return response(new CategoryResource($category), Response::HTTP_ACCEPTED);
     }
 
     /** * Remove the specified resource from storage. * @param  \App\Model\Category  $category * @return \Illuminate\Http\Response */
