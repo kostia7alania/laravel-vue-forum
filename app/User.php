@@ -6,25 +6,17 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Model\Question;
+use App\Model\Reply;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
-
-    /** The attributes that are mass assignable.
-     * @var array
-     */
+/** The attributes that are mass assignable. * @var array     */
     protected $fillable = [ 'name', 'email', 'password', ];
-
     /** The attributes that should be hidden for arrays. * @var array */
     protected $hidden = [ 'password', 'remember_token', ];
-
-    public function question() {
-        return $this->hasMany(Question::class);
-    }
-
     /** * The attributes that should be cast to native types.* @var array */
     protected $casts = [ 'email_verified_at' => 'datetime', ];
 
@@ -35,17 +27,16 @@ class User extends Authenticatable implements JWTSubject
         return $this->getKey();
     }
 
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     * @return array
-     */
-    public function getJWTCustomClaims()
-    {//reutrn a key value array, containing any claims to be added to  JWT
+    /** * Return a key value array, containing any custom claims to be added to the JWT.
+     * @return array */
+    public function getJWTCustomClaims() {//reutrn a key value array, containing any claims to be added to  JWT
         return [];
     }
 
-    public function setPasswordAttribute($value) {
-        $this->attributes['password'] = bcrypt($value);
-    }
+    public function setPasswordAttribute($value) { $this->attributes['password'] = bcrypt($value); }
+
+    public function question() { return $this->hasMany(Question::class); }
+    public function reply() { return $this->hasMany(Reply::class); }
+    public function roles() { return $this->belongsToMany('App\Model\Role', 'user_roles'); }
 
 }
