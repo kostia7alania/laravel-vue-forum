@@ -24,7 +24,7 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required'
+            'name'=>'required|max:255|regex:/^[a-z,а-я,\d]{1,999}.*[a-z,а-я,\d]{1,999}$/i' //^[a-z,а-я,\d]{1,999}.*[a-z,а-я,\d]{1,999}$
         ];
     }
 }
