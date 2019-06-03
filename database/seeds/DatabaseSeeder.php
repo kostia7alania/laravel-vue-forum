@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-       factory(User::class, 33)->create(); echo 'Users faking finished
+        factory(User::class, 33)->create(); echo 'Users faking finished
        ';
        //die;
        factory(Category::class, 33)->create();echo 'Categories faking finished
