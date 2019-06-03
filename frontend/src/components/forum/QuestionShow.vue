@@ -6,16 +6,6 @@
                     <div class="headline">
                         {{ question.title }}
                     </div>
-                    <div grey--text>
-                        <span>
-                            <v-icon size=16.5>account_circle</v-icon>
-                            {{ question.user }}
-                        </span>
-                        <span>
-                            <v-icon size=16.5>date_range</v-icon>
-                            {{ created_at }}
-                        </span>
-                    </div>
                 </div>
                 <v-spacer></v-spacer>
                 <v-btn color="teal" dark>{{ replyCount }} Replies</v-btn>
@@ -23,15 +13,48 @@
 
             <v-card-text v-html="body"></v-card-text>
 
-            <v-card-actions v-if="own">
-                <v-btn icon small @click="edit">
-                    <v-icon color="orange">edit</v-icon>
-                </v-btn>
-                <v-btn icon small @click="destroy">
-                    <v-icon color="red">delete</v-icon>
-                </v-btn>
+                <div grey--text>
+                    <v-divider/>
+                    <v-icon size=25.1>account_circle</v-icon>
+                        {{ question.user }}
+                        <v-icon size=25.5>date_range</v-icon>
+                    {{ created_at }}
+
+                    <v-tooltip v-if="updated_at" bottom class="pl-2">
+                        <template v-slot:activator="{ on }">
+                            <span v-on="on"><v-icon size=24>border_color</v-icon></span>
+                        </template>
+                        <span>Updated at: {{ updated_at }}</span>
+                    </v-tooltip>
+
+            <v-card-actions v-if="own" class="text-xs-center d-flex align-center">
+
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                            <v-btn color="primary" v-on="on" @click="edit">
+                                <v-icon color="orange">edit</v-icon>
+                                Редактировать
+                            </v-btn>
+                        </template>
+                        <span>Редактировать тему</span>
+                    </v-tooltip>
+
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                            <v-btn  color="primary" dark v-on="on" @click="destroy">
+                                <v-icon color="red">delete</v-icon>
+                                Удалить
+                            </v-btn>
+                        </template>
+                        <span>Удалить тему</span>
+                    </v-tooltip>
+
             </v-card-actions>
 
+
+
+
+             </div>
         </v-container>
     </v-card>
 </template>
@@ -60,6 +83,12 @@ export default {
         },
         created_at() {
             return  new Date(this.question.created_at).toLocaleString()
+        },
+        updated_at() {
+            if(!this.question || !this.question.updated_at) return false;
+            const updated = new Date(this.question.updated_at);
+            const created = new Date(this.question.created_at);
+            return +created==+updated?false:updated.toLocaleString()
         }
     },
     created() {

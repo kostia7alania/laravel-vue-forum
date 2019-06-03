@@ -4,7 +4,13 @@
 
         <v-card-title>
             <div class="headline">{{ data.user }}</div>
-            <div class="md-2">написал  {{ created_at }}</div>
+            <div class="pl-2"> {{ created_at }}</div>
+            <v-tooltip v-if="show_updated_at" bottom class="pl-2">
+                <template v-slot:activator="{ on }">
+                    <span v-on="on"><v-icon>border_color</v-icon></span>
+                </template>
+                <span>Updated at: {{ updated_at }}</span>
+            </v-tooltip>
             <v-spacer/>
             <Like :content="data"/>
         </v-card-title>
@@ -56,15 +62,15 @@ export default {
     reply() {
       return md.parse(this.data.reply);
     },
-    created_at() {
-      const t = new Date(this.data.created_at).toLocaleString();
-      return t != "Invalid Date" ? t : "";
-    }
+    created_at() { return this.parseDate(this.data.created_at) },
+    updated_at() { return this.parseDate(this.data.updated_at) },
+    show_updated_at() { return new Date(this.data.updated_at) && new Date(this.data.updated_at)!='Invalid Date' && (+new Date(this.data.created_at) != +new Date(this.data.updated_at)) },
   },
   created() {
     this.listen();
   },
   methods: {
+    parseDate: date => date.toLocaleString() != 'Invalid Date'?date.toLocaleString():'',
     destroy() {
       EventBus.$emit("deleteReply", this.index);
     },

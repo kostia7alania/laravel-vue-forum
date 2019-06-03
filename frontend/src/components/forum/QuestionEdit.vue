@@ -9,16 +9,31 @@
 
                 <markdown-editor v-model.trim="form.body"></markdown-editor>
 
-                <v-card-actions>
-                    <v-btn icon small type="submit">
-                        <v-icon color="teal">save</v-icon>
-                    </v-btn>
+            <v-card-actions class="text-xs-center d-flex align-center">
 
-                    <v-btn icon small @click="cancel">
-                        <v-icon>cancel</v-icon>
-                    </v-btn>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                            <v-btn color="primary" v-on="on" type="submit">
+                                <v-icon color="orange">save</v-icon>
+                                Сохранить
+                            </v-btn>
+                        </template>
+                        <span>Сохранить правки</span>
+                    </v-tooltip>
 
-                </v-card-actions>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                            <v-btn  color="primary" dark v-on="on" @click="cancel">
+                                <v-icon color="red">cancel</v-icon>
+                                Отменить
+                            </v-btn>
+                        </template>
+                        <span>Выйти без сохранения</span>
+                    </v-tooltip>
+
+            </v-card-actions>
+
+
             </v-form>
         </v-card>
    </v-container>
