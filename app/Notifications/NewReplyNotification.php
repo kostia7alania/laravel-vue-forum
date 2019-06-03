@@ -23,7 +23,10 @@ class NewReplyNotification extends Notification
      */
     public function __construct(Reply $reply)
     {
+        echo 'reply CONSTRUCT!';die;
+
         $this->reply = $reply;
+
     }
 
     /**
