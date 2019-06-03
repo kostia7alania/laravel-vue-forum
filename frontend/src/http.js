@@ -16,6 +16,7 @@ window.axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.lo
 axios.interceptors.request.use(config => {
         const token = store.token;
         if (token) config.headers.Authorization = `Bearer ${store.state.login.token}`;
+        else 'Authorization' in config.headers ? delete config.headers.Authorization:'';
         return config;
     },
     error => Promise.reject(error)
