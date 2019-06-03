@@ -6,6 +6,7 @@ use App\Model\Category;
 use App\Model\Question;
 use App\Model\Reply;
 use App\Model\Like;
+use App\Model\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,8 +17,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        foreach(['admin', 'editor', 'user'] as $role_name) {
+            $role = App\Model\Role::firstOrNew(['name'=>$role_name]);
+            $role->save();
+        }
+        echo 'roles added';
+        factory(User::class, 33)->create()
+        ->each(function($user){
+            $role = App\Model\Role::get()->random();//factory(Role::class)->make();
+            //return $user->roles()->save( $role );
+            $user->roles()->attach($role->id);
+            //die;
 
-        factory(User::class, 33)->create(); echo 'Users faking finished
+            echo "USER ATTACHED ROLE => $role
+           ";
+       });
+       echo 'Users faking finished
        ';
        //die;
        factory(Category::class, 33)->create();echo 'Categories faking finished
