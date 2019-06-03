@@ -1,8 +1,9 @@
 <?php
 
 use Faker\Generator as Faker;
+use App\Model\Category;
 
-$factory->define(App\Model\Category::class, function (Faker $faker) {
+$factory->define(Category::class, function (Faker $faker) {
     $word = $faker->word;
     $rand = $faker->unique()->firstNameFemale;
     echo $rand.'

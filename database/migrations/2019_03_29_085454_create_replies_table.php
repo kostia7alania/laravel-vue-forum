@@ -16,7 +16,7 @@ class CreateRepliesTable extends Migration
             $table->unsignedBigInteger('user_id')->unsigned();
             $table  ->foreign('user_id')
                     ->references('id')->on('users');
-                   // ->onDelete('cascade');//УдалИТСЯ,когда сработает триггер в QUESTIONs!!!
+                   // ->onDelete('cascade');//УдалИТСЯ,когда сработает триггер в QUESTIONs!!! а если просто ЮЗЕР будет удален 7
 
 
 
