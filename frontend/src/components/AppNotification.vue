@@ -13,19 +13,19 @@
             </v-btn>
             <v-list :class="noAlerts?'ma-0 pa-0':'pb-0'" >
 
-                <v-list-tile v-for="item in unread" :key="item.id">
+                <v-list-item v-for="item in unread" :key="item.id">
                     <router-link :to="item.path">
-                        <v-list-tile-title @click="markAsRead(item)">{{ item.question }}</v-list-tile-title>
+                        <v-list-item-title @click="markAsRead(item)">{{ item.question }}</v-list-item-title>
                     </router-link>
-                </v-list-tile>
+                </v-list-item>
 
                 <v-divider v-if="unreadCount"/>
 
-                <v-list-tile v-for="item in read" :key="item.id">
+                <v-list-item v-for="item in read" :key="item.id">
                     <router-link :to="item.path">
-                        <v-list-tile-title>{{ item.question }}</v-list-tile-title>
+                        <v-list-item-title>{{ item.question }}</v-list-item-title>
                     </router-link>
-                </v-list-tile>
+                </v-list-item>
 
                 <v-alert class="ma-0 pa-0" v-if="noAlerts"
                     :value="true" type="primary" >

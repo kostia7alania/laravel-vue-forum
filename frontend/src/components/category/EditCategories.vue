@@ -2,7 +2,7 @@
     <v-container>
 
         <v-alert v-if="errors" type="error" color="red" :value="true">
-            Pleasse give category name
+            Category format is invalid (it must contains at least 2 words)
         </v-alert>
 
         <v-form @submit.prevent="submit">
@@ -34,27 +34,27 @@
 
             <v-list>
                 <div v-for="(category,index) in categories" :key="category.id">
-                <v-list-tile>
-                    <v-list-tile-action>
+                <v-list-item>
+                    <v-list-item-action>
                         <v-btn icon small @click="edit(category.name, category.slug)" :disabled="editSlug==category.slug || deletingSlug==category.slug || loading">
                             <v-icon color="orange">edit</v-icon>
                         </v-btn>
-                    </v-list-tile-action>
+                    </v-list-item-action>
 
-                    <v-list-tile-content>
-                        <v-list-tile-title :class="deletingSlug==category.slug?'deleting-text':''">
+                    <v-list-item-content>
+                        <v-list-item-title :class="deletingSlug==category.slug?'deleting-text':''">
                             {{ category.name }}
-                        </v-list-tile-title>
-                    </v-list-tile-content>
+                        </v-list-item-title>
+                    </v-list-item-content>
 
-                    <v-list-tile-action>
+                    <v-list-item-action>
                         <v-btn icon small @click="destroy(category.slug, index)" :disabled="deletingSlug==category.slug">
                             <v-progress-circular v-if="deletingSlug==category.slug" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
                             <v-icon color="red" v-else>delete</v-icon>
                         </v-btn>
-                    </v-list-tile-action>
+                    </v-list-item-action>
 
-                </v-list-tile>
+                </v-list-item>
                 <v-divider/>
                 </div>
 
@@ -80,11 +80,11 @@ export default {
     };
   },
   created() {
-    /*
+
     if(!this['login/isAdmin']) { //выкидываем за шкирку НЕадмина;
         console.warn('Брысь отсюда! Ты не админ .!. ');
         this.$router.push( { name:'forum' } )
-    } else */
+    } else
     this["category/getCategories"]();
   },
   computed: {

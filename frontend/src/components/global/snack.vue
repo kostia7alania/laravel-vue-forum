@@ -12,7 +12,7 @@
     > {{ text }}
       <v-btn
         color="pink"
-        flat
+        text
         @click="snackbar = false"
       > Close
       </v-btn>

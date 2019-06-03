@@ -10,14 +10,14 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-tile v-for="(item, i) in items" :key="i"  v-show="item.show">
-                <v-list-tile-title>
-                        <v-btn flat>
+              <v-list-item v-for="(item, i) in items" :key="i"  v-show="item.show">
+                <v-list-item-title>
+                        <v-btn text>
                             <v-btn icon><v-icon>{{ item.icon }}</v-icon></v-btn>
                             {{ item.title }}
                         </v-btn>
-                </v-list-tile-title>
-              </v-list-tile>
+                </v-list-item-title>
+              </v-list-item>
             </v-list>
           </v-menu>
 
@@ -31,7 +31,7 @@
     <app-notification v-if="loggedIn"/>
 
     <div class="hidden-sm-and-down">
-        <v-btn flat v-for="item in items" :key="item.title" v-show="item.show" :to="item.to" @click="!item.to?logout():''">
+        <v-btn text v-for="item in items" :key="item.title" v-show="item.show" :to="item.to" @click="!item.to?logout():''">
             <v-icon>{{ item.icon }}</v-icon>
             {{ item.title }}
         </v-btn>
@@ -50,9 +50,7 @@ export default {
     name: 'TOOLbar',
     components: {AppNotification},
     data() {
-      return {
-
-      }
+      return { }
     },
     computed: {
         ...mapGetters([
@@ -88,8 +86,6 @@ export default {
 }
 </style>
 <style>
-
-
 .v-list__tile {
     top: -18px !important   ;
 }
