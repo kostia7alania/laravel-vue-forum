@@ -14,36 +14,27 @@ class CreateQuestionsTable extends Migration
     public function up()
     {
         Schema::create('questions', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('title');
             $table->string('slug');
             $table->text('body');
 
-            $table->integer('category_id')->unsigned();
-            $table->integer('user_id')->unsigned();
 
 
-            $table->foreign('category_id')    //kostia:26.04.2019 delete TESTing
-            ->references('id')
-            ->on('categories')
-            ->onDelete('cascade');
+            $table->integer('category_id')->unsigned(); // делаем внешний ключ;
+            $table  ->foreign('category_id')            // в questions есть столбец category_id
+                    ->references('id')->on('categories') // связь с categories по ID
+                    ->onDelete('cascade');              // при удалении categorie - удалить каскадно и question
 
 
+            $table->unsignedBigInteger('user_id')->unsigned();
             $table->foreign('user_id')        //kostia:26.04.2019 delete TESTing
-            ->references('id')
-            ->on('users')
-            ->onDelete('cascade');
+            ->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('questions');
-    }
+    /**  * Reverse the migrations. * @return void */
+    public function down() { Schema::dropIfExists('questions');  }
 }

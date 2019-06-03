@@ -6,37 +6,28 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateRepliesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
+    /** * Run the migrations. * * @return void */
+    public function up() {
         Schema::create('replies', function (Blueprint $table) {
             $table->increments('id');
             $table->text('body');
 
-            $table->integer('question_id')->unsigned();
 
-            $table->integer('user_id')->unsigned();
+            $table->unsignedBigInteger('user_id')->unsigned();
+            $table  ->foreign('user_id')
+                    ->references('id')->on('users');
+                   // ->onDelete('cascade');//УдалИТСЯ,когда сработает триггер в QUESTIONs!!!
 
-           $table  ->foreign('question_id')
-                    ->references('id')
-                    ->on('questions')
-                    ->onDelete('cascade');
+
+
+            $table->unsignedBigInteger('question_id')->unsigned(); // делаем внешний ключ;
+            $table  ->foreign('question_id')           // в replies есть столбец QUESTION_ID
+                    ->references('id')->on('questions') // связь с QUESTIONS по ID
+                    ->onDelete('cascade');              // при удалении question'a - удалить каскадно и reply
 
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('replies');
-    }
+    /** * Reverse the migrations. * * @return void */
+    public function down() { Schema::dropIfExists('replies'); }
 }
