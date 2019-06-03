@@ -40,7 +40,7 @@ export default  {
 
         getNotifications( {state, commit, dispatch}, logPass) {
             return axios
-            .post("/notifications")
+            .post("notifications")
             .then(res => {
                 commit('changeProp', {
                     prop: 'notifications',
@@ -60,7 +60,7 @@ export default  {
 
         markAsRead({state, commit, dispatch}, notification)  {
             return axios
-              .post("/markAsRead", { id: notification.id })
+              .post("markAsRead", { id: notification.id })
               .then(res => {
                 commit('changeObj', {obj: 'notifications', prop: 'read', val:notification });
                 commit('spliceObj', { notification });

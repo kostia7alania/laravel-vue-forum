@@ -40,7 +40,7 @@ export default  {
         newReply( {state, commit, dispatch}, { body } ) {
             const slug = state.slug
             return  axios
-                        .post(`/question/${slug}/reply`, { body } )
+                        .post(`question/${slug}/reply`, { body } )
                         .then(res => {
                             commit('APPEND_TOPIC_REPLY', {slug, obj: res.data.Reply })
                             commit('CLEAR_TOPIC_DRAFT',slug)
@@ -57,7 +57,8 @@ export default  {
             commit('SET_SLUG', slug)
             if(!slug) return {stat:false, msg: 'Неверные параметры для отображения комментариев'};
             commit('SET_LOADING_ON')
-            return axios.get(`/question/${slug}/reply`)
+            return axios
+                    .get(`question/${slug}/reply`)
             .then(res => {
                 commit('SET_TOPIC_REPLIES', {prop: slug, val:res.data.data} );
                 return { stat: true, msg: res.data }

@@ -33,9 +33,9 @@ export default  {
 
     actions: {
 
-        getQuestions({ state,commit,dispatch}) {
+        getQuestions({ state, commit, dispatch, }) {
             commit('changeProp', {prop: 'loading',val: true})
-            return axios.get(`/question/`)
+            return axios.get(`question`)
                 .then(res => {
                     commit('changeProp', { prop: 'questions',val: res.data.data })
                     return res.data
@@ -52,7 +52,7 @@ export default  {
 
         getQuestionByCategorySlug({ state,commit,dispatch}, slug) {
             commit('changeProp', {prop: 'loading',val: true})
-            return axios.get(`/category/${slug}/questions`)
+            return axios.get(`category/${slug}/questions`)
                 .then(res => {
                     commit('changeProp', { prop: 'questions',val: res.data.data })
                     return res.data
@@ -67,12 +67,12 @@ export default  {
                 })
         },
 
-        createQuestion({}, form){
-            return axios.post("/question", form)
+        createQuestion({ }, form) {
+            return axios.post(`question`, form)
         },
 
-        questionUpdate({}, form){
-            return axios.patch(`/question/${form.slug}`, form)
+        questionUpdate({ }, form) {
+            return axios.patch(`question/${form.slug}`, form)
         },
 
     }
