@@ -6,71 +6,50 @@ export default {
     },
 
     getters: {
-        categories({
-            state,
-            getters
-        }, arg2, arg3, modulesGetters, ) {
+        categories({ state, getters }, arg2, arg3, modulesGetters, ) {
             return arg3.category.categories
         },
-        loading({
-            state,
-            getters
-        }, arg2, arg3, modulesGetters, ) {
+        loading({ state, getters }, arg2, arg3, modulesGetters, ) {
             return arg3.category.loading
         }
 
     },
     mutations: {
         /***** USING GLOBAL ****/
-        changeProp(state, {
-            prop,
-            val
-        }) {
-            state[prop] = val
-        },
+        changeProp(state, { prop, val }) { state[prop] = val },
+        SET_LOADING_ON(state) { state.loading = true },
+        SET_LOADING_OFF(state) { state.loading = false },
     },
 
     actions: {
 
-        async getCategories({
-            state,
-            commit,
-            dispatch
-        }) {
-            commit('changeProp', {
-                prop: 'loading',
-                val: true
-            })
+        async getCategories({ commit}) {
+            commit('SET_LOADING_ON');
             return axios
-                .get('/category')
+                .get(`category`)
                 .then(res => commit('changeProp', {
                     prop: 'categories',
                     val: res.data.data
                 }))
-                .catch(err => {
-                    console.warn('ERR in getCategories => ', err)
-                })
-                .finally(e => commit('changeProp', {
-                    prop: 'loading',
-                    val: false
-                }))
+                .catch(err => { console.warn('ERR in getCategories => ', err) })
+                .finally(e => commit('SET_LOADING_OFF') )
         },
 
-        createCategory({dispatch}, form) {
+        createCategory({ dispatch}, form) {
             return axios
-                .post("/category", form)
+                .post(`category`, form)
                 .then(() => {
                     dispatch('getCategories')//in "background")
                     return true;
                 })
         },
 
-        deleteCategory({dispatch}, slug) {
-            return axios.delete(`/category/${slug}`) //ждем в компоннете обновление категорий;
+        deleteCategory ({  }, slug) {
+            return axios.delete(`category/${slug}`) //ждем в компоннете обновление категорий;
         },
 
-        updateCategory({dispatch}, {slug, form} ) {
-            return axios.patch(`/category/${slug}`, form) //ждем в компоннете обновление категорий;
+        updateCategory({ rootState }, {slug, form} ) {
+            return axios.patch(`category/${slug}`, form) //ждем в компоннете обновление категорий;
         },
 
     },
