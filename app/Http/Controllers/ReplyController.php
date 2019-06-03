@@ -10,6 +10,8 @@ use App\Http\Resources\ReplyResource;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use App\Notifications\NewReplyNotification;
 use App\Events\DeleteReplyEvent;
+use App\Http\Requests\ReplyRequest;
+use PHPUnit\Framework\Constraint\Exception;
 
 class ReplyController extends Controller
 {
@@ -32,9 +34,16 @@ class ReplyController extends Controller
     /* Store a newly created resource in storage.
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response*/
-    public function store(Question $question, Request $request)
+    public function store(Question $question, ReplyRequest $request)
     {
-        $reply = $question->replies()->create($request->all());
+
+
+       // $question = auth()->user()->question()->replies()->create($request->all());
+
+        $reply = $question->replies()->create([//create($request->all());
+            'user_id' => auth()->id(),
+            'body' => $request->body,//test
+        ]);
         $user = $question->user;
         if($reply->user_id!==$question->user_id) {
             $user->notify(new NewReplyNotification($reply));
