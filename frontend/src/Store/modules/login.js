@@ -1,5 +1,5 @@
 
-import AppStorage from '../Helpers/AppStorage';
+// import AppStorage from '../Helpers/AppStorage';
 export default  {
 
     state:  {
@@ -10,11 +10,11 @@ export default  {
         user: {
             role: false,
             name: null,
-        }
+        },
+        loading: false
     },
 
     getters: {
-
         TOKEN__isValid (state, getters) {
             const isBase64 = str => {
                 try {  return btoa(atob(str)).replace(/=/g, '') == str } catch (err)
@@ -66,11 +66,9 @@ export default  {
         loggedIn(state,getters) {
             return getters.isUser || getters.isAdmin
         },
-
     },
 
     mutations: { /***** USING GLOBAL ****/
-
         toggle(state, { prop }) {
             state[prop] = !state[prop];
         },
@@ -81,13 +79,17 @@ export default  {
             state[obj][prop] = val
         },
 
-    },
 
+        SET_LOADING_ON(state) { state.loading = true },
+        SET_LOADING_OFF(state) { state.loading = false },
+
+    },
 
     actions: {
         async login( {state, commit, dispatch}, logPass) {
+            commit('SET_LOADING_ON')
             return axios
-                        .post('/auth/login', logPass)
+                        .post(`auth/login`, logPass)
                         .then( res => {
                             const token = res.data.access_token
                         //    AppStorage.store(token)
@@ -96,21 +98,23 @@ export default  {
                             window.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
                             return true;
                         }) //return!!
-                        .catch( () => !!0 );
+                        .catch( () => !!0 )
+                        .finally(() => commit('SET_LOADING_OFF') )
         },
 
-        async register( {state, commit, dispatch}, logPass) {
+        async register( { commit }, logPass) {
+            commit('SET_LOADING_ON')
             return axios
-                        .post('/auth/signup', logPass)
+                        .post(`auth/signup`, logPass)
                         .then( res => {
-                            debugger
                             const token = res.data.access_token
                          //   AppStorage.store(token)
                             commit('changeProp',{prop: 'token', val:token})
                             commit('changeObj', {obj: 'user', prop: 'role', val: res.data.role})
                             return true;
                         })
-                        .catch( err => err.response.data.errors );
+                        .catch( err => err.response.data.errors )
+                        .finally(()=>commit('SET_LOADING_OFF'))
 
         },
 
