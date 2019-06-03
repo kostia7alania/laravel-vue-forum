@@ -27,6 +27,9 @@ Vue.use(VueSimplemde)
 window.md = require('marked');
 
 import './sass/app.scss'
+import vuetify from './plugins/vuetify';
+import 'roboto-fontface/css/roboto/roboto-fontface.css'
+import '@mdi/font/css/materialdesignicons.css'
 
 window.EventBus = new Vue();
 
@@ -35,7 +38,8 @@ Vue.config.performance = true;
 Vue.config.devtools = true;
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+    router,
+    store,
+    vuetify,
+    render: h => h(App)
 }).$mount('#app')
