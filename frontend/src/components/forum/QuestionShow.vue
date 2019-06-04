@@ -13,19 +13,7 @@
 
             <v-card-text v-html="body"></v-card-text>
 
-                <div grey--text>
-                    <v-divider/>
-                    <v-icon size=25.1>account_circle</v-icon>
-                        {{ question.user }}
-                        <v-icon size=25.5>date_range</v-icon>
-                    {{ created_at }}
-
-                    <v-tooltip v-if="updated_at" bottom class="pl-2">
-                        <template v-slot:activator="{ on }">
-                            <span v-on="on"><v-icon size=24>border_color</v-icon></span>
-                        </template>
-                        <span>Updated at: {{ updated_at }}</span>
-                    </v-tooltip>
+            <user-info :question="question"/>
 
             <v-card-actions v-if="own" class="text-xs-center d-flex align-center">
 
@@ -51,10 +39,6 @@
 
             </v-card-actions>
 
-
-
-
-             </div>
         </v-container>
     </v-card>
 </template>
@@ -62,9 +46,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import userInfo from '@/components/user-info'
 
 export default {
     name:"forum-show-question",
+    components: {
+        'user-info': userInfo,
+    },
     props: ['question'],
     data() {
         return {
@@ -81,15 +69,6 @@ export default {
         body() {
             return md.parse(this.question.body);
         },
-        created_at() {
-            return  new Date(this.question.created_at).toLocaleString()
-        },
-        updated_at() {
-            if(!this.question || !this.question.updated_at) return false;
-            const updated = new Date(this.question.updated_at);
-            const created = new Date(this.question.created_at);
-            return +created==+updated?false:updated.toLocaleString()
-        }
     },
     created() {
         Echo.private('App.User.' + this['login/id'] )

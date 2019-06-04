@@ -7,10 +7,9 @@
                     {{ question.title }}
                 </router-link>
             </h3>
-            <div class="grey--text">
-                {{ question.user }} said
-                {{ question.created_at }}
-            </div>
+
+            <user-info :question="question"/>
+
           </div>
         </v-card-title>
         <v-card-text>
@@ -21,7 +20,11 @@
 
 <script>
 
+import userInfo from '@/components/user-info'
 export default {
+    components:{
+        'user-info':userInfo
+    },
     name: 'question',
     props: ['question'],
 }
