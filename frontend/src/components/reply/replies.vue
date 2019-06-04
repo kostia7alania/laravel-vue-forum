@@ -55,7 +55,7 @@ export default {
       EventBus.$on("deleteReply", index => {
         axios
           .delete(
-            `/question/${this.question.slug}/reply/${this.content[index].id}`
+            `question/${this.question.slug}/reply/${this.content[index].id}`
           )
           .then(res => {
             this.content.splice(index, 1);
