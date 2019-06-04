@@ -10,7 +10,7 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item v-for="(item, i) in items" :key="i"  v-show="item.show">
+              <v-list-item v-for="(item, i) in items" :key="i" v-show="item.show" :to="item.to"  @click="!item.to?logout():''" >
                 <v-list-item-title>
                         <v-btn text>
                             <v-btn icon><v-icon>{{ item.icon }}</v-icon></v-btn>
