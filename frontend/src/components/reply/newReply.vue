@@ -5,8 +5,9 @@
             ref='mark'
         />
         <v-btn v-if="loggedIn" dark @click="submit" :disabled="!body.length" color="green">
-        <v-icon>reply</v-icon> Reply </v-btn>
-        <v-btn v-else dark to="/login" :disabled="!body.length" color="green"> Log in for reply </v-btn>
+            <v-icon>reply</v-icon> Ответить
+        </v-btn>
+        <v-btn v-else dark to="/login" :disabled="!body.length" color="green">Войдите, чтобы оставить комментарий </v-btn>
     </div>
 </template>
 
@@ -43,11 +44,12 @@ export default {
         ]),
         async submit() {
                 const comm = await this['reply/newReply']({body:this.body })
-                if(comm) {
-                    this.body = ''
-                } else {
-                    console.log('cant Comment HANDLER')
-                }
+                console.log('comm =>',comm)
+                if(typeof comm != 'object') return snack('Ошибка при отправке комменатрия', 'danger')
+                if(!comm.state) return snack('Ошибка при отправке комменатрия: '+ comm.msg, 'danger')
+                snack('Комменатрий успешно отправлен: '+ comm.msg, 'success')
+                this.body = ''
+
         },
 
     }
