@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -35,7 +36,16 @@ class Handler extends ExceptionHandler
             return response(['error' => 'Token is expired'], Response::HTTP_BAD_REQUEST);
         } else if ($exception instanceof JWTException) {
             return response(['error' => 'Token is not provided'], Response::HTTP_BAD_REQUEST);
+        }/*else if ($exception instanceof ModelNotFoundException) {
+            $exception = new NotFoundHttpException($exception->getMessage(), $exception);
+        } */
+        else if ($exception instanceof ModelNotFoundException) {
+            return response()->json([
+                'error' => 'Entry for '.str_replace('App\\', '', $exception->getModel()).' not found'], 404);
+        } else if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+            return response(['error' => 'Sorry, your session seems to have expired. Please try again.'], Response::HTTP_BAD_REQUEST);
         }
+
         return parent::render($request, $exception);
     }
 }
