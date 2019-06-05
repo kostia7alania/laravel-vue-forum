@@ -52,3 +52,8 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
 });
+
+Route::fallback(function(){
+    return response()->json([
+        'message' => 'Page Not Found'], 404);
+});
