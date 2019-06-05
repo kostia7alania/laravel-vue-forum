@@ -1,23 +1,24 @@
 
-import AppStorage from '../Helpers/AppStorage';
 export default  {
     state: {
-
+        modalMode: false,
     },
-
+    mutations: { /***** USING GLOBAL ****/
+        SET_MODAL_MODE_ON(state) { state.modalMode = true },
+        SET_MODAL_MODE_OFF(state) { state.modalMode = false },
+    },
     getters: {
         items({state, getters}, arg2, arg3, modulesGetters, ) {
-            console.warn(arguments)
-
+            //console.warn(arguments)
             const admin = modulesGetters['login/isAdmin']
             const user = modulesGetters['login/isUser']
             const loggedIn = admin || user
             return [
-                {title: 'Forum', to:'/forum', icon:'question_answer',   show: true},
-                {title: 'Ask question', to:'/ask', icon: 'plus_one',    show: loggedIn },
-                {title: 'Edit categories', to:'/edit-categories', icon: 'bookmarks',  show: true },
-                {title: 'Login', to:'/login', icon: 'person',           show: !loggedIn },
-                {title: 'Logout', icon: 'exit_to_app',                  show: loggedIn },
+                {title: 'Форум', to:'/forum', icon:'question_answer',   show: true,         roles: ['*']},
+                {title: 'Создать тему', to:'/ask', icon: 'plus_one',    show: loggedIn,     roles: ['admin', 'user'] },
+                {title: 'Редактор категорий', to:'/edit-categories',    icon: 'bookmarks',  show: loggedIn, roles: ['admin'] },
+                {title: 'Войти', icon: 'person',                        show: !loggedIn,    roles: ['guest'] },
+                {title: 'Выйти', icon: 'exit_to_app',                   show: loggedIn,     roles: ['admin','user'] },
             ]
         }
 

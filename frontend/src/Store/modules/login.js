@@ -8,7 +8,7 @@ export default  {
             iss: "http://localhost/api/auth/login"
         },
         user: {
-            role: false,
+            role: null,
             name: null,
         },
         loading: false
@@ -52,11 +52,11 @@ export default  {
         },
 
         isAdmin(state,getters) {
-            return getters.TOKEN__isOK && state.user.role == 1 //0-user, 1-admin, null - first reg;
+            return getters.TOKEN__isOK //&& state.user.role == 1 //0-user, 1-admin, null - first reg;
         },
 
         isUser(state,getters) {
-            return getters.TOKEN__isOK &&  (state.user.role === null || state.user.role === 0)  //0-user, 1-admin, null - first reg;
+            return getters.TOKEN__isOK //&&  (state.user.role === null || state.user.role === 0)  //0-user, 1-admin, null - first reg;
         },
 
         username(state,getters) {
@@ -66,23 +66,26 @@ export default  {
         loggedIn(state,getters) {
             return getters.isUser || getters.isAdmin
         },
+
     },
 
     mutations: { /***** USING GLOBAL ****/
-        toggle(state, { prop }) {
-            state[prop] = !state[prop];
-        },
-        changeProp(state, { prop, val } ) {
-            state[prop] = val
-        },
-        changeObj(state, { obj, prop, val } ) {
-            state[obj][prop] = val
-        },
+        toggle(state, { prop }) { state[prop] = !state[prop]; },
+        changeProp(state, { prop, val } ) { state[prop] = val },
+        changeObj(state, { obj, prop, val } ) { state[obj][prop] = val },
 
 
         SET_LOADING_ON(state) { state.loading = true },
         SET_LOADING_OFF(state) { state.loading = false },
 
+        SET_TOKEN(state, token) {
+            state.token = token
+            state.user.role = 'admin'
+        },
+        DROP_TOKEN(state) {
+            state.token = null
+            state.user.role = null
+        },
     },
 
     actions: {
@@ -90,40 +93,46 @@ export default  {
             commit('SET_LOADING_ON')
             return axios
                         .post(`auth/login`, logPass)
-                        .then( res => {
-                            const token = res.data.access_token
-                        //    AppStorage.store(token)
-                            commit('changeProp',{prop: 'token', val:token})
-                            commit('changeObj', {obj: 'user', prop: 'role', val: res.data.role})
-                            window.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-                            return true;
-                        }) //return!!
+                        .then( res => { commit('SET_TOKEN', res.data.access_token); return true;} )
                         .catch( () => !!0 )
-                        .finally(() => commit('SET_LOADING_OFF') )
+                        .finally(() => {
+                            commit('SET_LOADING_OFF')
+                            dispatch('checkPermitionsOnCurrentPath')
+                        })
         },
 
-        async register( { commit }, logPass) {
+        async register( { commit, dispatch }, logPass) {
             commit('SET_LOADING_ON')
             return axios
                         .post(`auth/signup`, logPass)
-                        .then( res => {
-                            const token = res.data.access_token
-                         //   AppStorage.store(token)
-                            commit('changeProp',{prop: 'token', val:token})
-                            commit('changeObj', {obj: 'user', prop: 'role', val: res.data.role})
-                            return true;
+                        .then( res => { commit('SET_TOKEN', res.data.access_token); return true;} )
+                        .catch( err => err.response && err.response.data && err.response.data.errors )
+                        .finally(() => {
+                            commit('SET_LOADING_OFF')
+                            dispatch('checkPermitionsOnCurrentPath')
                         })
-                        .catch( err => err.response.data.errors )
-                        .finally(()=>commit('SET_LOADING_OFF'))
-
         },
 
-        logout({commit}) {
-            commit('changeProp',{prop: 'token', val: null})
-            commit('changeProp',{prop: 'user', val: {} })
-            // AppStorage.clear();
-            // router.push('/forum')
-        },
+        logout({commit,dispatch}) {
+            commit('DROP_TOKEN')
+            dispatch('checkPermitionsOnCurrentPath')
+         },
 
+        checkPermitionsOnCurrentPath({state}, to=router.history.current.path) {
+            //debugger
+            const role = store.state.login.user.role // state.user.role;
+            const path = store.getters['toolbar/items'].filter(e=>e['to']==to)
+            if(path.length) {
+                if(path[0].roles.includes(role) || path[0].roles.includes('*')){
+                    console.warn('есть права')
+                    return true
+                } else {
+                    console.warn('нет прав!!')
+                    router.push({name:'forum'})
+                    return false
+                }
+            }
+            return true
+        }
     },
 }

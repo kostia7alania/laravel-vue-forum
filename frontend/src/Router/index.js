@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../Store';
 
 Vue.use(VueRouter)
 
@@ -78,13 +79,23 @@ const routes =  [
 ]
 
 
-
 const router = new VueRouter ({
     routes,
     hashbang:false,
     mode: 'history'
 });
+router.beforeEach(async (to, from, next) => {
+    if(await store._actions["login/checkPermitionsOnCurrentPath"][0](to.path)){
+        console.warn('ROUTER: есть права')
+        next();
+    }
+    else {
+        console.warn('ROUTER: нет прав')
+        next({name:'forum'});
+    }
 
+
+});
 
 // This callback runs before every route change, including on page load.
 router.beforeEach((to, from, next) => {
