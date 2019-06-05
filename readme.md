@@ -1,3 +1,29 @@
+########################################
+# UPD 5 JUN 2019
+HOW TO REFRESH DB:
+php artisan migrate:refresh
+php artisan migrate:fresh
+php artisan db:seed
+########################################
+# UPD 5 JUN 2019
+# FAKER PLAYGROUND
+КАК поиграться в тинкере (консоле) с фейкером:
+
+$faker = Faker\Factory::create('ru_RU');
+--> USAGE:
+$faker->firstNameFemale; //пашет по-русски
+$faker->realText($faker->numberBetween(10,2000)); // по-русски!
+$faker->word;
+$faker->name;
+$faker->streetAddress;
+$faker->text(400);
+$faker->randomDigit;
+$faker->bs;
+$faker->city;
+$faker->randomLetter;
+Остальные тут —-> https://github.com/fzaninotto/Faker
+
+########################################
 # PLAYGROUND:
 ```
 php artisan tinker
