@@ -3,7 +3,7 @@
        <v-form @submit.prevent="create">
 
            <span class="red--text" v-if="errors.title">{{ errors.title[0] }}</span>
-           <v-text-field label="Title" v-model.trim="form.title" type="text" required>
+           <v-text-field label="Название" v-model.trim="form.title" type="text" required>
            </v-text-field>
 
             <categories :form='form'/>
@@ -14,7 +14,7 @@
             <v-btn color="green" type="submit" :disabled="disabled">
                  <v-progress-circular v-if="loading" :width="7" color="purple" indeterminate ></v-progress-circular>
                 <v-icon v-else>note_add</v-icon>
-                Create
+                Создать
             </v-btn>
            <span class="red--text" v-if="errors.category_id">{{ errors.category_id[0] }}</span>
 
@@ -53,15 +53,17 @@ export default {
       this["question/createQuestion"](this.form)
         .then(res => {
           this.$router.push(res.data.path);
-          snack("Topic is successfully created", "success");
+          snack("Тема успешно создана", "success");
         })
         .catch(error => {
           console.log("ERRR=>", error);
-          if (error.error.match("Token is")) {
-            snack("Error! Please login", "error");
+          if(error.message == 'Network Error') {
+                snack("Сетевая ошибка!", "error");
+            } else if (error.error.match("Token is")) {
+            snack("Пожалуйста, авторизуйтесь!", "error");
             this["login/logout"]();
           } else {
-            snack("Error while creating the topic", "error");
+            snack("Ошибка при создании темы", "error");
             this.errors = error.response.data.errors;
           }
         })

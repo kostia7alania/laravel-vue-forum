@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-toolbar color="cyan" dark dense>
-            <v-toolbar-title>Categories ({{ categories_length }})
+            <v-toolbar-title>Категории ({{ categories_length }})
                 <v-progress-circular v-if="loading" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
             </v-toolbar-title>
         </v-toolbar>
@@ -14,11 +14,8 @@
             <v-list-item v-for="category in categories" :key="category.path">
                 <v-list-item-content>
                         <v-list-item-title>
-                            <v-badge>
-                                <template v-slot:badge>{{ category.questions_count }}</template>
-                                <router-link :to="category.path">{{ category.name }}
+                            <router-link :to="category.path">[{{ category.questions_count }}] {{ category.name }}
                                 </router-link>
-                            </v-badge>
                         </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>

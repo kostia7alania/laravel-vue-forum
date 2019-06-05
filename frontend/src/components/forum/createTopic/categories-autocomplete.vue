@@ -4,11 +4,11 @@
                 item-text="name"
                 item-value="id"
                 cache-items
+                browser-autocomplete="new-password"
                 :loading="loading"
                 v-model="form.category_id"
-                label="Category"
-                  style="z-index:22222;"
-                hint="Type the first letters and select the appropriate category"
+                label="Категория"
+                hint="Введите первое слово и выбите подходящий вариант"
             ></v-autocomplete>
 
 </template>

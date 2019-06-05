@@ -2,7 +2,7 @@
     <v-container>
 
         <v-alert v-if="errors" type="error" color="red" :value="true">
-            Category format is invalid (it must contains at least 2 words)
+            Формат категорий неверный (должен содержать минимум 2 слова)
         </v-alert>
 
         <v-form @submit.prevent="submit">
@@ -20,14 +20,14 @@
             </v-btn>
             <v-btn v-if="editSlug && !loading" color="purple" @click="cancelEditing">
                 <v-icon>cancel</v-icon>
-                Cancel
+                Отмена
             </v-btn>
 
         </v-form>
 
         <v-card>
             <v-toolbar color="indigo" dark dense>
-            <v-toolbar-title>Categories
+            <v-toolbar-title>Категории
                 <v-progress-circular v-if="category_loading" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
             </v-toolbar-title>
             </v-toolbar>
@@ -87,8 +87,19 @@ export default {
     } else
     this["category/getCategories"]();
   },
+  watch: {
+      isAdmin(neww,old) {
+        if(!neww) {
+            console.warn('Брысь отсюда! Ты не админ .!. ');
+            this.$router.push( { name:'forum' } )
+        }
+      },
+  },
   computed: {
     ...mapGetters(["login/isAdmin", "category/categories", "category/loading"]),
+    isAdmin(){
+        return this['login/isAdmin']
+    },
     disabled() {
       return !this.form.name || this.loading;
     },

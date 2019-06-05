@@ -29,16 +29,14 @@ export default {
         })
     },
     computed: {
-        ...mapGetters([
-            'login/loggedIn',
-        ])
+        ...mapGetters([ 'login/loggedIn'])
     },
     methods: {
         likeIt() {
             if(this['login/loggedIn']) {
                 this.liked ? this.decr() : this.incr()
                 this.liked = !this.liked
-            }
+            } else snack('Для выполнения этого действия нужна авторизация!')
         },
         incr() {
             axios.post(`/like/${this.content.id}`)

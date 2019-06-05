@@ -14,7 +14,7 @@
         color="pink"
         text
         @click="snackbar = false"
-      > Close
+      > Закрыть
       </v-btn>
     </v-snackbar>
 </template>

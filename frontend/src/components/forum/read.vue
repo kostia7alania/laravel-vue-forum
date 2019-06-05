@@ -18,7 +18,7 @@
             <new-reply v-if="['login/loggedIn']"/>
 
             <div class="mt-4" v-else>
-                <router-link to="/login">Log in to Reply</router-link>
+                <router-link to="/login">Войдите, чтобы ответить</router-link>
             </div>
        </v-container>
 

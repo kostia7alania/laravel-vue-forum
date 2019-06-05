@@ -4,11 +4,10 @@
             <v-flex xs8>
 
                 <v-toolbar color="cyan" dark dense>
-                    <v-toolbar-title>Questions
+                    <v-toolbar-title>Темы
                         <v-progress-circular v-if="loading" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
                     </v-toolbar-title>
                 </v-toolbar>
-
 
                 <div v-if="loading" class="text-xs-center">
                     <v-progress-circular :size="70" :width="7" color="purple" indeterminate ></v-progress-circular>

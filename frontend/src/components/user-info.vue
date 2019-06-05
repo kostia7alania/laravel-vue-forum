@@ -1,6 +1,6 @@
 <template>
                 <div grey--text class="body-1">
-                    <v-divider/>
+
                     <v-icon size=20>account_circle</v-icon>
                         {{ question.user }}
                         <v-icon size=20>date_range</v-icon>

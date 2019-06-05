@@ -5,12 +5,12 @@ use App\Model\Category;
 
 $factory->define(Category::class, function (Faker $faker) {
     $word = $faker->word;
-    $rand = $faker->unique()->firstNameFemale;
+    $rand = $faker->unique()->country;//firstNameFemale;
     echo $rand.'
     ';
     return [
-        'name' => $word,
-        //'slug' => str_slug($word),
-        'slug' => $rand
+        'name' => $rand,
+        //'slug' => str_slug($word), word-англ слово
+        'slug' => str_slug($rand)
     ];
 });

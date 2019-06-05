@@ -1,6 +1,6 @@
 <template>
   <div class="text-xs-center pos-rel">
-    <v-alert class="alert-abs" :value="true" type="error" transition="scale-transition"> 404! PAGE NOT FOUND! </v-alert>
+    <v-alert class="alert-abs" :value="true" type="error" transition="scale-transition"> 404! Страница не найдена! </v-alert>
      <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-parallax>
   </div>
 </template>

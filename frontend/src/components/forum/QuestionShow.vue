@@ -8,7 +8,7 @@
                     </div>
                 </div>
                 <v-spacer></v-spacer>
-                <v-btn color="teal" dark>{{ replyCount }} Replies</v-btn>
+                <v-btn color="teal" dark>{{ replyCount }} Комментариев</v-btn>
             </v-card-title>
 
             <v-card-text v-html="body"></v-card-text>
@@ -49,7 +49,7 @@ import { mapGetters } from 'vuex';
 import userInfo from '@/components/user-info'
 
 export default {
-    name:"forum-show-question",
+    name:"forum--question-show",
     components: {
         'user-info': userInfo,
     },

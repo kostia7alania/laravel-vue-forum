@@ -51,8 +51,8 @@ export default {
       questions() {
           return this['question/questions']
       },
-      slug(){
-          return this.$route.params&&this.$route.params.slug || "Last questions"
+      slug() {
+          return this.$route.params&&this.$route.params.slug || "Последние темы"
       },
       quantity(){
           return this.questions instanceof Array && `(${this.questions.length})` || ''

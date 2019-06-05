@@ -35,9 +35,9 @@ class DatabaseSeeder extends Seeder
        echo 'Users faking finished
        ';
        //die;
-       factory(Category::class, 33)->create();echo 'Categories faking finished
+       factory(Category::class, 30)->create();echo 'Categories faking finished
        ';
-       factory(Question::class, 33)->create();echo 'Questions faking finished
+       factory(Question::class, 100)->create();echo 'Questions faking finished
        ';
 
        factory(Reply::class, 113)
