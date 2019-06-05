@@ -1,5 +1,11 @@
 <template>
-      <div  z-index=0>
+ <v-hover>
+       <v-card
+        slot-scope="{ hover }"
+        :elevation="hover ? 12 : 2"
+
+       class="mt-2 mx-auto">
+
         <v-card-title primary-title>
           <div>
             <h3 class="headline mb-0">
@@ -12,20 +18,29 @@
 
           </div>
         </v-card-title>
-        <v-card-text>
-            {{ question.body }}
-        </v-card-text>
-      </div>
+            <v-card-text> {{ question_short }} </v-card-text>
+        <rating/>
+
+       </v-card>
+  </v-hover>
 </template>
 
 <script>
-
-import userInfo from '@/components/user-info'
+import userInfo from "@/components/user-info";
+import rating from './rating.vue';
 export default {
-    components:{
-        'user-info':userInfo
-    },
-    name: 'question',
-    props: ['question'],
-}
+  components: {
+    "user-info": userInfo,
+    'rating':rating
+  },
+  name: "question",
+  props: ["question"],
+  computed: {
+      question_short() {
+          let text = this.question.body
+          if(typeof text=='string' && text.length>300) text = text.slice(0,300)+'...'
+          return text;
+      }
+  }
+};
 </script>

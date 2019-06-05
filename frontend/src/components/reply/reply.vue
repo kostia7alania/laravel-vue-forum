@@ -3,14 +3,15 @@
     <v-card>
 
         <v-card-title>
-            <div class="headline">{{ data.user }}</div>
+            <user-info :question="data"/>
+            <!--<div class="headline">{{ data.user }}</div>
             <div class="pl-2"> {{ created_at }}</div>
             <v-tooltip v-if="show_updated_at" bottom class="pl-2">
                 <template v-slot:activator="{ on }">
                     <span v-on="on"><v-icon>border_color</v-icon></span>
                 </template>
                 <span>Updated at: {{ updated_at }}</span>
-            </v-tooltip>
+            </v-tooltip>-->
             <v-spacer/>
             <Like :content="data"/>
         </v-card-title>
@@ -44,11 +45,12 @@
 import editReply from "./editReply";
 import Like from "@/components/likes/like";
 import { mapGetters } from "vuex";
+import userInfo from '../user-info.vue';
 
 export default {
   name: "reply",
   props: ["data", "index"],
-  components: { editReply, Like },
+  components: { editReply, Like, 'user-info':userInfo },
   data() {
     return {
       editing: false

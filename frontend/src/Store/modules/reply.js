@@ -58,11 +58,11 @@ export default  {
             if(!slug) return {stat:false, msg: 'Неверные параметры для отображения комментариев'};
             commit('SET_LOADING_ON')
             return axios
-                    .get(`question/${slug}/reply`)
-            .then(res => {
-                commit('SET_TOPIC_REPLIES', {prop: slug, val:res.data.data} );
-                return { stat: true, msg: res.data }
-            })
+                        .get(`question/${slug}/reply`)
+                        .then(res => {
+                            commit('SET_TOPIC_REPLIES', {prop: slug, val:res.data.data} );
+                            return { stat: true, msg: res.data }
+                        })
             .catch(err => {
                 console.warn('ERR in getReplies => ', err)
                 return { stat: false, msg: err }
