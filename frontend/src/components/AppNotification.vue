@@ -2,17 +2,14 @@
     <div clsas="text-xs-center">
         <v-menu offset-y>
 
-                <v-alert class="ma-0 pa-0" v-if="noNews"
-                    :value="true" type="primary" >
-                    Нету новостей
-                </v-alert>
+            <template v-slot:activator="{ on }">
+                <v-btn icon slot="activator" v-on="on">
+                    <v-icon :color="unreadCount?'red':'red lighten-4'">add_alert</v-icon>
+                    {{ unreadCount }}
+                </v-btn>
+            </template>
 
-            <v-btn icon slot="activator">
-                <v-icon :color="unreadCount?'red':'red lighten-4'">add_alert</v-icon>
-                {{ unreadCount }}
-            </v-btn>
             <v-list :class="noAlerts?'ma-0 pa-0':'pb-0'" >
-
                 <v-list-item v-for="item in unread" :key="item.id">
                     <router-link :to="item.path">
                         <v-list-item-title @click="markAsRead(item)">{{ item.question }}</v-list-item-title>
@@ -27,12 +24,11 @@
                     </router-link>
                 </v-list-item>
 
-                <v-alert class="ma-0 pa-0" v-if="noAlerts"
-                    :value="true" type="primary" >
-                    Нету оповещений
-                </v-alert>
+                <v-alert  class=" mb-0" v-if="!noAlerts && noNews" :value="true" color="primary" > Нету новостей </v-alert>
+                <v-alert  class=" mb-0" v-if="noAlerts" type="info" > Нету оповещений </v-alert>
 
             </v-list>
+
         </v-menu>
        <!--
            <audio controls="controls">
