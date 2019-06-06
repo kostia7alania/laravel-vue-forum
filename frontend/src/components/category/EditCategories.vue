@@ -33,23 +33,23 @@
             </v-toolbar>
 
             <v-list>
-                <div v-for="(category,index) in categories" :key="category.id">
+                <div v-for="category in categories" :key="category.id">
                 <v-list-item>
                     <v-list-item-action>
-                        <v-btn icon small @click="edit(category.name, category.slug)" :disabled="editSlug==category.slug || deletingSlug==category.slug || loading">
+                        <v-btn icon small @click="edit(category.name, category.slug)" :disabled="editSlug==category.slug || isDeleting(category.slug) || loading">
                             <v-icon color="orange">edit</v-icon>
                         </v-btn>
                     </v-list-item-action>
 
                     <v-list-item-content>
-                        <v-list-item-title :class="deletingSlug==category.slug?'deleting-text':''">
+                        <v-list-item-title :class="isDeleting(category.slug)?'deleting-text':''">
                             {{ category.name }}
                         </v-list-item-title>
                     </v-list-item-content>
 
                     <v-list-item-action>
-                        <v-btn icon small @click="destroy(category.slug, index)" :disabled="deletingSlug==category.slug">
-                            <v-progress-circular v-if="deletingSlug==category.slug" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
+                        <v-btn icon small @click="destroy(category.slug)" :disabled="isDeleting(category.slug)">
+                            <v-progress-circular v-if="isDeleting(category.slug)" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
                             <v-icon color="red" v-else>delete</v-icon>
                         </v-btn>
                     </v-list-item-action>
@@ -76,7 +76,7 @@ export default {
       },
       editSlug: null,
       errors: null,
-      deletingSlug: null
+      deletingSlug: []
     };
   },
   created() {
@@ -117,6 +117,9 @@ export default {
       "category/updateCategory",
       "category/deleteCategory"
     ]),
+    isDeleting(slug){
+        return this.deletingSlug.indexOf(slug) != -1;
+    },
     cancelEditing() {
       this.editSlug = null;
       this.form.name = null;
@@ -153,8 +156,8 @@ export default {
         })
         .finally(() => (this.loading = false));
     },
-    destroy(slug, index) {
-      this.deletingSlug = slug;
+    destroy(slug) {
+      this.deletingSlug.push(slug)
       this["category/deleteCategory"](slug)
         .then(async () => {
             snack("Категория успешно удалена", "success")
@@ -164,7 +167,7 @@ export default {
           console.warn(err);
           snack("Ошибка при удалении категории", "error");
         })
-        .finally(() => (this.deletingSlug = null));
+        .finally(() => (delete this.deletingSlug[slug]));
     },
     edit(name,slug) {
       this.form.name = name;
