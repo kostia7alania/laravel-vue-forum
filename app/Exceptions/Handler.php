@@ -41,8 +41,10 @@ class Handler extends ExceptionHandler
         } */
         else if ($exception instanceof ModelNotFoundException) {
             return response()->json([
-                'error' => 'Entry for '.str_replace('App\\', '', $exception->getModel()).' not found'], 404);
+                'error' => 'Entry for '.str_replace('App\\', '', $exception->getModel()).' not found'], Response::HTTP_NOT_FOUND);
         } else if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+            return response(['error' => 'Sorry, your session seems to have expired. Please try again.'], Response::HTTP_BAD_REQUEST);
+        } else if ($exception instanceof CustomException) {
             return response(['error' => 'Sorry, your session seems to have expired. Please try again.'], Response::HTTP_BAD_REQUEST);
         }
 
