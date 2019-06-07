@@ -11,8 +11,10 @@ use App\Http\Requests\CategoryRequest;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
-
 use App\Exceptions\CategoryError;
+
+
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller {
 
@@ -30,10 +32,23 @@ class CategoryController extends Controller {
     /** * Store a newly created resource in storage. * @param  \Illuminate\Http\Request  $request * @return \Illuminate\Http\Response */
     public function store(CategoryRequest $request) {
        // Category::create($request->all());
+       //print_r($request);
+
+        $request['slug'] = Str::slug($request->name, '-');
+        Category::create($request->all());
+        dd($request->all());
+       // print_r($request->all());die;
+        return response('Created', Response::HTTP_CREATED);
+
+        $category = category()->create($request->all());
+        return response(new CategoryResource($category), Response::HTTP_CREATED);
+
         $category = new Category;
-        $category->name=$request->name;
+        $category->name = $request->name;
         $category->slug = str_slug($request->name);
+        //dd($category);
         $category->save();
+        print_r($category->slug);die;
         return response(new CategoryResource($category), Response::HTTP_CREATED);
     }
 

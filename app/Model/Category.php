@@ -11,7 +11,7 @@ class Category extends Model
         static::creating(function($question) {
          //   dd($question); //запускается констуркция при выполнениии -> php artisan db:seed
             if (isset($_SERVER['REQUEST_METHOD'])) // чтобы при запуске СИДИНГА вручную, не надо было ето комментить,!,
-                $question-> slug = str_slug($question->title);
+                $question-> slug = str_slug($question->name);//title
         });
     }
     //protected $fillable = [ 'title', 'slug', 'body', 'category_id', 'category_slug', 'user_id','question_id' ];

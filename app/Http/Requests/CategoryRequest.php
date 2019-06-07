@@ -21,10 +21,18 @@ class CategoryRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            'name'=>'required|max:255|regex:/^[a-z,а-я,\d]{1,999}.*[a-z,а-я,\d]{1,999}$/i' //^[a-z,а-я,\d]{1,999}.*[a-z,а-я,\d]{1,999}$
+            'name'=>'required|max:255|unique:categories|regex:/^[a-z,а-я,\d]{1,999}.*[a-z,а-я,\d]{1,999}$/i' //^[a-z,а-я,\d]{1,999}.*[a-z,а-я,\d]{1,999}$
+            //'name'=>'required|max:255|unique:categories'
         ];
     }
+
+    public function messages() {
+        return [
+            'name.required' => 'A name is required',
+            'name.regex' => 'A name is regex',
+        ];
+    }
+
 }
