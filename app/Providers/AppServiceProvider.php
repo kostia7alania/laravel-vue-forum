@@ -23,8 +23,9 @@ class AppServiceProvider extends ServiceProvider
         //
         if(0)//выводить sql-запрос?
         DB::listen(function ($query) {
-            dump($query->sql);//сам запрос
-            dump($query->bindings);//переданные в него параметры
+            //print_r($query->bindings);
+            //dump($query->sql);//сам запрос
+            //dump($query->bindings);//переданные в него параметры
         });
 
     }
