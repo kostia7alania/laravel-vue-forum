@@ -5,7 +5,14 @@ module.exports = {
     ],
     // proxy API requests to Valet during development
     devServer: {
-        //proxy: 'http://localhost:80/api'//с пушером траблы вызывает;
+        //proxy: 'http://localhost:8000'//с пушером траблы вызывает;
+        proxy: {
+            '^/api': {
+              target: 'http://localhost:8000/api',
+              ws: true,
+              changeOrigin: true
+            }
+          }
     },
 
     // output built static files to Laravel's public dir.
