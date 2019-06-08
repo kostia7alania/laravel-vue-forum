@@ -53,7 +53,9 @@ Route::group([
     Route::post('me', 'AuthController@me');
 });
 
+/*
 Route::fallback(function(){
     return response()->json([
         'message' => 'Page Not Found'], 404);
 });
+*/
