@@ -11,7 +11,8 @@
     "build_win": "rimraf ../public/{img,js,css}* & rimraf ../public/*.js & vue-cli-service build --no-clean",
     "build_win_old": "del '../public/*.css' /F /S  && vue-cli-service build --no-clean НУЖЕН clean-webpack-plugin",
     "test:e2e": "vue-cli-service test:e2e",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "test-jest": "jest --no-cache"
   },
   "dependencies": {
     "@mdi/font": "^3.6.95",
@@ -42,6 +43,7 @@
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "fibers": "^3.1.1",
+    "jest": "^24.8.0",
     "sass": "^1.17.4",
     "sass-loader": "^7.1.0",
     "stylus": "^0.54.5",
