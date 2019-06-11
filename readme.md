@@ -255,12 +255,11 @@ TEST:
 
 ТУТ СОВЕТ ПОМОГ: https://github.com/laravel/framework/issues/19403
 но ввел ето в виндовой среде:
-"""
+```
 php artisan key:generate
 php artisan config:clear
 php artisan config:cache
-потом : php artisan serve
-"""
+```
 и прикинь, запахало прямо на винде!! ЭТо мб у меня раньше пахало изза нехватки оперативы? [+8gb ram +500gb HDD]
 С виндовыми дровами на ms sql; Но так не интересно и давай на линухе , то бишь, на убунте настроим дрова;;;
 
