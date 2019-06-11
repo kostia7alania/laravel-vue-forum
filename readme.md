@@ -79,9 +79,10 @@ php artisan serve
 /*************/
 
 1) Создаем модель:
+```
 php artisan help make:model #выведет хелп
 php artisan make:model Model/Question -mfr # ( где m-migration, c-controller, r-ресурс-контроллер (CRUD)))
-
+```
 СОЗДАСТ файл в моделях! + запись в базе! НЕ СОЗДАСТ )))
 2) Создаем апи:
 можно было бы так
@@ -221,9 +222,9 @@ php artisan make:model Model/Like -mfr
 
 # API
 ## routes\api.php
-        ```
-            Route::get('/question', 'QuestionController@index');
-        ```
+```
+Route::get('/question', 'QuestionController@index');
+```
 ## смотрим список роутов (апи и веб):
 ```
 php artisan route:list
