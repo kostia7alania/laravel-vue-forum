@@ -5,12 +5,16 @@ import modules from './modules/index.js'
 
 
 import VuexPersistence from 'vuex-persist'
-const vuexLocal = new VuexPersistence({ storage: window.localStorage })
+const vuexLocal = new VuexPersistence({
+    storage: window.localStorage,
+    key:'vuex',
+    reducer: (state) => ({login: state.login}),
+})
 
 
 Vue.use(Vuex)
 
-window.store = new Vuex.Store({
+const store = window.store = new Vuex.Store({
     plugins: [vuexLocal.plugin],
     modules
 });
