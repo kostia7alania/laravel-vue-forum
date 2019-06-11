@@ -39,17 +39,14 @@ App\Model\Category::all()
 \App\Model\Like::all()->map->created_at
 App\Model\Like::first
 App\Model\Like::all()->first
-
-
-etc..
-
 ```
-
+etc..
+```
 php artisan migrate:rollback
 php artisan migrate:rollback --step=5 # отменить последние 5 миграций
 php artisan migrate:fresh --seed
 php artisan migrate:refresh --seed
-
+```
 
 # ВАЖНАЯ ИНФА О приоритетах в МИГРАЦИЯХ
 """"""""""""""""""
