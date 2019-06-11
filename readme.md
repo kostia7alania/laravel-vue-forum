@@ -50,7 +50,7 @@ php artisan migrate:refresh --seed
 
 # ВАЖНАЯ ИНФА О приоритетах в МИГРАЦИЯХ
 """"""""""""""""""
-В папке базы данных/миграции/ваше имя файла миграции имеет следующий формат: year_month_day_hhmmss_create_XXXX_table.php
+В папке базы данных/миграции/ваше имя файла миграции имеет следующий формат: ```year_month_day_hhmmss_create_XXXX_table.php```
 
 Просто переименуйте созданный файл пользователя, чтобы дата создания таблицы приоритетов таблиц была установлена ​​позже, чем дата пользователя (даже спустя одну секунду)
 """"""""""""""""""
@@ -231,7 +231,7 @@ php artisan route:list
 ```
 Теперь напишем так:
 ```
-        Route::apiResource('/question', 'QuestionController@index');
+Route::apiResource('/question', 'QuestionController@index');
 ```
 и увидим много роутов по формуле;;
 
@@ -268,13 +268,15 @@ php artisan config:cache
 => ВОЗМОЖНОЕ РЕШЕНИЕ ТРАБЛЫ С РАСШИРЕНИЕМ SQLSRV PHP :
 https://github.com/laradock/laradock/issues/721
 Удалить контейнеры php и nginx, поднастроить их в laradock и переустановить без кеша:
+```
 docker-compose build --no-cache php-fpm
 docker-compose build --no-cache nginx
-
+```
 
 
 
 =================
+
 смотрим роуты: жмакаем F1, пишем ROUTE LIST.
 
 делаем остальные разделы + авторизацию JWT;
@@ -383,7 +385,7 @@ docker-compose exec —user=laradock workspace bash #в общем случае,
 php artisan config:cache
 ```
 
-2) Если хочешь запустить из под Ларки (пхп), т.е. так: php artisan serve, то без докера:
+2) Если хочешь запустить из под Ларки (пхп), т.е. так: ```php artisan serve```, то без докера:
 ```
 php artisan config:cache
 ```
