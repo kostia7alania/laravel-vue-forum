@@ -71,7 +71,7 @@ export default {
                 if(!m)  this.$router.push( { name: 'forum' } )
                 this['toolbar/SET_MODAL_MODE_OFF']()
                 snack('Вы успешно вошли', 'success')
-            } else snack('Invalid password', 'error')
+            } else snack('Неверный пароль', 'error')
             this.loading = false
         },
         toRegHandler(){
