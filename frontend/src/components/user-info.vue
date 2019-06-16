@@ -25,7 +25,7 @@ export default {
       toHumanDateTime: date => {
           const d = new Date(date);
           if(d=='Invalid Date') return 'n/a';
-        return `${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`
+        return `${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()} ${d.getHours()>9?d.getHours():'0'+d.getHours()}:${d.getMinutes()}`
       }
   },
   computed: {
