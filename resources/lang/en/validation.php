@@ -131,6 +131,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'slug' => array(
+            'unique' => 'Тема с подобным заголовком уже существует!',
+        ),
     ],
 
     /*
