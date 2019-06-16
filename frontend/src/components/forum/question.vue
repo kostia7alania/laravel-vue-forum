@@ -1,13 +1,12 @@
 <template>
  <v-hover>
+
        <v-card
         slot-scope="{ hover }"
         :elevation="hover ? 12 : 2"
-
-       class="mt-2 mx-auto">
+        class="mt-2 mx-auto">
 
         <v-card-title primary-title>
-          <div>
             <h3 class="headline mb-0">
                 <router-link :to="question.path">
                     {{ question.title }}
@@ -15,11 +14,11 @@
             </h3>
 
             <user-info :question="question"/>
+             <v-spacer></v-spacer>
+            <rating />
 
-          </div>
         </v-card-title>
             <v-card-text> {{ question_short }} </v-card-text>
-        <rating/>
 
        </v-card>
   </v-hover>
