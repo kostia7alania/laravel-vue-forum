@@ -8,61 +8,70 @@
                 </v-toolbar>
 
 
-        <reply
-            v-for="(reply,index) in GETTER_TOPIC_REPLIES"
+        <replyRender
+            v-for="(reply,index) in replies"
             :key="reply.id"
-            :data="reply"
+            :reply="reply"
             :index="index"
+            @deleteReply="deleteReply"
         />
     </div>
 </template>
 
 <script>
-import reply from "./reply";
+import replyRender from "./reply";
 
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "REPLIES",
-  components: { reply },
+  components: { replyRender },
   data() {
     return {
-      content: null//old replies
+      content: null,//old replies
+      replies: []
     };
   },
   async mounted() {
+    const slug = this.$router.history.current.params.slug
+    this['global/SET_SLUG'](slug)
+
+    const replies = await this['reply/GET_TOPIC_REPLIES']()
+    if(replies) this.replies = replies
+
     this.listen();
-    const replies = await this["reply/getReplies"]()
-    if(replies && replies.stat) snack("Комментарии обновлены!", "success");
-    else snack(`Комментарии не получены.
-    ${typeof replies == 'object' && replies.msg || '' }`, "error");
+    this.updateReplies();
+
   },
   computed: {
-    ...mapGetters(["login/id", "reply/GETTER_TOPIC_REPLIES", "reply/loading"]),
-    GETTER_TOPIC_REPLIES() {
-      return this["reply/GETTER_TOPIC_REPLIES"];
-    },
-    loading() {
-      return this["reply/loading"];
-    },
-    replies_length() {
-        return this.GETTER_TOPIC_REPLIES && this.GETTER_TOPIC_REPLIES.length || 0
-    }
+    ...mapGetters(["login/id", "reply/loading"]),
+
+    loading() {  return this["reply/loading"];   },
+
+    replies_length() { return this.replies.length }
   },
   methods: {
-    ...mapActions(["reply/getReplies"]),
-    listen() {
-      EventBus.$on("deleteReply", index => {
-        axios
-          .delete(
-            `question/${this.question.slug}/reply/${this.content[index].id}`
-          )
-          .then(res => {
-            this.content.splice(index, 1);
-          })
-          .catch(err => console.warn(err));
-      });
+    ...mapMutations(['global/SET_SLUG']),
+    ...mapActions(["reply/getReplies", 'reply/GET_TOPIC_REPLIES','reply/deleteReply']),
 
+    async updateReplies () {
+        const res = await this["reply/getReplies"]()
+        if(res && res.stat) {
+            this.replies = res.replies
+            snack("Комментарии обновлены!", "success");
+        } else snack(`Комментарии не получены. ${typeof res == 'object' && res.msg || '' }`, "error");
+
+    },
+    async deleteReply(index) {
+        const res = await this['reply/deleteReply'](this.replies[index].id)
+        if(res && res.stat) {
+            snack("Комментарий удален!", "success");
+            this.replies.splice(index, 1);
+            this.updateReplies();
+        } else snack(`Комментарий не удален. ${typeof res == 'object' && res.msg || '' }`, "error");
+
+    },
+    listen() {
       Echo.private("App.User." + this["login/id"]).notification(
         notification => {
           console.log("NOTIF->", notification, notification.type);
