@@ -4,7 +4,7 @@
 
             <v-form @submit.prevent="update">
 
-                <v-text-field label="Title" v-model.trim="form.title" type="text" required>
+                <v-text-field maxlength=200 label="Тема" class="pl-3 pr-3" v-model.trim="form.title" type="text" required>
                 </v-text-field>
 
                 <markdown-editor v-model.trim="form.body"></markdown-editor>
