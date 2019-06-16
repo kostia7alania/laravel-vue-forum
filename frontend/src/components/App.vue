@@ -3,7 +3,9 @@
         <toolbar></toolbar>
 
  <keep-alive max="1">
-        <router-view :key="$route.fullPath"></router-view>
+     <transition name="fade">
+        <router-view :key="$route.fullPath"/>
+    </transition>
  </keep-alive>
 
         <snack/>
@@ -37,6 +39,13 @@ export default {
 <style>
 .app {
     height: 100%;;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
 }
 </style>
 
