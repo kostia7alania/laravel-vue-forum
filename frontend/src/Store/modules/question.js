@@ -74,6 +74,16 @@ export default  {
         questionUpdate({ }, form) {
             return axios.patch(`question/${form.slug}`, form)
         },
+        questionDelete({ }, slug) {
+            return axios
+            .delete(`question/${slug}`)
+            .then(res => res)
+            .catch( err => {
+                console.warn('catch =>',err.response.data)
+                return false
+            })
+
+        },
 
     }
 }
