@@ -7,7 +7,7 @@
         <v-btn v-if="loggedIn" dark @click="submit" :disabled="!body.length" color="green">
             <v-icon>reply</v-icon> Ответить
         </v-btn>
-        <v-btn v-else dark to="/login" :disabled="!body.length" color="green">Войдите, чтобы оставить комментарий </v-btn>
+        <v-btn v-else dark @click="login" :disabled="!body.length" color="green">Войдите, чтобы оставить комментарий </v-btn>
     </div>
 </template>
 
@@ -37,11 +37,15 @@ export default {
     },
     methods: {
         ...mapMutations([
-            'reply/SET_TOPIC_DRAFT'
+            'reply/SET_TOPIC_DRAFT',
+            'toolbar/SET_MODAL_MODE_ON'
         ]),
         ...mapActions([
             'reply/newReply'
         ]),
+        login(){
+            this['toolbar/SET_MODAL_MODE_ON']()
+        },
         async submit() {
                 const comm = await this['reply/newReply']({body:this.body })
                 console.log('comm submit =>',comm)
