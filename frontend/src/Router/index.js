@@ -120,12 +120,6 @@ router.beforeEach(async (to, from, next) => {
         });
     }
 
-
-});
-
-// This callback runs before every route change, including on page load.
-router.beforeEach((to, from, next) => {
-
     store.state.global.slug = to.params && to.params.slug//router.history.current.params.slug
     // This goes through the matched routes from last to first, finding the closest route with a title.
     // eg. if we have /some/deep/nested/route and /some, /deep, and /nested have titles, nested's will be chosen.
