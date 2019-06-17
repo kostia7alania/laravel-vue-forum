@@ -1,7 +1,7 @@
 ///const tok = localStorage.getItem('token');
 const ax = require('axios');
 window.axios = ax.create({
-    baseURL:'http://127.0.0.1:8000/api',// 'http://127.0.0.1:8000/api', ///'http://localhost:80/api',
+    baseURL: process.env.NODE_ENV === 'production' ? '/api' : 'http://127.0.0.1:8000/api',// 'http://127.0.0.1:8000/api', ///'http://localhost:80/api',
     headers: {
         /*common: {
             'X-Requested-With': 'XMLHttpRequest',
