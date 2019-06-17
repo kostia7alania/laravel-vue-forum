@@ -1,25 +1,20 @@
 <template>
     <div>
 
+        <BreadcrumbsVue :category='question.category' :name='question.title'/>
+
         <div v-if="loading" class="text-xs-center">
             <v-progress-circular :size="70" :width="7" color="purple" indeterminate ></v-progress-circular>
         </div>
 
         <div v-else-if="question">
-            <question-edit v-if="editing"
-                :question="question"
-            />
-            <question-show v-else
-                :question="question"
-            />
+            <question-edit v-if="editing" :question="question" />
+            <question-show v-else :question="question" />
        </div>
+
        <v-container  v-if="question">
             <replies/>
-            <new-reply v-if="['login/loggedIn']"/>
-
-            <div class="mt-4" v-else>
-                <router-link to="/login">Войдите, чтобы ответить</router-link>
-            </div>
+            <new-reply/>
        </v-container>
 
     </div>
@@ -32,17 +27,18 @@ import replies from "@/components/reply/replies";
 import NewReply from "@/components/reply/newReply";
 
 import { mapGetters } from 'vuex'
+import BreadcrumbsVue from './Breadcrumbs.vue';
 
 export default {
-  components: { QuestionEdit, QuestionShow, replies, NewReply },
+  components: { QuestionEdit, QuestionShow, replies, NewReply, BreadcrumbsVue },
   data() {
     return {
-      question: null,
+      question: {},
       editing: null,
       loading: false
     };
   },
-  created() {
+  mounted() {
     this.listen();
     this.getQuestion();
   },
