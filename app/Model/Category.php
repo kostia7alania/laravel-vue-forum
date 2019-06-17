@@ -17,7 +17,7 @@ class Category extends Model
     //protected $fillable = [ 'title', 'slug', 'body', 'category_id', 'category_slug', 'user_id','question_id' ];
     protected $guarded = [];
     protected $with = ['questions'];
-    public function questions() { return $this->hasMany(Question::class)->latest(); }
+    public function questions() { return $this->hasMany(Question::class); }
     public function getRouteKeyName() { return 'slug'; }//берем из столбца слог
     public function getPathAttribute() { return "/category/$this->slug"; }
     //public function category() { return $this->belongsTo(Category::class); }

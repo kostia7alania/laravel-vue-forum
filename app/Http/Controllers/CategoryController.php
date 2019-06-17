@@ -15,6 +15,7 @@ use App\Exceptions\CategoryError;
 
 
 use Illuminate\Support\Str;
+use App\Model\Question;
 
 class CategoryController extends Controller {
 
@@ -89,8 +90,13 @@ class CategoryController extends Controller {
         return response(null. Response::HTTP_NO_CONTENT);
     }
 
-    public function getQuestionsByCategorySlug(Category $category) {
-        return  CategoryQuestionsResource::collection($category->questions);
+    public function getQuestionsByCategorySlug(Request $request, Category $category) {
+
+       // $perPage = $request->get( 'per-page', 1 ); //10
+        //return QuestionTopicsResource::collection( Question::latest()->paginate ( $perPage ) );
+        $id = $category->id;
+        $page = $request->get( 'per-page', 10 );
+        return  CategoryQuestionsResource::collection(Question::whereCategory_id($id)->paginate ( $page ) );
         //return CategoryTopicsResource::collection( category::latest()->get()->where('id','=','1') );
     }
 

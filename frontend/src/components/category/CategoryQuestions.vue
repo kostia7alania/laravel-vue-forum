@@ -6,9 +6,15 @@
             <v-flex xs8>
 
                 <v-toolbar color="cyan" dark dense>
-                    <v-toolbar-title>{{ category_name }} {{ quantity }}
+                    <v-toolbar-title>
+                        {{ category_name }}
                         <v-progress-circular v-if="loading" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
+
                     </v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items>
+                         {{ quantity }}
+                    </v-toolbar-items>
                 </v-toolbar>
 
                 <div v-if="loading" class="text-xs-center">
@@ -89,13 +95,14 @@ export default {
     async getQuestions(page = 1) {
       const slug = this.slug
       let res;
+      const query = page>1 ? {page}:{}
       if (!slug) {
-        const query = page>1 ? {page}:{}
         this.$router.push({name:'forum', query})
-        res = await  this["question/getQuestions"](page);
+        res = await  this["question/getQuestions"]({page});
       }
       else {
-          res = await this["question/getQuestionByCategorySlug"](slug);
+        this.$router.push({name:'CategoryQuestions', query})
+          res = await this["question/getQuestionByCategorySlug"]({slug,page});
       }
       if (!res) snack("Ошибка при получении списка", "error");
       else snack("Список обновлен!", "success");

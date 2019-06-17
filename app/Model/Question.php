@@ -26,7 +26,8 @@ class Question extends Model
         //protected $guarded = [];
         protected $with = ['replies'];
         public function user() { return $this->belongsTo(User::class); }
-        public function replies() {return $this->hasMany(Reply::class);//->latest();
+        public function replies() {
+            return $this->hasMany(Reply::class);//->latest();
         }
         public function category() { return $this->belongsTo(Category::class); }
         public function getPathAttribute() {return "/question/$this->slug";

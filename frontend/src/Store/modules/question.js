@@ -30,9 +30,9 @@ export default  {
 
     actions: {
 
-        getQuestions({ state, commit, dispatch, }, num = 1) {
+        getQuestions({ state, commit, dispatch, }, {page=1}) {
             commit('SET_LOADING_ON')
-            return axios.get(`question?page=${num}`)
+            return axios.get(`question?page=${page}`)
                 .then(res => {
                     commit('SET_QUESTIONS', res.data.data)
                     commit('SET_META',      res.data.meta)
@@ -48,9 +48,9 @@ export default  {
                 })
         },
 
-        getQuestionByCategorySlug({ state,commit,dispatch}, slug) {
+        getQuestionByCategorySlug({ state,commit,dispatch}, {slug,page}) {
             commit('SET_LOADING_ON')
-            return axios.get(`category/${slug}/questions`)
+            return axios.get(`category/${slug}/questions?page=${page}`)
                 .then(res => {
                     commit('SET_QUESTIONS', res.data.data)
                     commit('SET_META',      res.data.meta || {})
