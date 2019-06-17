@@ -9,6 +9,7 @@
  </keep-alive>
 
         <snack/>
+        <v-spacer></v-spacer>
         <foot-app></foot-app>
    </v-app>
 </template>
