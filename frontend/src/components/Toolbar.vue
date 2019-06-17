@@ -10,7 +10,7 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item v-for="(item, i) in items" :key="i" v-show="item.show" :to="item.to"  @click="manuClickHandler(item.title)" >
+              <v-list-item v-for="(item, i) in items" :key="i" v-show="item.show" @click="manuClickHandler(item)" >
                 <v-list-item-title>
                         <v-btn text>
                             <v-btn icon><v-icon>{{ item.icon }}</v-icon></v-btn>
@@ -31,7 +31,7 @@
     <app-notification v-if="loggedIn"/>
 
     <div class="hidden-sm-and-down">
-        <v-btn :ripple="false" text v-for="item in items" :key="item.title" v-show="item.show" :to="item.to"  @click="manuClickHandler(item.title)">
+        <v-btn :ripple="false" text v-for="item in items" :key="item.title" v-show="item.show" @click="manuClickHandler(item)">
             <v-icon>{{ item.icon }}</v-icon>
             {{ item.title }}
         </v-btn>
@@ -114,11 +114,14 @@ export default {
         ...mapActions([
             'login/logout'
         ]),
-        manuClickHandler(title) {
+        manuClickHandler(item) {
 
-            if(title=='Выйти') this.logout();
-            if(title=='Войти') {
+            if(item.title=='Выйти') this.logout();
+            else if(item.title=='Войти') {
                 this['toolbar/SET_MODAL_MODE_ON']();
+            }
+            else {
+                this.$router.push({name: item.slug})
             }
 
         },
