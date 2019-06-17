@@ -1,22 +1,18 @@
 <template>
     <v-container>
 
-        <v-alert v-if="errors" type="error" color="red" :value="true">
-            Формат категорий неверный (должен содержать минимум 2 слова)
-        </v-alert>
 
         <v-form @submit.prevent="submit">
 
-            <v-text-field
-                label="Category Name"
-                v-model.trim="form.name"
-                required
-            ></v-text-field>
+            <v-alert v-if="errors.name" type="error" color="red" :value="true">
+                {{ errors.name[0] }}
+            </v-alert>
+            <v-text-field label="Имя категории" v-model.trim="form.name" required ></v-text-field>
 
             <v-btn type="submit" :disabled="disabled" :color="editSlug?'pink':'teal'">
                 <v-progress-circular v-if="loading" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
                 <v-icon v-else>{{editSlug?"update":"playlist_add"}}</v-icon>
-                        {{ editSlug?"Update":"Create" }}
+                        {{ editSlug?"Обновить":"Создать" }}
             </v-btn>
             <v-btn v-if="editSlug && !loading" color="purple" @click="cancelEditing">
                 <v-icon>cancel</v-icon>
@@ -75,7 +71,7 @@ export default {
         name: null
       },
       editSlug: null,
-      errors: null,
+      errors: {},
       deletingSlug: []
     };
   },
@@ -143,18 +139,19 @@ export default {
         .finally(() => (this.loading = false));
     },
     create() {
-      this.loading = true;
-      this["category/createCategory"](this.form)
-        .then(() => {
+        this.loading = true;
+        this["category/createCategory"](this.form)
+        .then(()=>{
+            this["category/getCategories"]()
             this.form.name = null
             snack("Категория успешно создана", "success")
+            this.errors = {}
+        }).catch(err=>{
+            if(!err) alert('пусто')
+            this.errors = err.response.data.errors;
+            snack("Ошибка при создании категории", "error");
         })
-        .catch(err => {
-          console.warn(err);
-          this.errors = err.response.data.errors;
-          snack("Ошибка при создании категории", "error");
-        })
-        .finally(() => (this.loading = false));
+        .finally(()=> this.loading = false )
     },
     destroy(slug) {
       this.deletingSlug.push(slug)

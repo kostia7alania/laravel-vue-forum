@@ -30,8 +30,9 @@ class CategoryRequest extends FormRequest
 
     public function messages() {
         return [
-            'name.required' => 'A name is required',
-            'name.regex' => 'A name is regex',
+            'name.required' => 'Укажите имя категории',
+            'name.unique' => 'Категория с таким именем уже существует!',
+            'name.regex' => 'Имя категории не проходит валидацию. Необходимо минимум 2 буквы. ',
         ];
     }
 

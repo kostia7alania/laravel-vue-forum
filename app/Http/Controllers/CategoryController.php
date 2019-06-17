@@ -37,7 +37,6 @@ class CategoryController extends Controller {
 
         $request['slug'] = Str::slug($request->name, '-');
         Category::create($request->all());
-        dd($request->all());
        // print_r($request->all());die;
         return response('Created', Response::HTTP_CREATED);
 
@@ -49,7 +48,6 @@ class CategoryController extends Controller {
         $category->slug = str_slug($request->name);
         //dd($category);
         $category->save();
-        print_r($category->slug);die;
         return response(new CategoryResource($category), Response::HTTP_CREATED);
     }
 
