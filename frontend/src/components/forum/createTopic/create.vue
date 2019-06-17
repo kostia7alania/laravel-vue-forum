@@ -1,8 +1,8 @@
 <template>
    <v-container>
        <v-form @submit.prevent="create">
-
            <span class="red--text" v-if="errors.title">{{ errors.title[0] }}</span>
+           <span class="red--text" v-if="errors.slug">{{ errors.slug[0] }}</span>
            <v-text-field label="Название" v-model.trim="form.title" type="text" required>
            </v-text-field>
 
@@ -59,7 +59,7 @@ export default {
           console.log("ERRR=>", error);
           if(error.message == 'Network Error') {
                 snack("Сетевая ошибка!", "error");
-            } else if (error.error.match("Token is")) {
+            } else if (error.error&&error.error.match("Token is")) {
             snack("Пожалуйста, авторизуйтесь!", "error");
             this["login/logout"]();
           } else {

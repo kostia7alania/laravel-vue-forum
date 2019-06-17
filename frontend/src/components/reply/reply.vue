@@ -3,8 +3,8 @@
     <v-card>
 
         <v-card-title>
-            <user-info :question="data"/>
-            <!--<div class="headline">{{ data.user }}</div>
+            <user-info :question="reply"/>
+            <!--<div class="headline">{{ reply.user }}</div>
             <div class="pl-2"> {{ created_at }}</div>
             <v-tooltip v-if="show_updated_at" bottom class="pl-2">
                 <template v-slot:activator="{ on }">
@@ -13,16 +13,16 @@
                 <span>Updated at: {{ updated_at }}</span>
             </v-tooltip>-->
             <v-spacer/>
-            <Like :content="data"/>
+            <Like :content="reply"/>
         </v-card-title>
 
         <v-divider/>
         <edit-reply
             v-if="editing"
-            :data=data
+            :reply=reply
         />
 
-        <v-card-text v-else v-html="reply"></v-card-text>
+        <v-card-text v-else v-html="body"></v-card-text>
 
         <v-divider/>
 
@@ -49,7 +49,7 @@ import userInfo from '../user-info.vue';
 
 export default {
   name: "reply",
-  props: ["data", "index"],
+  props: ["reply", "index"],
   components: { editReply, Like, 'user-info':userInfo },
   data() {
     return {
@@ -59,25 +59,25 @@ export default {
   computed: {
     ...mapGetters(["login/id", "login/loggedIn"]),
     own() {
-      return this["login/id"] == this.data.user_id;
+      return this["login/id"] == this.reply.user_id;
     },
-    reply() {
-      return md.parse(this.data.reply);
+    body() {
+      return md.parse(this.reply.reply);
     },
-    created_at() { return this.parseDate(this.data.created_at) },
-    updated_at() { return this.parseDate(this.data.updated_at) },
-    show_updated_at() { return new Date(this.data.updated_at) && new Date(this.data.updated_at)!='Invalid Date' && (+new Date(this.data.created_at) != +new Date(this.data.updated_at)) },
+    created_at() { return this.parseDate(this.reply.created_at) },
+    updated_at() { return this.parseDate(this.reply.updated_at) },
+    show_updated_at() { return new Date(this.reply.updated_at) && new Date(this.reply.updated_at)!='Invalid Date' && (+new Date(this.reply.created_at) != +new Date(this.reply.updated_at)) },
   },
   created() {
     this.listen();
   },
   methods: {
     parseDate: date => date.toLocaleString() != 'Invalid Date'?date.toLocaleString():'',
-    destroy() {
-      EventBus.$emit("deleteReply", this.index);
-    },
     edit() {
       this.editing = true;
+    },
+    destroy(){
+        this.$emit('deleteReply', this.index)
     },
     listen() {
       EventBus.$on("cancelEditing", () => {

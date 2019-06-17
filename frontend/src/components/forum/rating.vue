@@ -1,17 +1,20 @@
 <template>
-         <v-layout 2 align-center justify-center fill-height>
+         <v-layout 2 align-center justify-end>
+
+
             <v-rating
-              :value="value"
-              color="amber"
-              dense
-              half-increments
-              readonly
-              size="14"
-            ></v-rating>
-            <div class="ml-2 grey--text text--darken-2">
-              <span>{{ value }}</span>
-              <span>({{ reviews }})</span>
-            </div>
+                v-model="rating"
+                color="indigo"
+                background-color="indigo lighten-3"
+                half-increments
+                hover
+                dense
+                size=18
+            />
+
+             <span class="grey--text text--lighten-2 caption mr-2">
+               {{ rating }} ({{ reviews }})
+            </span>
 
           </v-layout>
 </template>
@@ -21,7 +24,7 @@ export default {
     name:'rating',
     data: () => ({
       reviews: 413,
-      value: 4.5,
+      rating: 4.5,
     }),
 }
 </script>

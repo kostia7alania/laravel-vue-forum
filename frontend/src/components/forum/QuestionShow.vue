@@ -2,18 +2,19 @@
     <v-card>
         <v-container fluid>
             <v-card-title>
-                <div>
-                    <div class="headline">
-                        {{ question.title }}
-                    </div>
-                </div>
+                <div class="headline"> {{ question.title }} </div>
                 <v-spacer></v-spacer>
                 <v-btn color="teal" dark>{{ replyCount }} Комментариев</v-btn>
             </v-card-title>
 
-            <v-card-text v-html="body"></v-card-text>
+            <v-layout 2 align-center justify-end>
+                <user-info :question="question"/>
+                <rating />
+            </v-layout>
 
-            <user-info :question="question"/>
+                <v-card-text v-html="body"></v-card-text>
+
+
 
             <v-card-actions v-if="own" class="text-xs-center d-flex align-center">
 
@@ -45,24 +46,33 @@
 
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters , mapActions, mapState} from 'vuex';
 import userInfo from '@/components/user-info'
+import ratingVue from './rating.vue';
 
 export default {
     name:"forum--question-show",
     components: {
         'user-info': userInfo,
+        'rating': ratingVue
     },
     props: ['question'],
     data() {
-        return {
-            replyCount: this.question.reply_count //<--меняется в процессе;
-        }
+        return { }
     },
     computed: {
         ...mapGetters([
-            'login/id'
+            'login/id',
+            'reply/GETTER_TOPIC_REPLIES_ARR'
         ]),
+        replyCount() {
+            const slug = this.$route.params.slug //this['global/slug'] //router.history.current.params.slug//не реактивно =(
+            const replies_arr = this['reply/GETTER_TOPIC_REPLIES_ARR']
+            if(typeof replies_arr != 'object') return 11
+            return slug in replies_arr ? replies_arr[slug].length : 0
+
+            //return this.question.reply_count //<--меняется в процессе;  поетому непригодно
+        },
         own() {
             return this['login/id'] == this.question.id
         },
@@ -84,15 +94,16 @@ export default {
         })
     }  ,
     methods: {
-        destroy() {
-            axios
-            .delete(`/question/${this.question.slug}`)
-            .then(res => {
-                this.$router.push('/forum');
-            })
-            .catch( err => {
-                console.warn('err',err.response.data);
-            })
+        ...mapActions([
+            'question/questionDelete'
+        ]),
+        async destroy() {
+            const res = await this['question/questionDelete'](this.question.slug)
+            if(res) {
+                this.$router.push('/forum')
+                snack("Тема успешно удалена", "success");
+            }
+            else snack("Не удалось удалить тему", "error");
         },
         edit() {
             EventBus.$emit('startEditing')

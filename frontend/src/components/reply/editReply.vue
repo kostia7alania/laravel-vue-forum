@@ -1,6 +1,6 @@
 <template>
     <div>
-        <markdown-editor v-model="data.reply"/>
+        <markdown-editor v-model="reply.reply"/>
 
         <v-card-actions>
             <v-btn icon small @click="update">
@@ -16,11 +16,11 @@
 
 <script>
 export default {
-    props:['data'],
+    props:['reply'],
     methods: {
         update() {
             axios
-            .patch(`/question/${this.data.question_slug}/reply/${this.data.id}`, {body: this.data.reply} )
+            .patch(`/question/${this.reply.question_slug}/reply/${this.reply.id}`, {body: this.reply.reply} )
             .then(res => {
                 this.cancel();
             })

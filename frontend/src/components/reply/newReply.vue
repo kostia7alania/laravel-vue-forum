@@ -44,10 +44,10 @@ export default {
         ]),
         async submit() {
                 const comm = await this['reply/newReply']({body:this.body })
-                console.log('comm =>',comm)
+                console.log('comm submit =>',comm)
                 if(typeof comm != 'object') return snack('Ошибка при отправке комменатрия', 'danger')
                 if(!comm.state) return snack('Ошибка при отправке комменатрия: '+ comm.msg, 'danger')
-                snack('Комменатрий успешно отправлен: '+ comm.msg, 'success')
+                snack('Комменатрий успешно отправлен!', 'success')
                 this.body = ''
 
         },

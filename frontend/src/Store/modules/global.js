@@ -2,7 +2,7 @@
 export default  {
 
     state:  {
-
+        slug: null
     },
 
     getters: {
@@ -10,8 +10,7 @@ export default  {
     },
 
     mutations: {
-
-
+        SET_SLUG(state, slug) {state.slug = slug},
     },
 
     actions: {
