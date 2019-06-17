@@ -11,8 +11,12 @@ export default {
         },
         loading({ state, getters }, arg2, arg3, modulesGetters, ) {
             return arg3.category.loading
-        }
+        },
 
+        GET_CATEGORIES(state) {
+            //state.categories.filter(e=>e.slug == )
+            return state.categories
+        }
     },
     mutations: {
         /***** USING GLOBAL ****/

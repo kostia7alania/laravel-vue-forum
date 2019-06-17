@@ -38,7 +38,8 @@ const routes = [{
             ]
         },
         path: "/forum",
-        component: () => import("@/components/category/CategoryQuestions") // import("@/components/forum/forum")
+        component: () => import("@/components/category/CategoryQuestions"), // import("@/components/forum/forum")
+        props: true
 
     },
     {

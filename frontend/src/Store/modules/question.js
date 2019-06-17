@@ -1,43 +1,41 @@
 
-import AppStorage from '../Helpers/AppStorage';
+// import AppStorage from '../Helpers/AppStorage';
+import Vue from 'vue'
+
 export default  {
     state: {
         questions: [],
         loading:false,
+        meta: {}
     },
 
     getters: {
-        questions  (state, getters) {
-            return state.questions
-        },
-        loading (state, getters) {
-            return state.loading
-        },
-
+        questions (state, getters) { return state.questions },
+        loading   (state, getters) { return state.loading   },
+        GETTER_meta      (state) {return state.meta}
     },
 
     mutations: { /***** USING GLOBAL ****/
 
-        toggle(state, { prop }) {
-            state[prop] = !state[prop];
-        },
-        changeProp(state, { prop, val } ) {
-            state[prop] = val
-        },
-        changeObj(state, { obj, prop, val } ) {
-            state[obj][prop] = val
-        },
+        changeProp(state, { prop, val } ) { state[prop] = val },
+        changeObj(state, { obj, prop, val } ) { state[obj][prop] = val },
 
+        SET_LOADING_ON(state) { state.loading = true },
+        SET_LOADING_OFF(state) { state.loading = false },
+
+        SET_QUESTIONS(state, questions) { Vue.set(state, 'questions', questions) },
+        SET_META(state, meta) { Vue.set(state, 'meta', meta) },
     },
 
 
     actions: {
 
-        getQuestions({ state, commit, dispatch, }) {
-            commit('changeProp', {prop: 'loading',val: true})
-            return axios.get(`question`)
+        getQuestions({ state, commit, dispatch, }, num = 1) {
+            commit('SET_LOADING_ON')
+            return axios.get(`question?page=${num}`)
                 .then(res => {
-                    commit('changeProp', { prop: 'questions',val: res.data.data })
+                    commit('SET_QUESTIONS', res.data.data)
+                    commit('SET_META',      res.data.meta)
                     return res.data
                 })
                 .catch(err => {
@@ -45,16 +43,17 @@ export default  {
                     return false
                 })
                 .finally(e => {
-                    commit('changeProp', { prop: 'loading', val: false })
+                    commit('SET_LOADING_OFF')
                     return e
                 })
         },
 
         getQuestionByCategorySlug({ state,commit,dispatch}, slug) {
-            commit('changeProp', {prop: 'loading',val: true})
+            commit('SET_LOADING_ON')
             return axios.get(`category/${slug}/questions`)
                 .then(res => {
-                    commit('changeProp', { prop: 'questions',val: res.data.data })
+                    commit('SET_QUESTIONS', res.data.data)
+                    commit('SET_META',      res.data.meta || {})
                     return res.data
                 })
                 .catch(err => {
@@ -62,7 +61,7 @@ export default  {
                     return false
                 })
                 .finally(e => {
-                    commit('changeProp', { prop: 'loading', val: false })
+                    commit('SET_LOADING_OFF')
                     return e
                 })
         },
