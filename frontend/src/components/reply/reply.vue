@@ -62,7 +62,11 @@ export default {
       return this["login/id"] == this.reply.user_id;
     },
     body() {
-      return md.parse(this.reply.reply);
+        window.t = this;
+        let rep = this.reply.reply&&this.reply.reply.replace(/\n{3,99}/g,'<br><br>')
+        if(!rep) return;
+        rep = rep.replace(/\n{1,3}/g,'<br>')
+      return md.parse(rep);
     },
     created_at() { return this.parseDate(this.reply.created_at) },
     updated_at() { return this.parseDate(this.reply.updated_at) },
