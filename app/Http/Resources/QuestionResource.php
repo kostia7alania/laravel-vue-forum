@@ -27,6 +27,11 @@ class QuestionResource extends JsonResource
             'user' => $this->user->name,
             'id' => $this->user_id,
             'category_id' => $this->category_id,
+
+            'category'=>[
+                'name'=>$this->category->name,
+                'slug'=>$this->category->slug
+            ],
           //  'category_slug' =>  new CategoryResource($this->category_id)
         ];
         //parent::toArray($request);
