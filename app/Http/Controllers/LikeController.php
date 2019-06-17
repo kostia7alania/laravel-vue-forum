@@ -20,12 +20,18 @@ class LikeController extends Controller
             //'user_id' => '1'//test
             'user_id' => auth()->id()
         ]);
-        broadcast(new LikeEvent($reply->id,1))->toOthers();
+
+        if (DIRECTORY_SEPARATOR == '/') { // unix, linux, mac
+            broadcast(new LikeEvent($reply->id,1))->toOthers();
+        }
     }
     public function unLikeIt(Reply $reply) {
         // $reply->like()->where('user_id','1')->first()->delete();//test
         $reply->like()->where('user_id',auth()->id())->first()->delete();
-        broadcast(new LikeEvent($reply->id,0))->toOthers();
+
+        if (DIRECTORY_SEPARATOR == '/') { // unix, linux, mac
+            broadcast(new LikeEvent($reply->id,0))->toOthers();
+        }
 
     }
 }

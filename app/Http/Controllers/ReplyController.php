@@ -86,7 +86,11 @@ class ReplyController extends Controller
     public function destroy(Question $question, Reply $reply)
     {
         $reply->delete();
-        broadcast(new DeleteReplyEvent($reply->id))->toOthers();
+
+        if (DIRECTORY_SEPARATOR == '/') { // unix, linux, mac
+            broadcast(new DeleteReplyEvent($reply->id))->toOthers();
+        }
+
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }
