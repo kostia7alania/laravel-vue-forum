@@ -40,12 +40,7 @@ export default {
         },
 
         createCategory({ dispatch}, form) {
-            return axios
-                .post(`category`, form)
-                .then(() => {
-                    dispatch('getCategories')//in "background")
-                    return true;
-                })
+            return axios.post(`category`, form)
         },
 
         deleteCategory ({  }, slug) {
