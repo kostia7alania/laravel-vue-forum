@@ -17,21 +17,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        /*
         foreach(['admin', 'editor', 'user'] as $role_name) {
             $role = App\Model\Role::firstOrNew(['name'=>$role_name]);
             $role->save();
         }
         echo 'roles added';
-        factory(User::class, 33)->create()
-        ->each(function($user){
-            $role = App\Model\Role::get()->random();//factory(Role::class)->make();
+        */
+        factory(User::class, 33)->create();
+        /*->each(function($user){
             //return $user->roles()->save( $role );
-            $user->roles()->attach($role->id);
             //die;
-
+            $role = App\Model\Role::get()->random();//factory(Role::class)->make();
+            $user->roles()->attach($role->id);
             echo "USER ATTACHED ROLE => $role
            ";
-       });
+       });*/
        echo 'Users faking finished
        ';
        //die;
