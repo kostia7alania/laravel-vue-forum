@@ -28,7 +28,7 @@ import categories from "./categories-autocomplete";
 import markdownEditor from "vue-simplemde/src/markdown-editor";
 
 export default {
-  name: "create-topik-create",
+  name: "create-topic-create",
   components: { categories, markdownEditor },
   data() {
     return {

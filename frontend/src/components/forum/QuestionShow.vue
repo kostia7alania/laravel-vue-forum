@@ -77,7 +77,8 @@ export default {
             return this['login/id'] == this.question.id
         },
         body() {
-            return md.parse(this.question.body);
+            const txt = this.question.body
+            return md.parse(txt?txt:'');
         },
     },
     created() {
