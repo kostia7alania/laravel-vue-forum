@@ -40,6 +40,14 @@ window.Echo = new Echo({
     }
 });
 
+
+axios.interceptors.response.use(response => { // после каждого получения ответа
+    if(process.env.NODE_ENV === 'production')
+        console.log('[RES]=>', response)
+        store._actions['login/checkPermitionsOnCurrentPath'][0]()//check perm and redirect
+    return response
+  })
+
 /* химичу */
 Pusher.logToConsole = true;
 /*
