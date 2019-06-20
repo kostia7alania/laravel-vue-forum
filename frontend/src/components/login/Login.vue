@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-form @submit.prevent="handleSubmit">
+        <v-form @submit.prevent="loginSubmit">
             <v-text-field
                 label="E-mail"
                 v-model.trim="form.email"
@@ -63,15 +63,23 @@ export default {
             'toolbar/SET_MODAL_MODE_OFF'
         ]),
         ...mapActions([ 'login/login' ]),
-        async handleSubmit() {
+        async loginSubmit() {
             this.loading = true;
-            const req = await this['login/login'](this.form)
-            if(req) {
+            const res = await this['login/login'](this.form)
+            if(typeof res != 'object') snack('Ошибка сервера', 'error')
+            else if('token' in res) {
                 const m = this.modalMode
                 if(!m)  this.$router.push( { name: 'forum' } )
                 this['toolbar/SET_MODAL_MODE_OFF']()
                 snack('Вы успешно вошли', 'success')
-            } else snack('Неверный пароль', 'error')
+            } else if(res.message.match('401')) {
+                snack('Неверный пароль', 'error')
+            } else if(res.message.match('429')) {
+                snack('Слишком много попыток входа', 'error')
+            }
+            else {
+                snack('Произошла необработанная ошибка', 'error')
+            }
             this.loading = false
         },
         toRegHandler(){
