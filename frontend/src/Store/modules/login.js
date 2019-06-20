@@ -1,4 +1,4 @@
-
+import Vue from 'vue'
 // import AppStorage from '../Helpers/AppStorage';
 export default  {
 
@@ -7,14 +7,12 @@ export default  {
         tokenValidation: {
             iss: "http://localhost/api/auth/login"
         },
-        user: {
-            role: null,
-            name: null,
-        },
-        loading: false
+        loading: false,
+        now: new Date
     },
 
     getters: {
+
         TOKEN__isValid (state, getters) {
             const isBase64 = str => {
                 try {  return btoa(atob(str)).replace(/=/g, '') == str } catch (err)
@@ -30,7 +28,8 @@ export default  {
         },
         TOKEN__isExpired(state,getters) {
             if(getters.TOKEN__parse)
-                return new Date > getters.TOKEN__parse.exp*1000    //да-истек, нет-не истек
+                return state.now > getters.TOKEN__parse.exp*1000    //да-истек, нет-не истек
+            else return null
         },
         TOKEN__parse(state,getters) {
             if(getters.TOKEN__isValid) {
@@ -67,6 +66,7 @@ export default  {
             return getters.isUser || getters.isAdmin
         },
 
+
     },
 
     mutations: { /***** USING GLOBAL ****/
@@ -79,22 +79,31 @@ export default  {
         SET_LOADING_OFF(state) { state.loading = false },
 
         SET_TOKEN(state, token) {
-            state.token = token
+            Vue.set(state, 'token', token) //state.token = token
             state.user.role = 'admin'
         },
         DROP_TOKEN(state) {
             state.token = null
             state.user.role = null
         },
+
+        UPDATE_DATE (state) { state.now = +new Date }
     },
 
     actions: {
+        startUpdatingTime ({ commit, dispatch }) {
+            setInterval(() => {
+                commit('UPDATE_DATE')
+                console.log('Date updated ')
+                dispatch('checkPermitionsOnCurrentPath')
+            }, 1000 * 3 )
+        },
         async login( {state, commit, dispatch}, logPass) {
             commit('SET_LOADING_ON')
             return axios
                         .post(`auth/login`, logPass)
-                        .then( res => { commit('SET_TOKEN', res.data.access_token); return true;} )
-                        .catch( () => !!0 )
+                        .then( res => { commit('SET_TOKEN', res.data.access_token); return res.data; } )
+                        .catch( err => err )
                         .finally(() => {
                             commit('SET_LOADING_OFF')
                             dispatch('checkPermitionsOnCurrentPath')
