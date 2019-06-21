@@ -23,10 +23,10 @@ class CreateUsersTable extends Migration
 
     /**  * Reverse the migrations. * @return void  */
     public function down() {
-        Schema::drop('likes');
-        Schema::drop('replies');
-        Schema::drop('questions');
-        Schema::drop('categories');
-        Schema::drop('users');
+        Schema::dropIfExists('likes');
+        Schema::dropIfExists('replies');
+        Schema::dropIfExists('categories');
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('questions');
     }
 }
