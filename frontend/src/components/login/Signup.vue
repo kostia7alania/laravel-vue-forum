@@ -9,32 +9,13 @@
             ></v-text-field>
             <span class="red--text" v-if="errors.name">{{ errors.name[0] }}</span>
 
-            <v-text-field
-                label="E-mail"
-                v-model="form.email"
-                type="email"
-                required
-            ></v-text-field>
-            <span class="red--text" v-if="errors.email"></span>
+            <email :valid="valid" :form="form"/>
             <span class="red--text" v-if="errors.email">{{ errors.email[0] }}</span>
 
-
-            <v-text-field
-                label="Пароль"
-                v-model="form.password"
-                type="password"
-                required
-            ></v-text-field>
+            <password :valid="valid" :form="form" min='1'/>
             <span class="red--text" v-if="errors.password">{{ errors.password[0] }}</span>
 
-
-            <v-text-field
-                label="Подтверждение пароля"
-                v-model="form.password_confirmation"
-                type="password"
-                required
-            ></v-text-field>
-
+            <password :confirm='true' :valid="valid" :form="form" min='1'/>
 
             <v-btn :disabled='!isFormValid' color="green" type="submit">
                  <v-icon>done_outline</v-icon>
@@ -51,15 +32,24 @@
 
 <script>
 import { mapGetters, mapActions, mapState, mapMutations } from 'vuex';
+import emailVue from '../inputs/email.vue';
+import passwordVue from '../inputs/password.vue';
+
 export default {
+    components: {'email': emailVue, 'password':passwordVue},
     name:'sign-up',
     data ()  {
         return {
             form:{
                 name:null,
-                email: null,
-                password: null,
-                password_confirmation: null,
+                email: '',
+                password:'',
+                password_confirmation: '',
+            },
+            valid:{
+                email:false,
+                password:false,
+                password_confirmation:false,
             },
             errors: {
 
