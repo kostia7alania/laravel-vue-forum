@@ -44,5 +44,6 @@ new Vue({
     render: h => h(App),
     mounted() {
         this.$store.dispatch('login/startUpdatingTime')
+        window.app = this
     },
 }).$mount('#app')

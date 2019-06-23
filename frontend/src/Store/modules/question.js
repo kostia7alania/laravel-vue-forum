@@ -2,23 +2,23 @@
 // import AppStorage from '../Helpers/AppStorage';
 import Vue from 'vue'
 
-export default  {
+export default {
     state: {
         questions: [],
-        loading:false,
+        loading: false,
         meta: {}
     },
 
     getters: {
-        questions (state, getters) { return state.questions },
-        loading   (state, getters) { return state.loading   },
-        GETTER_meta      (state) {return state.meta}
+        questions(state, getters) { return state.questions },
+        loading(state, getters) { return state.loading },
+        GETTER_meta(state) { return state.meta }
     },
 
     mutations: { /***** USING GLOBAL ****/
 
-        changeProp(state, { prop, val } ) { state[prop] = val },
-        changeObj(state, { obj, prop, val } ) { state[obj][prop] = val },
+        changeProp(state, { prop, val }) { state[prop] = val },
+        changeObj(state, { obj, prop, val }) { state[obj][prop] = val },
 
         SET_LOADING_ON(state) { state.loading = true },
         SET_LOADING_OFF(state) { state.loading = false },
@@ -30,12 +30,12 @@ export default  {
 
     actions: {
 
-        getQuestions({ state, commit, dispatch, }, {page=1}) {
+        getQuestions({ state, commit, dispatch, }, { page = 1 }) {
             commit('SET_LOADING_ON')
             return axios.get(`question?page=${page}`)
                 .then(res => {
                     commit('SET_QUESTIONS', res.data.data)
-                    commit('SET_META',      res.data.meta)
+                    commit('SET_META', res.data.meta)
                     return res.data
                 })
                 .catch(err => {
@@ -48,12 +48,12 @@ export default  {
                 })
         },
 
-        getQuestionByCategorySlug({ state,commit,dispatch}, {slug,page}) {
+        getQuestionByCategorySlug({ state, commit, dispatch }, { slug, page }) {
             commit('SET_LOADING_ON')
             return axios.get(`category/${slug}/questions?page=${page}`)
                 .then(res => {
                     commit('SET_QUESTIONS', res.data.data)
-                    commit('SET_META',      res.data.meta || {})
+                    commit('SET_META', res.data.meta || {})
                     return res.data
                 })
                 .catch(err => {
@@ -75,12 +75,12 @@ export default  {
         },
         questionDelete({ }, slug) {
             return axios
-            .delete(`question/${slug}`)
-            .then(res => res)
-            .catch( err => {
-                console.warn('catch =>',err.response.data)
-                return false
-            })
+                .delete(`question/${slug}`)
+                .then(res => res)
+                .catch(err => {
+                    console.warn('catch =>', err.response.data)
+                    return false
+                })
 
         },
 

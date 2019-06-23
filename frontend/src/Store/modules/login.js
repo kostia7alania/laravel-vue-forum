@@ -63,7 +63,12 @@ export default {
         username(state, getters) {
             return state.user.name || 'не авторизован'
         },
+
         loggedIn(state, getters) { return getters.TOKEN__isOK },
+
+        role(state, getters) {
+            return getters.TOKEN__isOK && state.user.role
+        }
     },
 
     mutations: { /***** USING GLOBAL ****/
@@ -113,10 +118,7 @@ export default {
                     else snack('Произошла необработанная ошибка', 'error')
                     return false
                 })
-                .finally(() => {
-                    commit('SET_LOADING_OFF')
-                    dispatch('checkPermitionsOnCurrentPath')
-                })
+                .finally(() => commit('SET_LOADING_OFF'))
         },
 
         async register({ commit, dispatch }, logPass) {
@@ -127,30 +129,27 @@ export default {
                 .catch(err => err.response && err.response.data && err.response.data.errors)
                 .finally(() => {
                     commit('SET_LOADING_OFF')
-                    dispatch('checkPermitionsOnCurrentPath')
                 })
         },
 
         logout({ commit, dispatch }) {
             commit('DROP_TOKEN')
-            dispatch('checkPermitionsOnCurrentPath')
         },
 
-        checkPermitionsOnCurrentPath({ state }, to = router.history.current.path) {
+        checkPermitionsOnCurrentPath({ state, getters }, routeName = router.history.current.name) {
             //debugger
-            const role = store.state.login.user.role // state.user.role;
-            const path = store.getters['toolbar/items'].filter(e => e['to'] == to)
-            if (path.length) {
-                if (path[0].roles.includes(role) || path[0].roles.includes('*')) {
-                    console.warn('есть права')
-                    return true
-                } else {
-                    console.warn('нет прав!!')
-                    router.push({ name: 'forum' })
-                    return false
-                }
+            const role = getters.role
+            const path = store.getters['toolbar/items'].filter(e => e['routeName'] == routeName)
+            if (!path.length) return true
+            if (path[0].roles.includes(role) || path[0].roles.includes('*')) {
+                console.warn('есть права')
+                return true
+            } else {
+                console.warn('нет прав!!')
+                snack('Переходим на главную...')
+                router.push({ name: 'forum' })
+                return false
             }
-            return true
         }
     },
 }

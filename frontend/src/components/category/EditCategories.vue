@@ -76,25 +76,24 @@ export default {
     };
   },
   created() {
-
-    if(!this['login/isAdmin']) { //выкидываем за шкирку НЕадмина;
-        console.warn('Брысь отсюда! Ты не админ .!. ');
-        this.$router.push( { name:'forum' } )
-    } else
-    this["category/getCategories"]();
+    if (!this["login/isAdmin"]) {
+      //выкидываем за шкирку НЕадмина;
+      console.warn("Брысь отсюда! Ты не админ .!. ");
+      this.$router.push({ name: "forum" });
+    } else this["category/getCategories"]();
   },
   watch: {
-      isAdmin(neww,old) {
-        if(!neww) {
-            console.warn('Брысь отсюда! Ты не админ .!. ');
-            this.$router.push( { name:'forum' } )
-        }
-      },
+    isAdmin(neww, old) {
+      if (!neww) {
+        console.warn("Брысь отсюда! Ты не админ .!. ");
+        this.$router.push({ name: "forum" });
+      }
+    }
   },
   computed: {
     ...mapGetters(["login/isAdmin", "category/categories", "category/loading"]),
-    isAdmin(){
-        return this['login/isAdmin']
+    isAdmin() {
+      return this["login/isAdmin"];
     },
     disabled() {
       return !this.form.name || this.loading;
@@ -113,8 +112,8 @@ export default {
       "category/updateCategory",
       "category/deleteCategory"
     ]),
-    isDeleting(slug){
-        return this.deletingSlug.indexOf(slug) != -1;
+    isDeleting(slug) {
+      return this.deletingSlug.indexOf(slug) != -1;
     },
     cancelEditing() {
       this.editSlug = null;
@@ -127,10 +126,10 @@ export default {
       this.loading = true;
       this["category/updateCategory"]({ slug: this.editSlug, form: this.form })
         .then(async () => {
-            snack("Имя категории успешно изменено", "success")
-            await this["category/getCategories"]()
-            this.form.name = null;
-            this.editSlug = null;
+          snack("Имя категории успешно изменено", "success");
+          await this["category/getCategories"]();
+          this.form.name = null;
+          this.editSlug = null;
         })
         .catch(err => {
           console.warn(err);
@@ -139,34 +138,35 @@ export default {
         .finally(() => (this.loading = false));
     },
     create() {
-        this.loading = true;
-        this["category/createCategory"](this.form)
-        .then(()=>{
-            this["category/getCategories"]()
-            this.form.name = null
-            snack("Категория успешно создана", "success")
-            this.errors = {}
-        }).catch(err=>{
-            if(!err) alert('пусто')
-            this.errors = err.response.data.errors;
-            snack("Ошибка при создании категории", "error");
+      this.loading = true;
+      this["category/createCategory"](this.form)
+        .then(() => {
+          this["category/getCategories"]();
+          this.form.name = null;
+          snack("Категория успешно создана", "success");
+          this.errors = {};
         })
-        .finally(()=> this.loading = false )
+        .catch(err => {
+          if (!err) alert("пусто");
+          this.errors = err.response.data.errors;
+          snack("Ошибка при создании категории", "error");
+        })
+        .finally(() => (this.loading = false));
     },
     destroy(slug) {
-      this.deletingSlug.push(slug)
+      this.deletingSlug.push(slug);
       this["category/deleteCategory"](slug)
         .then(async () => {
-            snack("Категория успешно удалена", "success")
-            return await this["category/getCategories"]()
+          snack("Категория успешно удалена", "success");
+          return await this["category/getCategories"]();
         })
         .catch(err => {
           console.warn(err);
           snack("Ошибка при удалении категории", "error");
         })
-        .finally(() => (delete this.deletingSlug[slug]));
+        .finally(() => delete this.deletingSlug[slug]);
     },
-    edit(name,slug) {
+    edit(name, slug) {
       this.form.name = name;
       this.editSlug = slug;
     }
