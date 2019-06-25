@@ -17,6 +17,7 @@ use Tymon\JWTAuth\PayloadFactory;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
+
 class AuthController extends Controller
 {
     /**
@@ -36,8 +37,8 @@ class AuthController extends Controller
         }
         return $this->respondWithToken($token);
     */
-
         $credentials = $request->only('email', 'password');
+
         try {
             // attempt to verify the credentials and create a token for the user
             if ( !$token = JWTAuth::attempt($credentials)) {
@@ -59,8 +60,8 @@ class AuthController extends Controller
     print_r($token);
     die;
     */
-    return response()->json($token); // all good so return the token
-        //return $this->respondWithToken($token);
+    //return response()->json($token); // all good so return the token
+      return $this->respondWithToken($token);
     }
 
 
@@ -74,7 +75,7 @@ class AuthController extends Controller
         //return response()->json(auth()->user());
         $user = JWTAuth::user();
         if (count((array)$user) > 0) {
-            return response()->json(['status' => 'success', 'user' => $user]);
+            return response()->json(['status' => 'success', 'user' => $user, 'id' => $user->id]);
         } else {
             return response()->json(['status' => 'fail'], 401);
         }

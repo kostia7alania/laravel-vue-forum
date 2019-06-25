@@ -175,6 +175,8 @@ return [
 
         Spatie\Permission\PermissionServiceProvider::class,
 
+     //   Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class
+
     ],
 
     /*
@@ -227,6 +229,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class, // kostia 4 debugbar 26.4.2019
 
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
     ],
 
 ];
