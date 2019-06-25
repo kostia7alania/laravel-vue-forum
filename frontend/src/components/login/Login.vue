@@ -1,20 +1,8 @@
 <template>
     <v-container>
         <v-form @submit.prevent="loginSubmit">
-            <v-text-field
-                label="E-mail"
-                v-model.trim="form.email"
-                type="email"
-                required
-            ></v-text-field>
-
-            <v-text-field
-                label="Password"
-                v-model.trim="form.password"
-                type="password"
-                required
-            ></v-text-field>
-
+            <email :valid="valid" :form="form"/>
+            <password :valid="valid" :form="form" min='1'/>
             <v-btn color="green" :disabled="disabled" type="submit">
                 <v-progress-circular v-if="loading" :width="7" color="purple" indeterminate ></v-progress-circular>
                 <v-icon v-else-if="disabled">cancel</v-icon>
@@ -30,13 +18,20 @@
 <script>
 
 import { mapGetters, mapActions, mapState, mapMutations } from 'vuex'
+import emailVue from '../inputs/email.vue';
+import passwordVue from '../inputs/password.vue';
 
 export default {
+    components: {'email': emailVue, 'password':passwordVue},
     data ()  {
         return {
+            valid:{
+                email:false,
+                password:false,
+            },
             form: {
-                email:null,
-                password: null,
+                email: '',
+                password: '',
             },
             loading:false,
         }
@@ -55,7 +50,7 @@ export default {
             return this.$store.state.toolbar.modalMode
         },
         disabled() {
-            return !this.form.email || !this.form.password
+            return !this.valid.email || !this.valid.password
         }
     },
     methods: {
