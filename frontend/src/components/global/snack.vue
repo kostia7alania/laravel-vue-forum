@@ -13,17 +13,18 @@
       <v-btn
         color="pink"
         text
-        @click="snackbar = false"
+        @click="close"
       > Закрыть
       </v-btn>
     </v-snackbar>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
+
   export default {
     data () {
       return {
-        snackbar: false,
         y: 'top',
         x: null,
         mode: '',
@@ -35,10 +36,35 @@
 
     mounted() {
         window.snack = (text='Attention', color='info') => {
-            this.text = text;
-            this.color = color;
-            this.snackbar = true;
+            this.text = text
+            this.color = color
+            this['global/SET_SNACK_ON']()
         }
-    }
+    },
+
+    computed: {
+
+      snackbar: {
+          get() {
+              return this.$store.state.global._snack
+          },
+          set(e) {
+              e ? this['global/SET_SNACK_ON']():
+              this['global/SET_SNACK_OFF']()
+          }
+      }
+
+    },
+
+    methods: {
+        ...mapMutations([
+            'global/SET_SNACK_ON',
+            'global/SET_SNACK_OFF',
+        ]),
+        close(e) {
+            this['global/SET_SNACK_OFF']()
+        }
+    },
+
   }
 </script>

@@ -37,100 +37,45 @@
         </v-btn>
     </div>
 
-
-  <div class="text-xs-center">
-    <v-dialog v-model="modal" width="500" >
-      <!--
-          <template v-slot:activator="{ on }">
-        <v-btn color="red lighten-2" dark v-on="on"> <v-icon>person</v-icon> Войти </v-btn>
-      </template-->
-
-      <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title >
-            <v-icon>{{  !regMode ? 'person' : 'assignment' }}</v-icon>
-          {{ !regMode ? 'Форма входа' : 'Форма регистрации'}}
-        </v-card-title>
-
-        <v-card-text v-if="modal">
-            <LoginVue  v-if="!regMode" @toRegMode="regMode=true"/>
-            <SignupVue v-else @toLoginMode="regMode=false"/>
-        </v-card-text>
-
-      </v-card>
-    </v-dialog>
-  </div>
-
-
-
+    <Login-form/>
 
   </v-toolbar>
 </template>
 
 <script>
-
-import AppNotification from './AppNotification'
-import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
-import LoginVue from './login/Login.vue';
-import SignupVue from './login/Signup.vue';
+import AppNotification from "./AppNotification";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import LoginFormVue from "./Login-form.vue";
 
 export default {
-    name: 'TOOLbar',
-    components: {AppNotification,LoginVue, SignupVue },
-    data() {
-      return {
-          regMode:false,
-      }
+  name: "TOOLbar",
+  components: { AppNotification, "Login-form": LoginFormVue },
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapGetters(["login/loggedIn", "toolbar/items"]),
+    items() {
+      return this["toolbar/items"];
     },
-    computed: {
-        ...mapState([
-//            'toolbar/modalMode'
-        ]),
-        ...mapGetters([
-            'login/loggedIn',
-            'toolbar/items'
-        ]),
-        modal:{
-            get(){
-                return this.$store.state.toolbar.modalMode
-            },
-            set(e){
-
-                if(e)   this['toolbar/SET_MODAL_MODE_ON']()
-                else    this['toolbar/SET_MODAL_MODE_OFF']()
-            }
-        },
-        items() {
-            return this['toolbar/items']
-        },
-        loggedIn() {
-            return this['login/loggedIn'];
-        }
-    },
-    methods: {
-        ...mapMutations([
-            'toolbar/SET_MODAL_MODE_ON',
-            'toolbar/SET_MODAL_MODE_OFF',
-        ]),
-        ...mapActions([
-            'login/logout'
-        ]),
-        manuClickHandler(item) {
-
-            if(item.title=='Выйти') this.logout();
-            else if(item.title=='Войти') {
-                this['toolbar/SET_MODAL_MODE_ON']();
-            }
-            else {
-                this.$router.push({name: item.slug})
-            }
-
-        },
-        logout(){
-            console.log('login/logout')
-            this['login/logout']();
-        }
+    loggedIn() {
+      return this["login/loggedIn"];
     }
-}
+  },
+  methods: {
+    ...mapMutations([
+      "toolbar/SET_MODAL_MODE_ON",
+      "toolbar/SET_MODAL_MODE_OFF"
+    ]),
+    ...mapActions(["login/logout"]),
+    manuClickHandler(item) {
+           if (item.title == "Выйти") this["login/logout"]()
+      else if (item.title == "Войти") this["toolbar/SET_MODAL_MODE_ON"]()
+      else this.$router.push({ name: item.slug })
+
+    }
+  }
+};
 </script>
 <!--
 <style lang="scss" scoped>
