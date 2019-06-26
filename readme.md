@@ -11,7 +11,7 @@
 
 > Laravel 5.8 + Vue.JS 2.6 + vue-router + vuex + vuetify
 
-### 🏠 [DEMO](forum.kostia7alania.ru)
+### 🏠 [DEMO](https://forum.kostia7alania.ru)
 
 ## Install
 
