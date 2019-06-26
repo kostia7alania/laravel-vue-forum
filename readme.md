@@ -1,4 +1,50 @@
-########################################
+<h1 align="center">Welcome to laravel-vue-forum 👋</h1>
+<p>
+  <img src="https://img.shields.io/badge/version-.1-blue.svg?cacheSeconds=2592000" />
+  <a href="seee readme.md">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
+  </a>
+  <a href="https://twitter.com/kostia7alania">
+    <img alt="Twitter: kostia7alania" src="https://img.shields.io/twitter/follow/kostia7alania.svg?style=social" target="_blank" />
+  </a>
+</p>
+
+> Laravel 5.8 + Vue.JS 2.6 + vue-router + vuex + vuetify
+
+### 🏠 [DEMO](forum.kostia7alania.ru)
+
+## Install
+
+```sh
+composer update
+cd frontend
+yarn
+```
+
+## Usage
+
+```sh
+php artisan serve
+yarn serve
+```
+
+## Author
+
+👤 **kostia7alania**
+
+* VK: [@kostia7alania](https://vk.com/kostia7alania)
+* Github: [@kostia7alania](https://github.com/kostia7alania)
+* Twitter: [@kostia7alania](https://twitter.com/kostia7alania)
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+<a href="https://www.patreon.com/kostia7alania">
+  <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
+</a>
+
+ ########################################
 # UPD 5 JUN 2019
 ```
 HOW TO REFRESH DB:
