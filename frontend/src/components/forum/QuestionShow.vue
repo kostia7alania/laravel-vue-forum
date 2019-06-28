@@ -12,9 +12,7 @@
                 <rating />
             </v-layout>
 
-                <v-card-text v-html="body"></v-card-text>
-
-
+            <v-card-text v-html="body"></v-card-text>
 
             <v-card-actions v-if="own" class="text-xs-center d-flex align-center">
 
@@ -67,7 +65,6 @@ export default {
       const replies_arr = this["reply/GETTER_TOPIC_REPLIES_ARR"];
       if (typeof replies_arr != "object") return 11;
       return slug in replies_arr ? replies_arr[slug].length : 0;
-
       //return this.question.reply_count //<--меняется в процессе;  поетому непригодно
     },
     own() {
@@ -97,7 +94,7 @@ export default {
     async destroy() {
       const res = await this["question/questionDelete"](this.question.slug);
       if (res) {
-        this.$router.push("/forum");
+        this.$router.push({ name: "forum" });
         snack("Тема успешно удалена", "success");
       } else snack("Не удалось удалить тему", "error");
     },
