@@ -21,6 +21,7 @@ class CategoryController extends Controller {
 
     public function __construct() { // Create a new AuthController instance. @return void
         $this->middleware('JWT', ['except' => ['index','show','getQuestionsByCategorySlug']]);
+        $this->middleware('auth.role:admin', ['only' => ['store', 'update', 'destroy']]);
     }
 
     public function index() {   // Display a listing of the resource.  @return \Illuminate\Http\Response

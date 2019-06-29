@@ -48,6 +48,8 @@ class AuthController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 
+    //    $payload = JWTAuth::getPayload($token);
+
 
         // grab some user
  //   $user = User::first();
@@ -60,8 +62,8 @@ class AuthController extends Controller
     print_r($token);
     die;
     */
-    //return response()->json($token); // all good so return the token
-      return $this->respondWithToken($token);
+   //  return response()->json(); // all good so return the token
+     return $this->respondWithToken($token);
     }
 
 
@@ -101,14 +103,14 @@ class AuthController extends Controller
         $payload = PayloadFactory::make($customClaims);
         print_r($payload);die;
         */
-
         return response()->json([
             //'token2'=>$token2,
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user()->name,
-            'roles' => auth()->user()->roles()->select('name')->get()
+            //'roles' =>auth()->user()->roles()->select('name')->get()
+            'role' =>auth()->user()->role
         ]);
     }
 }
