@@ -5,7 +5,7 @@
 
           <v-menu bottom left z-index="223" >
             <template v-slot:activator="{ on }">
-              <v-btn  dark icon  v-on="on" >
+              <v-btn dark icon  v-on="on" >
                 <v-app-bar-nav-icon></v-app-bar-nav-icon>
               </v-btn>
             </template>
@@ -69,10 +69,9 @@ export default {
     ]),
     ...mapActions(["login/logout"]),
     manuClickHandler(item) {
-           if (item.title == "Выйти") this["login/logout"]()
-      else if (item.title == "Войти") this["toolbar/SET_MODAL_MODE_ON"]()
-      else this.$router.push({ name: item.slug })
-
+      if (item.title == "Выйти") this["login/logout"]();
+      else if (item.title == "Войти") this["toolbar/SET_MODAL_MODE_ON"]();
+      else this.$router.push({ name: item.routeName });
     }
   }
 };
