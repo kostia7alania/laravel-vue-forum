@@ -4,7 +4,7 @@
             <v-card-title>
                 <div class="headline"> {{ question.title }} </div>
                 <v-spacer></v-spacer>
-                <v-btn color="teal" dark>{{ replyCount }} Комментариев</v-btn>
+                <v-btn @click="gotoComments" color="teal" dark>{{ replyCount }} Комментариев</v-btn>
             </v-card-title>
 
             <v-layout 2 align-center justify-end>
@@ -46,69 +46,64 @@
 
 
 <script>
-import { mapGetters , mapActions, mapState} from 'vuex';
-import userInfo from '@/components/user-info'
-import ratingVue from './rating.vue';
+import { mapGetters, mapActions, mapState } from "vuex";
+import userInfo from "@/components/user-info";
+import ratingVue from "./rating.vue";
 
 export default {
-    name:"forum--question-show",
-    components: {
-        'user-info': userInfo,
-        'rating': ratingVue
-    },
-    props: ['question'],
-    data() {
-        return { }
-    },
-    computed: {
-        ...mapGetters([
-            'login/id',
-            'reply/GETTER_TOPIC_REPLIES_ARR'
-        ]),
-        replyCount() {
-            const slug = this.$route.params.slug //this['global/slug'] //router.history.current.params.slug//не реактивно =(
-            const replies_arr = this['reply/GETTER_TOPIC_REPLIES_ARR']
-            if(typeof replies_arr != 'object') return 11
-            return slug in replies_arr ? replies_arr[slug].length : 0
+  name: "forum--question-show",
+  components: {
+    "user-info": userInfo,
+    rating: ratingVue
+  },
+  props: ["question"],
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapGetters(["login/id", "reply/GETTER_TOPIC_REPLIES_ARR"]),
+    replyCount() {
+      const slug = this.$route.params.slug; //this['global/slug'] //router.history.current.params.slug//не реактивно =(
+      const replies_arr = this["reply/GETTER_TOPIC_REPLIES_ARR"];
+      if (typeof replies_arr != "object") return 11;
+      return slug in replies_arr ? replies_arr[slug].length : 0;
 
-            //return this.question.reply_count //<--меняется в процессе;  поетому непригодно
-        },
-        own() {
-            return this['login/id'] == this.question.id
-        },
-        body() {
-            const txt = this.question.body
-            return md.parse(txt?txt:'');
-        },
+      //return this.question.reply_count //<--меняется в процессе;  поетому непригодно
     },
-    created() {
-        Echo.private('App.User.' + this['login/id'] )
-            .notification(notification => {
-            this.replyCount++
-        });
-        EventBus.$on('deleteReply', () => {
-            this.replyCount--
-        })
-        Echo.channel('deleteReplyChannel')
-            .listen('DeleteReplyEvent', e => {
-            this.replyCount--;
-        })
-    }  ,
-    methods: {
-        ...mapActions([
-            'question/questionDelete'
-        ]),
-        async destroy() {
-            const res = await this['question/questionDelete'](this.question.slug)
-            if(res) {
-                this.$router.push('/forum')
-                snack("Тема успешно удалена", "success");
-            }
-            else snack("Не удалось удалить тему", "error");
-        },
-        edit() {
-            EventBus.$emit('startEditing')
-        }
+    own() {
+      return this["login/id"] == this.question.id;
+    },
+    body() {
+      const txt = this.question.body;
+      return md.parse(txt ? txt : "");
     }
-}
+  },
+  created() {
+    Echo.private("App.User." + this["login/id"]).notification(notification => {
+      this.replyCount++;
+    });
+    EventBus.$on("deleteReply", () => {
+      this.replyCount--;
+    });
+    Echo.channel("deleteReplyChannel").listen("DeleteReplyEvent", e => {
+      this.replyCount--;
+    });
+  },
+  methods: {
+    ...mapActions(["question/questionDelete"]),
+    gotoComments() {
+      this.$vuetify.goTo(".comments");
+    },
+    async destroy() {
+      const res = await this["question/questionDelete"](this.question.slug);
+      if (res) {
+        this.$router.push("/forum");
+        snack("Тема успешно удалена", "success");
+      } else snack("Не удалось удалить тему", "error");
+    },
+    edit() {
+      EventBus.$emit("startEditing");
+    }
+  }
+};
 </script>
