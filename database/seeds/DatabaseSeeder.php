@@ -6,18 +6,12 @@ use App\Model\Category;
 use App\Model\Question;
 use App\Model\Reply;
 use App\Model\Like;
-use App\Model\Role;
+// use App\Model\Role;
+use App\Model\Rate;
 
-class DatabaseSeeder extends Seeder
-{
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
-    {
-
+class DatabaseSeeder extends Seeder {
+    /** * Seed the application's database. * * @return void */
+    public function run() {
         /*
         foreach(['admin', 'editor', 'user'] as $role_name) {
             $role = App\Model\Role::firstOrNew(['name'=>$role_name,'guard_name'=>$role_name]);
@@ -25,7 +19,7 @@ class DatabaseSeeder extends Seeder
         }
         echo 'roles added';
 */
-        factory(User::class, 33)->create();
+        factory(User::class, 11)->create();
 /*         ->each(function($user){
             //return $user->roles()->save( $role );
             //die;
@@ -38,14 +32,23 @@ class DatabaseSeeder extends Seeder
        echo 'Users faking finished
        ';
        //die;
-       factory(Category::class, 30)->create();echo 'Categories faking finished
-       ';
-       factory(Question::class, 100)->create();echo 'Questions faking finished
+       factory(Category::class, 11)->create(); echo 'Categories faking finished
        ';
 
-       factory(Reply::class, 113)
+       factory(Question::class, 11)
+       ->create()
+        ->each(function($question){
+            $user = factory(Rate::class)->make();
+            return $question->rate()->save( $user );   echo "USER LIKED => $reply
+           ";
+       });
+
+       echo 'Questions faking finished
+       ';
+
+       factory(Reply::class, 11)
         ->create()
-        ->each(function($reply){
+        ->each(function($reply) {
             $user = factory(Like::class)->make();
             return $reply->like()->save( $user );   echo "USER LIKED => $reply
            ";

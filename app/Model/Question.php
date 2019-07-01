@@ -7,6 +7,7 @@ use App\User;
 use App\Model\Reply;
 use App\Model\Category;
 use Illuminate\Http\Request;
+use App\Model\Rate;
 
 class Question extends Model
 {
@@ -30,8 +31,11 @@ class Question extends Model
             return $this->hasMany(Reply::class);//->latest();
         }
         public function category() { return $this->belongsTo(Category::class); }
-        public function getPathAttribute() {return "/question/$this->slug";
-        //return asset("api/question/$this->slug");
+        public function getPathAttribute() {
+            return "/question/$this->slug";
+            //return asset("api/question/$this->slug");
     }
+
+    public function rate() { return $this->hasMany(Rate::class); }
 
 }
