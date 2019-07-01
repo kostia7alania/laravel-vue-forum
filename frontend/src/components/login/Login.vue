@@ -16,71 +16,55 @@
 </template>
 
 <script>
-
-import { mapGetters, mapActions, mapState, mapMutations } from 'vuex'
-import emailVue from '../inputs/email.vue';
-import passwordVue from '../inputs/password.vue';
+import { mapGetters, mapActions, mapState, mapMutations } from "vuex";
+import emailVue from "../inputs/email.vue";
+import passwordVue from "../inputs/password.vue";
 
 export default {
-    components: {'email': emailVue, 'password':passwordVue},
-    data ()  {
-        return {
-            valid:{
-                email:false,
-                password:false,
-            },
-            form: {
-                email: '',
-                password: '',
-            },
-            loading:false,
-        }
+  components: { email: emailVue, password: passwordVue },
+  data() {
+    return {
+      valid: {
+        email: false,
+        password: false
+      },
+      form: {
+        email: "",
+        password: ""
+      }
+    };
+  },
+  mounted() {
+    if (this["login/loggedIn"]) {
+      this.$router.push({ name: "forum" });
+    }
+  },
+  computed: {
+    // ...mapState(['toolbar/modalMode']),
+    ...mapGetters(["login/loggedIn"]),
+    modalMode() {
+      return this.$store.state.toolbar.modalMode;
     },
-    mounted() {
-        if(this['login/loggedIn']) {
-            this.$router.push({name: 'forum'});
-        }
+    loading() {
+      return this.$store.state.login.loading;
     },
-    computed: {
-       // ...mapState(['toolbar/modalMode']),
-        ...mapGetters([
-            'login/loggedIn'
-        ]),
-        modalMode(){
-            return this.$store.state.toolbar.modalMode
-        },
-        disabled() {
-            return !this.valid.email || !this.valid.password
-        }
+    disabled() {
+      return !this.valid.email || !this.valid.password;
+    }
+  },
+  methods: {
+    ...mapMutations(["toolbar/SET_MODAL_MODE_OFF"]),
+    ...mapActions(["login/login"]),
+    async loginSubmit() {
+      if (await this["login/login"](this.form)) {
+        if (!this.modalMode) this.$router.push({ name: "forum" });
+        this["toolbar/SET_MODAL_MODE_OFF"]();
+      }
     },
-    methods: {
-        ...mapMutations([
-            'toolbar/SET_MODAL_MODE_OFF'
-        ]),
-        ...mapActions([ 'login/login' ]),
-        async loginSubmit() {
-            this.loading = true;
-            const res = await this['login/login'](this.form)
-            if(typeof res != 'object') snack('Ошибка сервера', 'error')
-            else if('token' in res) {
-                const m = this.modalMode
-                if(!m)  this.$router.push( { name: 'forum' } )
-                this['toolbar/SET_MODAL_MODE_OFF']()
-                snack('Вы успешно вошли', 'success')
-            } else if(res.message.match('401')) {
-                snack('Неверный пароль', 'error')
-            } else if(res.message.match('429')) {
-                snack('Слишком много попыток входа', 'error')
-            }
-            else {
-                snack('Произошла необработанная ошибка', 'error')
-            }
-            this.loading = false
-        },
-        toRegHandler(){
-            if(!this.modalMode) this.$router.push( { name: 'signup' } )
-            this.$emit('toRegMode');
-        },
-    },
+    toRegHandler() {
+      if (!this.modalMode) this.$router.push({ name: "signup" });
+      this.$emit("toRegMode");
+    }
   }
+};
 </script>

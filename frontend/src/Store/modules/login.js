@@ -94,12 +94,25 @@ export default {
                 dispatch('checkPermitionsOnCurrentPath')
             }, 1000 * 3)
         },
-        async login({ state, commit, dispatch }, logPass) {
+        login({ state, commit, dispatch }, logPass) {
             commit('SET_LOADING_ON')
             return axios
                 .post(`auth/login`, logPass)
-                .then(res => { commit('SET_TOKEN', res.data.access_token); return res.data; })
-                .catch(err => err)
+                .then(res => {
+                    if (typeof res != 'object' && !('access_token' in res)) {
+                        snack('Ошибка сервера', 'error')
+                        return false
+                    }
+                    snack('Вы успешно вошли', 'success')
+                    commit('SET_TOKEN', res.data.access_token)
+                    return res.data
+                })
+                .catch(err => {
+                    if (err.message.match('401')) snack('Неверный пароль', 'error')
+                    else if (err.message.match('429')) snack('Слишком много попыток входа', 'error')
+                    else snack('Произошла необработанная ошибка', 'error')
+                    return false
+                })
                 .finally(() => {
                     commit('SET_LOADING_OFF')
                     dispatch('checkPermitionsOnCurrentPath')
