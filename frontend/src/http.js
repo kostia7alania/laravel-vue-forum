@@ -13,7 +13,10 @@ window.axios = ax.create({
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 window.axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.login.token}`
 */
+//ПОСЛЕ ОТПРАВКИ КАЖДОГО ЗАПРОСА
 axios.interceptors.request.use(config => {
+    //  config.validateStatus = status => status < 500; // Reject only if the status code is greater than or equal to 500
+
     const token = store.state.login.token;
     if (token) config.headers.Authorization = `Bearer ${token}`;
     else 'Authorization' in config.headers ? delete config.headers.Authorization : '';
@@ -21,6 +24,24 @@ axios.interceptors.request.use(config => {
 },
     error => Promise.reject(error)
 );
+
+
+//ПОСЛЕ ПОЛУЧЕНИЯ КАЖДОГО ОТВЕТА
+axios.interceptors.response.use(res => {
+    // после каждого получения ответа
+    if (process.env.NODE_ENV !== 'production')
+        console.log('[RES]=>', res)
+    store._actions['login/checkPermitionsOnCurrentPath'][0]()//check perm and redirect
+    if (res.status == 401) {
+        snack('Недостаточно прав для этого действия', 'error')
+    }
+
+    return res
+})
+
+
+
+
 
 
 
@@ -39,12 +60,6 @@ window.Echo = new Echo({
 });
 
 
-axios.interceptors.response.use(response => { // после каждого получения ответа
-    if (process.env.NODE_ENV !== 'production')
-        console.log('[RES]=>', response)
-    store._actions['login/checkPermitionsOnCurrentPath'][0]()//check perm and redirect
-    return response
-})
 
 /* химичу */
 Pusher.logToConsole = true;
@@ -54,3 +69,5 @@ var pusher = new Pusher('7b08572e181a32553e9a', {
   forceTLS: true
 });
 */
+
+
