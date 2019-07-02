@@ -29,7 +29,7 @@ export default {
       }
     },
     isAdmin() {
-      return this.$store.getters.login.isAdmin;
+      return this.$store.getters["login/isAdmin"];
     }
   }
 };
