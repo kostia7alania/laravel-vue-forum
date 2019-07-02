@@ -56,7 +56,8 @@ export default {
     ...mapMutations(["toolbar/SET_MODAL_MODE_OFF"]),
     ...mapActions(["login/login"]),
     async loginSubmit() {
-      if (await this["login/login"](this.form)) {
+      let req = await this["login/login"](this.form);
+      if (req) {
         if (!this.modalMode) this.$router.push({ name: "forum" });
         this["toolbar/SET_MODAL_MODE_OFF"]();
       }

@@ -2,16 +2,13 @@
       <v-layout row wrap>
         <v-flex xs12>
           <v-text-field
-            v-model="form.password"
-            :append-icon="show ? 'visibility' : 'visibility_off'"
-            :rules="[rules.required, rules.min]"
-            :type="show ? 'text' : 'password'"
-            name="input-10-1"
-            label="Пароль"
-            :error-messages="hint"
-            :error="!valid.password && showErrors"
-            counter
-            @click:append="show = !show"
+              label="Имя"
+              v-model="form.name"
+              type="text"
+              :rules="[rules.required, rules.min]"
+              required
+              :error-messages="hint"
+              :error="!valid.name && showErrors"
           />
         </v-flex>
       </v-layout>
@@ -19,10 +16,10 @@
 
 <script>
 export default {
-  props: ["valid", "form", "min", "confirm", "confirm_error"],
+  name: "name-input",
+  props: ["valid", "form", "min"],
   data() {
     return {
-      show: false,
       showErrors: false,
       rules: {
         required: v => !!v || "Обязательное поле.",
@@ -34,23 +31,31 @@ export default {
     };
   },
   watch: {
-    "form.password"() {
+    model() {
       this.showErrors = true;
     }
   },
   computed: {
+    model: {
+      get() {
+        return this.form.name;
+      },
+      set(e) {
+        this.form.name = e.replace(/\s+/g, " ").trim();
+      }
+    },
     hint() {
       if (!this.showErrors) return "";
-      const minTest = this.minTest("password");
+      const minTest = this.minTest("name");
       if (minTest) return minTest;
-
-      this.valid.password = true;
+      this.valid.name = true;
       return "";
     }
   },
+
   methods: {
     minTest(name) {
-      if (this.min > this.form[name].length) {
+      if ((this.min || 1) > this.form[name].length) {
         this.valid[name] = false;
         return `Минимум символов - ${this.min}`;
       }
