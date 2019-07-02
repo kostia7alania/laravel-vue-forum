@@ -30,28 +30,28 @@
 
             <v-list>
                 <div v-for="category in categories" :key="category.id">
-                <v-list-item>
-                    <v-list-item-action>
-                        <v-btn icon small @click="edit(category.name, category.slug)" :disabled="editSlug==category.slug || isDeleting(category.slug) || loading">
-                            <v-icon color="orange">edit</v-icon>
-                        </v-btn>
-                    </v-list-item-action>
+                  <v-list-item>
+                      <v-list-item-action>
+                          <v-btn icon small @click="edit(category.name, category.slug)" :disabled="editSlug==category.slug || isDeleting(category.slug) || loading">
+                              <v-icon color="orange">edit</v-icon>
+                          </v-btn>
+                      </v-list-item-action>
 
-                    <v-list-item-content>
-                        <v-list-item-title :class="isDeleting(category.slug)?'deleting-text':''">
-                            {{ category.name }}
-                        </v-list-item-title>
-                    </v-list-item-content>
+                      <v-list-item-content>
+                          <v-list-item-title :class="isDeleting(category.slug)?'deleting-text':''">
+                              {{ category.name }}
+                          </v-list-item-title>
+                      </v-list-item-content>
 
-                    <v-list-item-action>
-                        <v-btn icon small @click="destroy(category.slug)" :disabled="isDeleting(category.slug)">
-                            <v-progress-circular v-if="isDeleting(category.slug)" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
-                            <v-icon color="red" v-else>delete</v-icon>
-                        </v-btn>
-                    </v-list-item-action>
+                      <v-list-item-action>
+                          <v-btn icon small @click="destroy(category.slug)" :disabled="isDeleting(category.slug)">
+                              <v-progress-circular v-if="isDeleting(category.slug)" :size="20" :width="3" color="purple" indeterminate ></v-progress-circular>
+                              <v-icon color="red" v-else>delete</v-icon>
+                          </v-btn>
+                      </v-list-item-action>
 
-                </v-list-item>
-                <v-divider/>
+                  </v-list-item>
+                  <v-divider/>
                 </div>
 
             </v-list>
@@ -75,26 +75,11 @@ export default {
       deletingSlug: []
     };
   },
-  created() {
-    if (!this["login/isAdmin"]) {
-      //выкидываем за шкирку НЕадмина;
-      console.warn("Брысь отсюда! Ты не админ .!. ");
-      this.$router.push({ name: "forum" });
-    } else this["category/getCategories"]();
-  },
-  watch: {
-    isAdmin(neww, old) {
-      if (!neww) {
-        console.warn("Брысь отсюда! Ты не админ .!. ");
-        this.$router.push({ name: "forum" });
-      }
-    }
+  mounted() {
+    this["category/getCategories"]();
   },
   computed: {
-    ...mapGetters(["login/isAdmin", "category/categories", "category/loading"]),
-    isAdmin() {
-      return this["login/isAdmin"];
-    },
+    ...mapGetters(["category/categories", "category/loading"]),
     disabled() {
       return !this.form.name || this.loading;
     },
