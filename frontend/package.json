@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@mdi/font": "^3.6.95",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "core-js": "^2.6.9",
     "laravel-echo": "^1.5.3",
     "lodash.camelcase": "^4.3.0",
